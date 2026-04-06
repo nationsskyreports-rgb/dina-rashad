@@ -39,7 +39,7 @@ function initServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('/dina-rashad/sw.js')
             .then(function(registration) {
                 console.log('✅ Service Worker registered:', registration.scope);
                 
