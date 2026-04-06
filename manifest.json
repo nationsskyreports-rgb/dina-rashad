@@ -5,10 +5,9 @@
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "favicon": "/favicon.ico",
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
-  "theme_color": "#6B7280",
+  "theme_color": "#2563eb",
   "lang": "en",
   "dir": "ltr",
   "categories": [
@@ -50,12 +49,12 @@
   "shortcuts": [
     {
       "name": "Book Now",
-      "short_name": "احجز",
+      "short_name": "Book",
       "url": "/booking.html"
     },
     {
       "name": "Contact",
-      "short_name": "تواصل",
+      "short_name": "Contact",
       "url": "/contact.html"
     }
   ]
