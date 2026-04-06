@@ -561,6 +561,82 @@
                             </li>
                         </ul>
                     </div>
+<!-- Recommendations -->
+                    <div class="recommendations-section">
+                        <h3>Recommendations</h3>
+                        
+                        <!-- Recommendation 1 - COA -->
+                        <div class="recommendation-card" id="recCard1" onclick="toggleRecommendation('recCard1')" style="margin-bottom: var(--spacing-xl);">
+                            <div class="recommendation-img-wrap">
+                                <img src="images/recommendation-coa.jpg" alt="Letter of Recommendation - COA Netherlands" loading="lazy">
+                            </div>
+                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard1')">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>View Full Letter</span>
+                            </button>
+                            <div class="recommendation-source">
+                                <strong>Letter of Recommendation</strong>
+                                <span>Martin Hobers — Facilitator Cultural Orientation The Netherlands</span>
+                                <div class="source-badge">
+                                    <i class="fas fa-building"></i>
+                                    COA (Centraal Orgaan opvang asielzoekers) — Netherlands
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation 2 - Tuncay Bayburt -->
+                        <div class="recommendation-card" id="recCard2" onclick="toggleRecommendation('recCard2')" style="margin-bottom: var(--spacing-xl);">
+                            <div class="recommendation-img-wrap">
+                                <img src="images/recommendation-tuncay.jpg" alt="Recommendation - Tuncay Bayburt" loading="lazy">
+                            </div>
+                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard2')">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>View Full Letter</span>
+                            </button>
+                            <div class="recommendation-source">
+                                <strong>Professional Recommendation</strong>
+                                <span>Tuncay Bayburt — Creative Growth Partner | Founder at Descre</span>
+                                <div class="source-badge">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Descre — April 2022
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation 3 - Barry Donadio -->
+                        <div class="recommendation-card" id="recCard3" onclick="toggleRecommendation('recCard3')">
+                            <div class="recommendation-img-wrap">
+                                <img src="images/recommendation-barry.jpg" alt="Recommendation - Barry Donadio" loading="lazy">
+                            </div>
+                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard3')">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>View Full Letter</span>
+                            </button>
+                            <div class="recommendation-source">
+                                <strong>Professional Recommendation</strong>
+                                <span>Barry Donadio — Former U.S. Secret Service | News Commentator</span>
+                                <div class="source-badge">
+                                    <i class="fas fa-star"></i>
+                                    Alghad TV Interview — February 2025
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard1')">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>View Full Letter</span>
+                            </button>
+                            <div class="recommendation-source">
+                                <strong>Letter of Recommendation</strong>
+                                <span>Martin Hobers — Facilitator Cultural Orientation The Netherlands</span>
+                                <div class="source-badge">
+                                    <i class="fas fa-building"></i>
+                                    COA (Centraal Orgaan opvang asielzoekers) — Netherlands
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     
                     <!-- CTA -->
                     <div class="about-cta">
@@ -663,9 +739,9 @@
                 
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <a href="https://wa.me/201064449413" class="footer-whatsapp" target="_blank" rel="noopener">
+                    <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener">
                         <i class="fab fa-whatsapp"></i>
-                        <span>+20 106 444 9413</span>
+                        <span>+20 101 116 0627</span>
                     </a>
                     <p class="availability">
                         <i class="fas fa-clock"></i>
@@ -682,13 +758,22 @@
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/201064449413?text=Hi%20Dina%2C%20I'd%20love%20to%20learn%20more%20about%20your%20services" 
+    <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'd%20love%20to%20learn%20more%20about%20your%20services" 
        class="whatsapp-float" 
        target="_blank" 
        rel="noopener"
        aria-label="Contact on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
+    <script>
+    function toggleRecommendation(id) {
+        var card = document.getElementById(id);
+        var isExpanded = card.classList.contains('expanded');
+        card.classList.toggle('expanded');
+        var btn = card.querySelector('.recommendation-toggle span');
+        btn.textContent = isExpanded ? 'View Full Letter' : 'Collapse Letter';
+    }
+    </script>
 
     <!-- Scripts -->
     <script src="Js/main.js"></script>
