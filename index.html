@@ -6,34 +6,37 @@
     <title>Dina Rashad | Simultaneous Interpreter</title>
     <meta name="description" content="Professional Freelance Conference Interpreter - 10+ Years Experience in Arabic-English Simultaneous Interpretation">
     
-    <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="images/profile.jpg">
     <link rel="apple-touch-icon" href="images/profile.jpg">
     
-    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/responsive.css">
     <link rel="stylesheet" href="CSS/animations.css">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker Registered'))
+                    .catch(err => console.log('Service Worker Failed', err));
+            });
+        }
+    </script>
 </head>
 <body>
 
-    <!-- ========== NAVIGATION ========== -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
             <a href="index.html" class="nav-logo">
@@ -57,7 +60,6 @@
         </div>
     </nav>
 
-    <!-- ========== HERO SECTION ========== -->
     <section class="hero" id="hero">
         <div class="hero-bg-overlay"></div>
         <div class="container hero-container">
@@ -131,7 +133,6 @@
         </div>
     </section>
 
-    <!-- ========== SERVICES SECTION ========== -->
     <section class="section services" id="services">
         <div class="container">
             <div class="section-header">
@@ -141,7 +142,6 @@
             </div>
             
             <div class="services-grid">
-                <!-- Service 1 -->
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-headset"></i>
@@ -158,7 +158,6 @@
                     </ul>
                 </div>
                 
-                <!-- Service 2 -->
                 <div class="service-card featured">
                     <div class="featured-badge">Most Popular</div>
                     <div class="service-icon">
@@ -176,7 +175,6 @@
                     </ul>
                 </div>
                 
-                <!-- Service 3 -->
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-video"></i>
@@ -193,7 +191,6 @@
                     </ul>
                 </div>
                 
-                <!-- Service 4 -->
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-newspaper"></i>
@@ -221,7 +218,6 @@
         </div>
     </section>
 
-    <!-- ========== WHY CHOOSE ME SECTION ========== -->
     <section class="section why-me">
         <div class="container">
             <div class="why-me-grid">
@@ -283,7 +279,6 @@
         </div>
     </section>
 
-    <!-- ========== LANGUAGES SECTION ========== -->
     <section class="section languages">
         <div class="container">
             <div class="section-header">
@@ -318,7 +313,6 @@
         </div>
     </section>
 
-    <!-- ========== CTA SECTION ========== -->
     <section class="section cta-section">
         <div class="container">
             <div class="cta-box">
@@ -340,7 +334,6 @@
         </div>
     </section>
 
-    <!-- ========== FOOTER ========== -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -362,17 +355,14 @@
                         <li><a href="about.html">About Me</a></li>
                         <li><a href="portfolio.html">Portfolio</a></li>
                         <li><a href="booking.html">Book Now</a></li>
-                        <!-- زرار تثبيت التطبيق - التنسيق موجود في ملف style.css -->
                         <li>
-                            <button id="pwa-install-btn">
+                            <button id="pwa-install-btn" style="display:none; cursor:pointer; background:none; border:none; color:inherit; font:inherit; padding:0; text-align:left;">
                                 <i class="fas fa-download"></i> تثبيت التطبيق
                             </button>
                         </li>
                     </ul>
                 </div>
 
-
-                
                 <div class="footer-services">
                     <h4>Services</h4>
                     <ul>
@@ -403,17 +393,48 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
     <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'm%20interested%20in%20your%20interpretation%20services" 
        class="whatsapp-float" 
        target="_blank" 
        rel="noopener"
        aria-label="Contact on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
+         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Scripts -->
     <script src="Js/main.js"></script>
     <script src="Js/pwa.js"></script>
+    
+    <script>
+        let deferredPrompt;
+        const installBtn = document.getElementById('pwa-install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // منع ظهور الرسالة التلقائية
+            e.preventDefault();
+            deferredPrompt = e;
+            // إظهار زرار التثبيت في الفوتر
+            if (installBtn) {
+                installBtn.style.display = 'block';
+            }
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`User response: ${outcome}`);
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none';
+                }
+            });
+        }
+
+        // إخفاء الزرار لو تم تثبيت التطبيق بالفعل
+        window.addEventListener('appinstalled', () => {
+            if (installBtn) installBtn.style.display = 'none';
+            deferredPrompt = null;
+        });
+    </script>
 </body>
 </html>
