@@ -12,28 +12,16 @@
     
     <link rel="icon" type="image/png" sizes="32x32" href="images/profile.jpg">
     <link rel="apple-touch-icon" href="images/profile.jpg">
-    
     <link rel="manifest" href="manifest.json">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/responsive.css">
     <link rel="stylesheet" href="CSS/animations.css">
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker Registered'))
-                    .catch(err => console.log('Service Worker Failed', err));
-            });
-        }
-    </script>
 </head>
 <body>
 
@@ -357,7 +345,7 @@
                         <li><a href="booking.html">Book Now</a></li>
                         <li>
                             <button id="pwa-install-btn" style="display:none; cursor:pointer; background:none; border:none; color:inherit; font:inherit; padding:0; text-align:left;">
-                                <i class="fas fa-download"></i> تثبيت التطبيق
+                                <i class="fas fa-download"></i> Install App
                             </button>
                         </li>
                     </ul>
@@ -398,43 +386,12 @@
        target="_blank" 
        rel="noopener"
        aria-label="Contact on WhatsApp">
-         <i class="fab fa-whatsapp"></i>
+        <i class="fab fa-whatsapp"></i>
     </a>
 
+    <!-- السكريبتات في الآخر بس -->
     <script src="Js/main.js"></script>
     <script src="Js/pwa.js"></script>
-    
-    <script>
-        let deferredPrompt;
-        const installBtn = document.getElementById('pwa-install-btn');
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // منع ظهور الرسالة التلقائية
-            e.preventDefault();
-            deferredPrompt = e;
-            // إظهار زرار التثبيت في الفوتر
-            if (installBtn) {
-                installBtn.style.display = 'block';
-            }
-        });
-
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    console.log(`User response: ${outcome}`);
-                    deferredPrompt = null;
-                    installBtn.style.display = 'none';
-                }
-            });
-        }
-
-        // إخفاء الزرار لو تم تثبيت التطبيق بالفعل
-        window.addEventListener('appinstalled', () => {
-            if (installBtn) installBtn.style.display = 'none';
-            deferredPrompt = null;
-        });
-    </script>
 </body>
 </html>
