@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Dina Rashad - Professional Interpreter</title>
+    <meta name="description" content="View Dina Rashad's portfolio of interpretation work - conferences, media appearances, press events, and professional certifications.">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/profile.jpg">
+    <link rel="apple-touch-icon" href="images/profile.jpg">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/responsive.css">
+    <link rel="stylesheet" href="CSS/animations.css">
+    
+    <!-- Portfolio Specific Styles -->
+    <style>
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
+            padding: 140px 0 80px;
+            color: white;
+        }
+        
+        .page-header-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .page-header-content h1 {
+            font-size: clamp(2.5rem, 5vw, var(--font-size-5xl));
+            font-weight: 800;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .page-header-content p {
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+        
+        .page-header .section-tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-xl);
+            font-size: var(--font-size-sm);
+            opacity: 0.8;
+        }
+        
+        .breadcrumb a { color: white; }
+        .breadcrumb a:hover { opacity: 1; }
+
+        /* Portfolio Filters */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-2xl);
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-600);
+            border-color: var(--primary-600);
+            color: var(--white);
+        }
+        
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-xl);
+        }
+        
+        .portfolio-item {
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-base);
+            position: relative;
+        }
+        
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .featured-project {
+            border: 2px solid var(--primary-200);
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: var(--spacing-md);
+            left: var(--spacing-md);
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            color: var(--white);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            z-index: 10;
+        }
+        
+        .portfolio-image {
+            position: relative;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+        }
+        
+        .portfolio-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+        
+        .portfolio-card:hover .portfolio-image img {
+            transform: scale(1.05);
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .portfolio-card:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-zoom {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transform: scale(0.8);
+            transition: all var(--transition-base);
+        }
+        
+        .portfolio-card:hover .portfolio-zoom {
+            transform: scale(1);
+        }
+        
+        .portfolio-zoom i {
+            color: var(--primary-600);
+            font-size: var(--font-size-lg);
+        }
+        
+        .portfolio-content {
+            padding: var(--spacing-xl);
+        }
+        
+        .portfolio-tags {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+        }
+        
+        .tag.conference { background: #dbeafe; color: #1e40af; }
+        .tag.media { background: #fce7f3; color: #9d174d; }
+        .tag.press { background: #fef3c7; color: #92400e; }
+        .tag.certification { background: #d1fae5; color: #065f46; }
+        .tag.sports { background: #ede9fe; color: #5b21b6; }
+        
+        .portfolio-title {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .portfolio-description {
+            color: var(--gray-600);
+            font-size: var(--font-size-sm);
+            line-height: 1.7;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .portfolio-meta {
+            display: flex;
+            gap: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .portfolio-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: var(--font-size-xs);
+            color: var(--gray-500);
+        }
+        
+        .portfolio-meta span i {
+            color: var(--primary-500);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-xl);
+        }
+        
+        .stat-card {
+            text-align: center;
+            color: var(--white);
+            padding: var(--spacing-2xl);
+        }
+        
+        .stat-card .stat-icon {
+            font-size: var(--font-size-3xl);
+            margin-bottom: var(--spacing-md);
+            opacity: 0.9;
+        }
+        
+        .stat-card .stat-number {
+            font-size: var(--font-size-5xl);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .stat-card .stat-label {
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+        
+        /* Testimonials */
+        .testimonials-section {
+            background: var(--gray-50);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-xl);
+        }
+        
+        .testimonial-card {
+            background: var(--white);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .testimonial-stars {
+            display: flex;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .testimonial-stars i {
+            color: var(--warning);
+            font-size: var(--font-size-lg);
+        }
+        
+        .testimonial-text {
+            color: var(--gray-700);
+            line-height: 1.8;
+            margin-bottom: var(--spacing-xl);
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-600);
+        }
+        
+        .author-info strong {
+            display: block;
+            color: var(--gray-900);
+            font-size: var(--font-size-sm);
+        }
+        
+        .author-info span {
+            font-size: var(--font-size-xs);
+            color: var(--gray-500);
+        }
+        
+        /* Lightbox Modal */
+        .lightbox-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl);
+        }
+        
+        .lightbox-modal.active {
+            display: flex;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: var(--spacing-xl);
+            right: var(--spacing-xl);
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+        
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--radius-lg);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .portfolio-filters {
+                gap: var(--spacing-xs);
+            }
+            
+            .filter-btn {
+                padding: var(--spacing-xs) var(--spacing-md);
+                font-size: var(--font-size-xs);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-language"></i>
+                <span>Dina Rashad</span>
+            </a>
+            
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="portfolio.html" class="nav-link active">Portfolio</a></li>
+                <li><a href="booking.html" class="nav-link">Book Now</a></li>
+                <li><a href="contact.html" class="nav-link nav-cta">Contact Me</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ========== PAGE HEADER ========== -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <span class="section-tag">My Work</span>
+                <h1>Portfolio</h1>
+                <p>A showcase of my professional interpretation experience across various events and platforms</p>
+            </div>
+            
+            <div class="breadcrumb">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <span>/</span>
+                <span class="current">Portfolio</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PORTFOLIO GALLERY ========== -->
+    <section class="section portfolio-gallery">
+        <div class="container">
+            <!-- Filter Buttons -->
+            <div class="portfolio-filters">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="conference">Conferences</button>
+                <button class="filter-btn" data-filter="media">Media & TV</button>
+                <button class="filter-btn" data-filter="press">Press Events</button>
+                <button class="filter-btn" data-filter="certification">Certifications</button>
+            </div>
+            
+            <!-- Portfolio Grid -->
+            <div class="portfolio-grid">
+                
+                <!-- Project 1: Akkadu Podcast -->
+                <div class="portfolio-item scroll-animate" data-category="conference media">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <img src="https://z-cdn-media.chatglm.cn/files/3b8c7dfb-df5c-4ba4-8a55-0e64e85e2e27.jpeg?auth_key=1875422981-90ec61eda19f49b4be9845913410650c-0-eacad92f0ef7550a89a3da5ff395912f" 
+                                 alt="RSI New Trends Podcast with Akkadu CEO" 
+                                 loading="lazy">
+                            <div class="portfolio-overlay">
+                                <button class="portfolio-zoom" onclick="openLightbox(this)">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-content">
+                            <div class="portfolio-tags">
+                                <span class="tag conference">Conference</span>
+                                <span class="tag media">Media</span>
+                            </div>
+                            <h3 class="portfolio-title">Akkadu RSI Industry Discussion</h3>
+                            <p class="portfolio-description">
+                                Featured as an RSI (Remote Simultaneous Interpretation) Industry Consultant 
+                                in a podcast discussion with Alvaro Montoya, CEO at Akkadu, about new trends 
+                                and technology players in the interpretation industry.
+                            </p>
+                            <div class="portfolio-meta">
+                                <span><i class="fas fa-microphone"></i> Simultaneous Interpretation</span>
+                                <span><i class="fas fa-globe"></i> Multi-language</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2: TV Studio -->
+                <div class="portfolio-item scroll-animate" data-category="media">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <img src="https://z-cdn-media.chatglm.cn/files/56deccbc-f026-498e-81ef-2d4e3177d08e.jpeg?auth_key=1875422981-34b67e56c3334271b1d80649e62e3191-0-5fc3f7e07fab7879c1fbf9a0aebabcb2" 
+                                 alt="TV Studio Broadcasting Experience" 
+                                 loading="lazy">
+                            <div class="portfolio-overlay">
+                                <button class="portfolio-zoom" onclick="openLightbox(this)">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-content">
+                            <div class="portfolio-tags">
+                                <span class="tag media">Media & TV</span>
+                            </div>
+                            <h3 class="portfolio-title">Television Broadcasting</h3>
+                            <p class="portfolio-description">
+                                Professional interpretation and broadcasting experience in a major television 
+                                studio environment, demonstrating expertise in live media settings with 
+                                professional broadcast equipment.
+                            </p>
+                            <div class="portfolio-meta">
+                                <span><i class="fas fa-tv"></i> Live Broadcast</span>
+                                <span><i class="fas fa-video"></i> Media Production</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3: US Customs Certificate -->
+                <div class="portfolio-item scroll-animate" data-category="certification">
+                    <div class="portfolio-card featured-project">
+                        <div class="featured-badge">Certified Professional</div>
+                        <div class="portfolio-image">
+                            <img src="https://z-cdn-media.chatglm.cn/files/4cf4c731-8592-45ec-8995-32fbc9ff566d.jpeg?auth_key=1875422981-e40ec3c8aa1a46bea562168b666a8d44-0-390be1532d392d7632881b15698e0597" 
+                                 alt="U.S. Customs and Border Protection Certification" 
+                                 loading="lazy">
+                            <div class="portfolio-overlay">
+                                <button class="portfolio-zoom" onclick="openLightbox(this)">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-content">
+                            <div class="portfolio-tags">
+                                <span class="tag certification">Certification</span>
+                            </div>
+                            <h3 class="portfolio-title">U.S. Customs & Border Protection Recognition</h3>
+                            <p class="portfolio-description">
+                                Official recognition and certification from U.S. Customs and Border Protection 
+                                for professional services rendered, demonstrating trust and credibility at 
+                                the highest governmental levels.
+                            </p>
+                            <div class="portfolio-meta">
+                                <span><i class="fas fa-certificate"></i> Official Certification</span>
+                                <span><i class="fas fa-shield-alt"></i> Government Approved</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 4: Press Conference -->
+                <div class="portfolio-item scroll-animate" data-category="press">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <img src="https://z-cdn-media.chatglm.cn/files/a02c1b9f-b8ad-4d7c-be24-c18c6924a6db.jpeg?auth_key=1875422981-36e21ce063ba41fc8e2bc9db02e497e2-0-afb39d35654a66c315a8a2b172dc6c9d" 
+                                 alt="CAF Press Conference Interpretation" 
+                                 loading="lazy">
+                            <div class="portfolio-overlay">
+                                <button class="portfolio-zoom" onclick="openLightbox(this)">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-content">
+                            <div class="portfolio-tags">
+                                <span class="tag press">Press Event</span>
+                                <span class="tag sports">Sports</span>
+                            </div>
+                            <h3 class="portfolio-title">CAF Press Conference</h3>
+                            <p class="portfolio-description">
+                                Simultaneous interpretation at a major CAF (Confederation of African Football) 
+                                press conference, providing real-time translation for international sports 
+                                media coverage.
+                            </p>
+                            <div class="portfolio-meta">
+                                <span><i class="fas fa-newspaper"></i> Press Conference</span>
+                                <span><i class="fas fa-futbol"></i> Sports Event</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== STATS SECTION ========== -->
+    <section class="section stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card scroll-animate">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-number" data-count="500">0</div>
+                    <div class="stat-label">Events Covered</div>
+                </div>
+                <div class="stat-card scroll-animate">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-number" data-count="10000">0</div>
+                    <div class="stat-label">People Served</div>
+                </div>
+                <div class="stat-card scroll-animate">
+                    <div class="stat-icon"><i class="fas fa-building"></i></div>
+                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-label">Organizations</div>
+                </div>
+                <div class="stat-card scroll-animate">
+                    <div class="stat-icon"><i class="fas fa-globe"></i></div>
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS SECTION ========== -->
+    <section class="section testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Client Feedback</span>
+                <h2 class="section-title">What Clients Say</h2>
+                <p class="section-subtitle">Trusted by organizations and individuals worldwide for exceptional interpretation services</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card scroll-animate">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Dina's interpretation was flawless during our international summit. Her ability to capture 
+                        nuances and maintain the speaker's tone made our event incredibly successful."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="author-info">
+                            <strong>International Summit Organizer</strong>
+                            <span>Corporate Event</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card scroll-animate">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Professional, punctual, and exceptionally skilled. Dina handled our complex technical 
+                        conference with ease, ensuring every detail was accurately conveyed."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="author-info">
+                            <strong>Tech Conference Director</strong>
+                            <span>Technology Sector</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card scroll-animate">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Working with Dina on our press events has been outstanding. She understands the urgency 
+                        and precision required in media environments."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="author-info">
+                            <strong>Media Relations Manager</strong>
+                            <span>Broadcasting Company</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA SECTION ========== -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <div class="cta-content">
+                    <h2>Ready to Work Together?</h2>
+                    <p>Let's discuss how I can support your next event with professional interpretation services.</p>
+                </div>
+                <div class="cta-buttons">
+                    <a href="booking.html" class="btn btn-white btn-lg">
+                        <i class="fas fa-calendar-alt"></i>
+                        Book Your Session
+                    </a>
+                    <a href="contact.html" class="btn btn-outline-white btn-lg">
+                        <i class="fas fa-envelope"></i>
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="footer-logo">
+                        <i class="fas fa-language"></i>
+                        <span>Dina Rashad</span>
+                    </a>
+                    <p class="footer-description">
+                        Professional freelance conference interpreter specializing in 
+                        Arabic-English simultaneous interpretation.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Me</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="booking.html">Book Now</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-services">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="booking.html">Simultaneous Interpretation</a></li>
+                        <li><a href="booking.html">Consecutive Interpretation</a></li>
+                        <li><a href="booking.html">Remote Interpretation</a></li>
+                        <li><a href="booking.html">Media & Press</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <a href="https://wa.me/201064449413" class="footer-whatsapp" target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>+20 106 444 9413</span>
+                    </a>
+                    <p class="availability">
+                        <i class="fas fa-clock"></i>
+                        Available 7 days a week
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Dina Rashad. All rights reserved.</p>
+                <p class="footer-credit">Professional Conference Interpreter</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/201064449413?text=Hi%20Dina%2C%20I%20loved%20your%20portfolio!%20Let's%20discuss%20working%20together." 
+       class="whatsapp-float" 
+       target="_blank" 
+       rel="noopener"
+       aria-label="Contact on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <button class="lightbox-close" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Portfolio Image">
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="Js/main.js"></script>
+    <script src="Js/pwa.js"></script>
+    
+    <!-- Portfolio Specific Script -->
+    <script>
+        // Portfolio Filter Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    
+                    portfolioItems.forEach(item => {
+                        if (filter === 'all' || item.dataset.category.includes(filter)) {
+                            item.style.display = 'block';
+                            setTimeout(() => item.style.opacity = '1', 10);
+                        } else {
+                            item.style.opacity = '0';
+                            setTimeout(() => item.style.display = 'none', 300);
+                        }
+                    });
+                });
+            });
+            
+            // Animate stats numbers
+            animateStats();
+        });
+        
+        // Lightbox Functions
+        function openLightbox(button) {
+            const card = button.closest('.portfolio-card');
+            const img = card.querySelector('.portfolio-image img');
+            const modal = document.getElementById('lightbox-modal');
+            const modalImg = document.getElementById('lightbox-image');
+            
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Close lightbox on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        
+        // Close lightbox on backdrop click
+        document.getElementById('lightbox-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+        
+        // Animate counter stats
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = parseInt(entry.target.dataset.count);
+                        animateCounter(entry.target, target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            statNumbers.forEach(stat => observer.observe(stat));
+        }
+        
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 60;
+            const duration = 2000;
+            const stepTime = duration / 60;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString() + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, stepTime);
+        }
+        
+        // Make functions globally available
+        window.openLightbox = openLightbox;
+        window.closeLightbox = closeLightbox;
+    </script>
+</body>
+</html>
