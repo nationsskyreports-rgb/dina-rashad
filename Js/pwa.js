@@ -4,10 +4,14 @@
    Service Worker & Installation
    =================================== */
 
+// متغير واحد بس للـ install prompt
+let deferredPrompt = null;
+
 document.addEventListener('DOMContentLoaded', function() {
     initPWA();
     initServiceWorker();
     initInstallPrompt();
+    initOnlineStatus();
 });
 
 /* ===================================
@@ -16,14 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function initPWA() {
     console.log('🚀 Initializing PWA...');
     
-    // Check if PWA is supported
     if ('serviceWorker' in navigator) {
         console.log('✅ Service Workers are supported');
     } else {
         console.log('⚠️ Service Workers are not supported');
     }
     
-    // Check if installed as PWA
     if (isStandalone()) {
         console.log('📱 Running in standalone mode (installed PWA)');
         document.body.classList.add('pwa-standalone');
@@ -34,107 +36,102 @@ function initPWA() {
    SERVICE WORKER REGISTRATION
    =================================== */
 function initServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(registration) {
-                    console.log('✅ Service Worker registered successfully:', registration.scope);
-                    
-                    // Check for updates
-                    registration.addEventListener('updatefound', function() {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', function() {
-                            if (newWorker.state === 'activated') {
-                                console.log('🔄 New Service Worker activated');
-                                showUpdateNotification();
-                            }
-                        });
+    if (!('serviceWorker' in navigator)) return;
+
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+                console.log('✅ Service Worker registered:', registration.scope);
+                
+                registration.addEventListener('updatefound', function() {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'activated') {
+                            console.log('🔄 New Service Worker activated');
+                            showUpdateNotification();
+                        }
                     });
-                })
-                .catch(function(error) {
-                    console.error('❌ Service Worker registration failed:', error);
                 });
-        });
-        
-        // Handle service worker messages
-        navigator.serviceWorker.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'CACHE_UPDATED') {
-                showUpdateNotification();
-            }
-        });
-    }
+            })
+            .catch(function(error) {
+                console.error('❌ Service Worker registration failed:', error);
+            });
+    });
+
+    navigator.serviceWorker.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'CACHE_UPDATED') {
+            showUpdateNotification();
+        }
+    });
 }
 
 /* ===================================
    INSTALL PROMPT (Add to Home Screen)
    =================================== */
-let deferredPrompt = null;
-
 function initInstallPrompt() {
-    // Listen for the beforeinstallprompt event
+    // لو التطبيق متثبت خلاص، متعملش حاجة
+    if (isStandalone()) {
+        hideInstallBanner();
+        return;
+    }
+
+    // استقبال الـ event من المتصفح
     window.addEventListener('beforeinstallprompt', function(e) {
         e.preventDefault();
         deferredPrompt = e;
-        
         console.log('📲 Install prompt available');
-        
-        // Show install button/banner after a delay
-        setTimeout(() => {
+
+        // اعرض البانر بعد 3 ثواني من فتح الصفحة
+        setTimeout(function() {
             showInstallBanner();
-        }, 5000);
+        }, 3000);
     });
-    
-    // Listen for successful installation
-    window.addEventListener('appinstalled', function(evt) {
-        console.log('✅ App was installed successfully');
+
+    // بعد التثبيت
+    window.addEventListener('appinstalled', function() {
+        console.log('✅ App installed successfully');
         deferredPrompt = null;
         hideInstallBanner();
-        showNotification('🎉 App installed successfully! You can now access it from your home screen.', 'success', 6000);
-        
-        // Save installation info
-        saveToStorage('pwa_installed', {
+        hidePwaInstallBtn();
+        showNotification('🎉 App installed! Access it from your home screen.', 'success', 6000);
+        localStorage.setItem('pwa_installed', JSON.stringify({
             date: new Date().toISOString(),
             version: '1.0.0'
-        });
+        }));
     });
-    
-    // Check if already installed
-    if (isStandalone()) {
-        hideInstallBanner();
+
+    // زرار الفوتر لو موجود
+    const installBtn = document.getElementById('pwa-install-btn');
+    if (installBtn) {
+        window.addEventListener('beforeinstallprompt', function() {
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async function() {
+            await installApp();
+        });
     }
 }
 
-// Trigger install prompt
+// تنفيذ التثبيت
 async function installApp() {
     if (!deferredPrompt) {
         console.log('⚠️ Install prompt not available');
         return;
     }
-    
+
     try {
-        // Show the install prompt
         deferredPrompt.prompt();
-        
-        // Wait for user response
         const { outcome } = await deferredPrompt.userChoice;
-        
-        console.log(`User response to install prompt: ${outcome}`);
-        
-        if (outcome === 'accepted') {
-            console.log('✅ User accepted the install prompt');
-        } else {
-            console.log('❌ User dismissed the install prompt');
-        }
-        
-        // Clear the deferred prompt
+        console.log(`User response: ${outcome}`);
         deferredPrompt = null;
-        
+        hideInstallBanner();
+        hidePwaInstallBtn();
     } catch (error) {
         console.error('Error during installation:', error);
     }
 }
 
-// Check if running in standalone mode (installed)
 function isStandalone() {
     return (
         window.matchMedia('(display-mode: standalone)').matches ||
@@ -143,22 +140,22 @@ function isStandalone() {
     );
 }
 
+function hidePwaInstallBtn() {
+    const btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.style.display = 'none';
+}
+
 /* ===================================
    INSTALL BANNER UI
    =================================== */
-
 function showInstallBanner() {
-    // Don't show if already dismissed or installed
-    if (getFromStorage('install_banner_dismissed')) {
-        return;
-    }
-    
-    // Don't show if already installed
-    if (getFromStorage('pwa_installed')) {
-        return;
-    }
-    
-    // Create banner element
+    // لو سبق ورفض أو متثبت
+    if (localStorage.getItem('install_banner_dismissed')) return;
+    if (localStorage.getItem('pwa_installed')) return;
+    if (document.getElementById('install-banner')) return;
+
+    addInstallBannerStyles();
+
     const banner = document.createElement('div');
     banner.id = 'install-banner';
     banner.className = 'install-banner';
@@ -172,24 +169,17 @@ function showInstallBanner() {
                 <p>Add Dina Rashad Interpreter to your home screen for quick access!</p>
             </div>
             <div class="install-banner-actions">
-                <button id="install-btn" class="btn-install" onclick="installApp()">
-                    Install
-                </button>
-                <button id="dismiss-install-btn" class="btn-dismiss" onclick="dismissInstallBanner()">
+                <button class="btn-install" onclick="installApp()">Install</button>
+                <button class="btn-dismiss" onclick="dismissInstallBanner()" aria-label="Dismiss">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
         </div>
     `;
-    
-    // Add styles
-    addInstallBannerStyles();
-    
-    // Append to body
+
     document.body.appendChild(banner);
-    
-    // Animate in
-    requestAnimationFrame(() => {
+
+    requestAnimationFrame(function() {
         banner.classList.add('visible');
     });
 }
@@ -198,24 +188,24 @@ function hideInstallBanner() {
     const banner = document.getElementById('install-banner');
     if (banner) {
         banner.classList.remove('visible');
-        setTimeout(() => banner.remove(), 300);
+        setTimeout(function() { banner.remove(); }, 300);
     }
 }
 
 function dismissInstallBanner() {
-    saveToStorage('install_banner_dismissed', true);
+    localStorage.setItem('install_banner_dismissed', 'true');
     hideInstallBanner();
 }
 
 function addInstallBannerStyles() {
     if (document.getElementById('install-banner-styles')) return;
-    
+
     const styles = document.createElement('style');
     styles.id = 'install-banner-styles';
     styles.textContent = `
         .install-banner {
             position: fixed;
-            bottom: -100px;
+            bottom: -120px;
             left: 0;
             right: 0;
             background: linear-gradient(135deg, #1e40af, #2563eb);
@@ -223,13 +213,11 @@ function addInstallBannerStyles() {
             padding: 16px 20px;
             z-index: 9998;
             box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
-            transition: bottom 0.3s ease;
+            transition: bottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        
         .install-banner.visible {
             bottom: 0;
         }
-        
         .install-banner-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -237,7 +225,6 @@ function addInstallBannerStyles() {
             align-items: center;
             gap: 16px;
         }
-        
         .install-banner-icon {
             width: 48px;
             height: 48px;
@@ -249,25 +236,22 @@ function addInstallBannerStyles() {
             font-size: 20px;
             flex-shrink: 0;
         }
-        
         .install-banner-text h4 {
             margin: 0 0 4px 0;
             font-size: 16px;
             font-weight: 600;
         }
-        
         .install-banner-text p {
             margin: 0;
             font-size: 13px;
             opacity: 0.9;
         }
-        
         .install-banner-actions {
             display: flex;
             gap: 8px;
             margin-left: auto;
+            align-items: center;
         }
-        
         .btn-install {
             background: white;
             color: #2563eb;
@@ -276,14 +260,13 @@ function addInstallBannerStyles() {
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
+            font-size: 14px;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        
         .btn-install:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        
         .btn-dismiss {
             background: rgba(255,255,255,0.2);
             color: white;
@@ -296,66 +279,51 @@ function addInstallBannerStyles() {
             justify-content: center;
             cursor: pointer;
             transition: background 0.2s;
+            flex-shrink: 0;
         }
-        
         .btn-dismiss:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.35);
         }
-        
-        /* Adjust for mobile */
+        /* لو في زرار واتساب يرفع البانر فوقيه */
+        body:has(.whatsapp-float) .install-banner.visible {
+            bottom: 80px;
+        }
         @media (max-width: 768px) {
+            .install-banner {
+                padding: 14px 16px;
+            }
             .install-banner-content {
                 flex-wrap: wrap;
-                gap: 12px;
+                gap: 10px;
+                position: relative;
             }
-            
             .install-banner-text {
                 flex: 1;
-                min-width: 200px;
+                min-width: 180px;
             }
-            
             .install-banner-actions {
                 width: 100%;
                 justify-content: center;
             }
-            
             .btn-dismiss {
                 position: absolute;
-                top: 10px;
-                right: 10px;
+                top: -8px;
+                right: 0;
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
             }
         }
-        
-        /* Hide when WhatsApp button is present */
-        body.pwa-standalone .install-banner,
-        .whatsapp-float + .install-banner {
-            bottom: 90px;
-        }
     `;
-    
     document.head.appendChild(styles);
 }
 
 /* ===================================
    UPDATE NOTIFICATION
    =================================== */
-
 function showUpdateNotification() {
-    const notification = document.createElement('div');
-    notification.id = 'update-notification';
-    notification.className = 'update-notification';
-    notification.innerHTML = `
-        <div class="update-content">
-            <i class="fas fa-sync-alt"></i>
-            <span>A new version is available!</span>
-        </div>
-        <button onclick="reloadPage()" class="btn-update">Reload</button>
-        <button onclick="this.parentElement.remove()" class="btn-dismiss-update">
-            <i class="fas fa-times"></i>
-        </button>
-    `;
-    
-    // Add styles
+    if (document.getElementById('update-notification')) return;
+
     if (!document.getElementById('update-notification-styles')) {
         const styles = document.createElement('style');
         styles.id = 'update-notification-styles';
@@ -364,7 +332,7 @@ function showUpdateNotification() {
                 position: fixed;
                 top: 90px;
                 left: 50%;
-                transform: translateX(-50%) translateY(-100px);
+                transform: translateX(-50%) translateY(-150px);
                 background: linear-gradient(135deg, #059669, #10b981);
                 color: white;
                 padding: 14px 20px;
@@ -374,28 +342,22 @@ function showUpdateNotification() {
                 gap: 14px;
                 box-shadow: 0 10px 40px rgba(0,0,0,0.15);
                 z-index: 10001;
-                animation: slideDown 0.3s ease forwards;
+                animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             }
-            
             @keyframes slideDown {
                 to { transform: translateX(-50%) translateY(0); }
             }
-            
             .update-content {
                 display: flex;
                 align-items: center;
                 gap: 10px;
+                font-size: 14px;
             }
-            
-            .update-content i {
-                animation: spin 1s linear infinite;
-            }
-            
+            .update-content i { animation: spin 1s linear infinite; }
             @keyframes spin {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
             }
-            
             .btn-update {
                 background: white;
                 color: #059669;
@@ -404,13 +366,10 @@ function showUpdateNotification() {
                 border-radius: 6px;
                 font-weight: 600;
                 cursor: pointer;
+                font-size: 13px;
                 transition: transform 0.2s;
             }
-            
-            .btn-update:hover {
-                transform: scale(1.05);
-            }
-            
+            .btn-update:hover { transform: scale(1.05); }
             .btn-dismiss-update {
                 background: rgba(255,255,255,0.2);
                 color: white;
@@ -426,7 +385,20 @@ function showUpdateNotification() {
         `;
         document.head.appendChild(styles);
     }
-    
+
+    const notification = document.createElement('div');
+    notification.id = 'update-notification';
+    notification.className = 'update-notification';
+    notification.innerHTML = `
+        <div class="update-content">
+            <i class="fas fa-sync-alt"></i>
+            <span>A new version is available!</span>
+        </div>
+        <button onclick="reloadPage()" class="btn-update">Reload</button>
+        <button onclick="this.parentElement.remove()" class="btn-dismiss-update">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
     document.body.appendChild(notification);
 }
 
@@ -435,75 +407,62 @@ function reloadPage() {
 }
 
 /* ===================================
-   OFFLINE/ONLINE STATUS
+   OFFLINE / ONLINE STATUS
    =================================== */
-
 function initOnlineStatus() {
-    const updateOnlineStatus = () => {
-        if (navigator.onLine) {
-            showNotification('🌐 You\'re back online!', 'success');
-            document.body.classList.remove('offline');
-        } else {
-            showNotification('⚠️ You\'re offline. Some features may be limited.', 'error', 5000);
-            document.body.classList.add('offline');
-        }
-    };
-    
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
+    window.addEventListener('online', function() {
+        showNotification('🌐 You\'re back online!', 'success');
+        document.body.classList.remove('offline');
+    });
+
+    window.addEventListener('offline', function() {
+        showNotification('⚠️ You\'re offline. Some features may be limited.', 'error', 5000);
+        document.body.classList.add('offline');
+    });
 }
 
-// Initialize online status monitoring
-initOnlineStatus();
+/* ===================================
+   NOTIFICATION HELPER
+   =================================== */
+function showNotification(message, type, duration) {
+    duration = duration || 3000;
+
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#10b981' : '#ef4444'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        z-index: 10002;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        max-width: 320px;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(function() {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0)';
+    });
+
+    setTimeout(function() {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(-10px)';
+        setTimeout(function() { notification.remove(); }, 300);
+    }, duration);
+}
 
 /* ===================================
    EXPORT FUNCTIONS
    =================================== */
-
 window.installApp = installApp;
 window.dismissInstallBanner = dismissInstallBanner;
 window.reloadPage = reloadPage;
-
-/* ===================================
-   INSTALLATION PROMPT LOGIC
-   Handles showing the install button
-   =================================== */
-let deferredPrompt;
-const installBtn = document.getElementById('pwa-install-btn');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    // منع المتصفح من إظهار الشريط التلقائي
-    e.preventDefault();
-    // حفظ الـ event
-    deferredPrompt = e;
-    // إظهار الزرار للمستخدم
-    if (installBtn) {
-        installBtn.style.display = 'block';
-        console.log('[PWA] Install prompt available');
-    }
-});
-
-if (installBtn) {
-    installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            // إظهار نافذة التثبيت
-            deferredPrompt.prompt();
-            // انتظر رد المستخدم
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`[PWA] User response: ${outcome}`);
-            // تصفير الـ prompt
-            deferredPrompt = null;
-            // إخفاء الزرار
-            installBtn.style.display = 'none';
-        }
-    });
-}
-
-// إخفاء الزرار لو التطبيق تم تثبيته بالفعل
-window.addEventListener('appinstalled', () => {
-    console.log('[PWA] App installed successfully');
-    deferredPrompt = null;
-    if (installBtn) {
-        installBtn.style.display = 'none';
-    }
-});
