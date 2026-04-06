@@ -463,3 +463,47 @@ initOnlineStatus();
 window.installApp = installApp;
 window.dismissInstallBanner = dismissInstallBanner;
 window.reloadPage = reloadPage;
+
+/* ===================================
+   INSTALLATION PROMPT LOGIC
+   Handles showing the install button
+   =================================== */
+let deferredPrompt;
+const installBtn = document.getElementById('pwa-install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // منع المتصفح من إظهار الشريط التلقائي
+    e.preventDefault();
+    // حفظ الـ event
+    deferredPrompt = e;
+    // إظهار الزرار للمستخدم
+    if (installBtn) {
+        installBtn.style.display = 'block';
+        console.log('[PWA] Install prompt available');
+    }
+});
+
+if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            // إظهار نافذة التثبيت
+            deferredPrompt.prompt();
+            // انتظر رد المستخدم
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`[PWA] User response: ${outcome}`);
+            // تصفير الـ prompt
+            deferredPrompt = null;
+            // إخفاء الزرار
+            installBtn.style.display = 'none';
+        }
+    });
+}
+
+// إخفاء الزرار لو التطبيق تم تثبيته بالفعل
+window.addEventListener('appinstalled', () => {
+    console.log('[PWA] App installed successfully');
+    deferredPrompt = null;
+    if (installBtn) {
+        installBtn.style.display = 'none';
+    }
+});
