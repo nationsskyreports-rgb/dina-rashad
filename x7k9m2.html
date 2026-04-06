@@ -1,0 +1,2349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | دينا رشاد</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* === CSS Variables === */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-hover: #1e293b;
+            --bg-white: #ffffff;
+            --border: rgba(255,255,255,0.08);
+            --border-light: rgba(255,255,255,0.15);
+            --border-active: #2563eb;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #3b82f6;
+            --accent-glow: rgba(37,99,235,0.15);
+            --accent-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-glow: rgba(239,68,68,0.15);
+            --warning: #f59e0b;
+            --warning-glow: rgba(245,158,11,0.15);
+            --success: #22c55e;
+            --success-glow: rgba(34,197,94,0.15);
+            --info: #06b6d4;
+            --info-glow: rgba(6,182,212,0.15);
+            --whatsapp: #25d366;
+            --sidebar-w: 260px;
+            --sidebar-collapsed: 72px;
+            --header-h: 64px;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-xs: 6px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+            --shadow-accent: 0 4px 24px rgba(37,99,235,0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        /* === Reset & Base === */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow: hidden;
+            height: 100vh;
+        }
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        input, select, textarea, button { font-family: inherit; font-size: inherit; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* === Login Screen === */
+        .login-screen {
+            position: fixed; inset: 0; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--bg-primary);
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .login-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .login-bg {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            background-size: 400% 400%;
+            animation: loginBgMove 15s ease infinite;
+        }
+        @keyframes loginBgMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .login-card {
+            position: relative; z-index: 1;
+            background: rgba(30,41,59,0.8);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 48px 40px;
+            width: 100%; max-width: 420px;
+            box-shadow: var(--shadow-lg);
+            animation: loginAppear 0.6s ease;
+        }
+        @keyframes loginAppear {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .login-logo {
+            width: 72px; height: 72px;
+            background: var(--accent-gradient);
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px; color: #fff;
+            box-shadow: var(--shadow-accent);
+        }
+        .login-title {
+            text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 4px;
+        }
+        .login-subtitle {
+            text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 32px;
+        }
+        .login-field { margin-bottom: 20px; position: relative; }
+        .login-field label {
+            display: block; font-size: 13px; font-weight: 500;
+            color: var(--text-secondary); margin-bottom: 6px;
+        }
+        .login-input-wrap {
+            position: relative; display: flex; align-items: center;
+        }
+        .login-input-wrap i { position: absolute; right: 14px; color: var(--text-muted); font-size: 14px; }
+        .login-input-wrap input {
+            width: 100%; padding: 12px 42px 12px 42px;
+            background: var(--bg-primary); border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            transition: var(--transition); outline: none;
+        }
+        .login-input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .login-input-wrap .toggle-pass {
+            position: absolute; left: 14px; right: auto; cursor: pointer;
+            color: var(--text-muted); background: none; border: none; font-size: 14px;
+        }
+        .login-error {
+            font-size: 12px; color: var(--danger); margin-top: 6px;
+            display: none; align-items: center; gap: 4px;
+        }
+        .login-error.show { display: flex; }
+        .login-remember {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 24px; font-size: 13px; color: var(--text-secondary);
+        }
+        .login-remember input[type="checkbox"] {
+            width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer;
+        }
+        .login-btn {
+            width: 100%; padding: 13px;
+            background: var(--accent-gradient); color: #fff; font-weight: 600;
+            border: none; border-radius: var(--radius-sm); cursor: pointer;
+            font-size: 15px; transition: var(--transition);
+        }
+        .login-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-accent); }
+        .login-btn:active { transform: scale(0.98); }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .shake { animation: shake 0.4s ease; }
+
+        /* === App Layout === */
+        .app { display: flex; height: 100vh; opacity: 0; transition: opacity 0.5s ease; }
+        .app.visible { opacity: 1; }
+
+        /* === Sidebar === */
+        .sidebar {
+            width: var(--sidebar-w); min-width: var(--sidebar-w);
+            height: 100vh; background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            transition: var(--transition);
+            position: relative; z-index: 100;
+            overflow: hidden;
+        }
+        .sidebar.collapsed { width: var(--sidebar-collapsed); min-width: var(--sidebar-collapsed); }
+        .sidebar-header {
+            padding: 20px; display: flex; align-items: center; gap: 12px;
+            border-bottom: 1px solid var(--border); min-height: var(--header-h);
+        }
+        .sidebar-logo {
+            width: 40px; height: 40px; min-width: 40px;
+            background: var(--accent-gradient); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: #fff;
+        }
+        .sidebar-brand { overflow: hidden; white-space: nowrap; transition: var(--transition); }
+        .sidebar.collapsed .sidebar-brand { opacity: 0; width: 0; }
+        .sidebar-brand h3 { font-size: 15px; font-weight: 700; line-height: 1.2; }
+        .sidebar-brand span { font-size: 11px; color: var(--text-muted); }
+        .sidebar-nav { flex: 1; overflow-y: auto; padding: 12px; }
+        .nav-section { margin-bottom: 20px; }
+        .nav-section-title {
+            font-size: 10px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1.5px; color: var(--text-muted);
+            padding: 8px 12px 6px; white-space: nowrap;
+            transition: var(--transition);
+        }
+        .sidebar.collapsed .nav-section-title { opacity: 0; height: 0; padding: 0; overflow: hidden; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 12px; border-radius: var(--radius-sm);
+            cursor: pointer; transition: var(--transition);
+            position: relative; white-space: nowrap; margin-bottom: 2px;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 15px; color: var(--text-muted); transition: var(--transition); min-width: 20px; }
+        .nav-item span { font-size: 13.5px; font-weight: 500; color: var(--text-secondary); transition: var(--transition); }
+        .nav-item:hover { background: var(--bg-hover); }
+        .nav-item:hover i, .nav-item:hover span { color: var(--text-primary); }
+        .nav-item.active {
+            background: var(--accent-glow);
+        }
+        .nav-item.active::before {
+            content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+            width: 3px; height: 20px; background: var(--accent); border-radius: 0 3px 3px 0;
+        }
+        .nav-item.active i { color: var(--accent); }
+        .nav-item.active span { color: var(--accent); font-weight: 600; }
+        .sidebar.collapsed .nav-item span { opacity: 0; width: 0; }
+        .nav-badge {
+            margin-right: auto; background: var(--danger); color: #fff;
+            font-size: 10px; font-weight: 600; padding: 2px 7px;
+            border-radius: 10px; line-height: 1.4;
+        }
+        .sidebar.collapsed .nav-badge { display: none; }
+        .sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
+        .sidebar-stat-card {
+            background: var(--accent-glow); border: 1px solid rgba(37,99,235,0.2);
+            border-radius: var(--radius-sm); padding: 12px; text-align: center;
+            transition: var(--transition);
+        }
+        .sidebar.collapsed .sidebar-stat-card { display: none; }
+        .sidebar-stat-card .num { font-size: 20px; font-weight: 700; color: var(--accent); }
+        .sidebar-stat-card .label { font-size: 11px; color: var(--text-secondary); }
+
+        /* === Sidebar Overlay (Mobile) === */
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0; z-index: 99;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+        }
+        .sidebar-overlay.show { display: block; }
+
+        /* === Main Area === */
+        .main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* === Header === */
+        .header {
+            height: var(--header-h); min-height: var(--header-h);
+            background: rgba(30,41,59,0.8); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 24px; gap: 16px;
+        }
+        .hamburger {
+            display: none; background: none; border: none; color: var(--text-secondary);
+            font-size: 20px; cursor: pointer; padding: 4px;
+        }
+        .header-title { font-size: 18px; font-weight: 600; }
+        .header-search {
+            flex: 1; max-width: 400px; margin: 0 auto; position: relative;
+        }
+        .header-search input {
+            width: 100%; padding: 9px 16px 9px 38px;
+            background: var(--bg-primary); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            outline: none; font-size: 13px; transition: var(--transition);
+        }
+        .header-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .header-search i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .header-icon-btn {
+            width: 38px; height: 38px; border-radius: var(--radius-sm);
+            background: var(--bg-primary); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); cursor: pointer; position: relative;
+            transition: var(--transition);
+        }
+        .header-icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .header-icon-btn .badge {
+            position: absolute; top: -3px; right: -3px;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: var(--danger); color: #fff; font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .header-avatar {
+            width: 36px; height: 36px; border-radius: var(--radius-sm);
+            background: var(--accent-gradient); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+        }
+        .notif-dropdown {
+            position: absolute; top: calc(100% + 8px); left: 0;
+            width: 320px; background: var(--bg-secondary);
+            border: 1px solid var(--border-light); border-radius: var(--radius);
+            box-shadow: var(--shadow-lg); display: none; z-index: 200;
+        }
+        .notif-dropdown.show { display: block; }
+        .notif-dropdown-header {
+            padding: 14px 16px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .notif-dropdown-header h4 { font-size: 14px; font-weight: 600; }
+        .notif-dropdown-header a { font-size: 12px; color: var(--accent); cursor: pointer; }
+        .notif-list { max-height: 280px; overflow-y: auto; }
+        .notif-item {
+            padding: 12px 16px; border-bottom: 1px solid var(--border);
+            display: flex; gap: 10px; cursor: pointer; transition: var(--transition);
+        }
+        .notif-item:hover { background: var(--bg-hover); }
+        .notif-item.unread { background: var(--accent-glow); }
+        .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
+        .notif-item:not(.unread) .notif-dot { background: var(--text-muted); opacity: 0.3; }
+        .notif-text { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+        .notif-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        /* === Content Area === */
+        .content {
+            flex: 1; overflow-y: auto; padding: 24px;
+        }
+        .page-section { display: none; animation: fadeInUp 0.35s ease; }
+        .page-section.active { display: block; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === Stat Cards === */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px;
+            transition: var(--transition);
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--border-light); }
+        .stat-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .stat-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+        .stat-icon.blue { background: var(--accent-glow); color: var(--accent); }
+        .stat-icon.cyan { background: var(--info-glow); color: var(--info); }
+        .stat-icon.green { background: var(--success-glow); color: var(--success); }
+        .stat-icon.yellow { background: var(--warning-glow); color: var(--warning); }
+        .stat-change {
+            font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 3px;
+        }
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+        .stat-value { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+        .stat-label { font-size: 13px; color: var(--text-secondary); }
+
+        /* === Cards === */
+        .card {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden;
+        }
+        .card-header {
+            padding: 18px 20px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .card-header h3 { font-size: 15px; font-weight: 600; }
+        .card-header a { font-size: 13px; color: var(--accent); cursor: pointer; font-weight: 500; }
+        .card-body { padding: 20px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        .grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+        /* === Chart Container === */
+        .chart-container { position: relative; height: 300px; }
+
+        /* === Upcoming Bookings List === */
+        .booking-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 0; border-bottom: 1px solid var(--border);
+            transition: var(--transition); cursor: pointer;
+        }
+        .booking-item:last-child { border-bottom: none; }
+        .booking-item:hover { padding-right: 8px; }
+        .booking-icon {
+            width: 42px; height: 42px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+            flex-shrink: 0;
+        }
+        .booking-info { flex: 1; min-width: 0; }
+        .booking-info h4 { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .booking-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .booking-meta { text-align: left; flex-shrink: 0; }
+        .booking-meta .date { font-size: 12px; color: var(--text-secondary); }
+        .booking-meta .time { font-size: 11px; color: var(--text-muted); }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+            white-space: nowrap;
+        }
+        .status-badge.confirmed { background: var(--success-glow); color: var(--success); }
+        .status-badge.pending { background: var(--warning-glow); color: var(--warning); }
+        .status-badge.cancelled { background: var(--danger-glow); color: var(--danger); }
+        .status-badge.completed { background: var(--info-glow); color: var(--info); }
+
+        /* === Messages List === */
+        .msg-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid var(--border);
+            cursor: pointer; transition: var(--transition);
+        }
+        .msg-item:last-child { border-bottom: none; }
+        .msg-item:hover { background: var(--bg-hover); margin: 0 -12px; padding: 12px; border-radius: var(--radius-sm); }
+        .msg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .msg-dot.unread { background: var(--accent); }
+        .msg-dot.read { background: var(--text-muted); opacity: 0.3; }
+        .msg-info { flex: 1; min-width: 0; }
+        .msg-info h4 { font-size: 13px; font-weight: 600; }
+        .msg-info p { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .msg-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+
+        /* === Toolbar === */
+        .toolbar {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 18px; border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            border: none; transition: var(--transition); white-space: nowrap;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--accent-gradient); color: #fff; }
+        .btn-primary:hover { box-shadow: var(--shadow-accent); }
+        .btn-secondary { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-light); }
+        .btn-secondary:hover { background: var(--bg-hover); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: var(--danger-hover); }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-icon {
+            width: 34px; height: 34px; padding: 0; justify-content: center;
+            border-radius: var(--radius-xs); background: var(--bg-tertiary);
+            color: var(--text-secondary); border: 1px solid var(--border);
+        }
+        .btn-icon:hover { color: var(--text-primary); background: var(--bg-hover); }
+        .toolbar-search {
+            flex: 1; min-width: 200px; position: relative;
+        }
+        .toolbar-search input {
+            width: 100%; padding: 9px 14px 9px 36px;
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            outline: none; font-size: 13px; transition: var(--transition);
+        }
+        .toolbar-search input:focus { border-color: var(--accent); }
+        .toolbar-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
+        .toolbar select {
+            padding: 9px 32px 9px 14px; background: var(--bg-secondary);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text-primary); outline: none; font-size: 13px;
+            cursor: pointer; appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: left 12px center;
+        }
+
+        /* === Tables === */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th {
+            padding: 12px 16px; text-align: right; font-size: 12px;
+            font-weight: 600; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
+            cursor: pointer; white-space: nowrap; user-select: none;
+        }
+        thead th:hover { color: var(--text-secondary); }
+        thead th i { margin-right: 4px; font-size: 10px; }
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        tbody tr:hover { background: var(--bg-hover); }
+        tbody td {
+            padding: 12px 16px; font-size: 13px; color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .actions-cell { display: flex; gap: 6px; }
+
+        /* === Pagination === */
+        .pagination {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 0 0; font-size: 13px; color: var(--text-muted);
+        }
+        .pagination-btns { display: flex; gap: 4px; }
+        .page-btn {
+            width: 34px; height: 34px; border-radius: var(--radius-xs);
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            color: var(--text-secondary); display: flex; align-items: center;
+            justify-content: center; cursor: pointer; font-size: 13px;
+            transition: var(--transition);
+        }
+        .page-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .page-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* === Modals === */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 500;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: var(--bg-secondary); border: 1px solid var(--border-light);
+            border-radius: 16px; width: 100%; max-width: 560px;
+            max-height: 85vh; overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.3s ease;
+        }
+        .modal-lg { max-width: 720px; }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-header {
+            padding: 20px 24px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; background: var(--bg-secondary); z-index: 1;
+        }
+        .modal-header h3 { font-size: 16px; font-weight: 600; }
+        .modal-close {
+            width: 32px; height: 32px; border-radius: var(--radius-xs);
+            background: var(--bg-tertiary); border: none; color: var(--text-muted);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--danger); color: #fff; }
+        .modal-body { padding: 24px; }
+        .modal-footer {
+            padding: 16px 24px; border-top: 1px solid var(--border);
+            display: flex; gap: 10px; justify-content: flex-start;
+        }
+
+        /* === Forms === */
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block; font-size: 13px; font-weight: 500;
+            color: var(--text-secondary); margin-bottom: 6px;
+        }
+        .form-group label .required { color: var(--danger); }
+        .form-input {
+            width: 100%; padding: 10px 14px;
+            background: var(--bg-primary); border: 1px solid var(--border-light);
+            border-radius: var(--radius-xs); color: var(--text-primary);
+            outline: none; transition: var(--transition); font-size: 13px;
+        }
+        .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .form-input.error { border-color: var(--danger); }
+        .form-error { font-size: 11px; color: var(--danger); margin-top: 4px; display: none; }
+        .form-error.show { display: block; }
+        textarea.form-input { min-height: 100px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        /* === Toggle Switch === */
+        .toggle-wrap { display: flex; align-items: center; gap: 10px; }
+        .toggle {
+            width: 44px; height: 24px; border-radius: 12px;
+            background: var(--bg-tertiary); border: 1px solid var(--border);
+            position: relative; cursor: pointer; transition: var(--transition);
+        }
+        .toggle::after {
+            content: ''; position: absolute; top: 3px; right: 3px;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--text-muted); transition: var(--transition);
+        }
+        .toggle.active { background: var(--accent-glow); border-color: var(--accent); }
+        .toggle.active::after { right: 23px; background: var(--accent); }
+        .toggle-label { font-size: 13px; color: var(--text-secondary); }
+
+        /* === Toast Notifications === */
+        .toast-container {
+            position: fixed; top: 20px; left: 20px; z-index: 9000;
+            display: flex; flex-direction: column-reverse; gap: 8px;
+        }
+        .toast {
+            display: flex; align-items: center; gap: 10px;
+            padding: 14px 18px; border-radius: var(--radius-sm);
+            background: var(--bg-secondary); border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-lg); min-width: 300px; max-width: 420px;
+            animation: toastIn 0.35s ease;
+            font-size: 13px;
+        }
+        .toast.removing { animation: toastOut 0.3s ease forwards; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { to { opacity: 0; transform: translateX(-30px); } }
+        .toast-icon { font-size: 16px; flex-shrink: 0; }
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.error .toast-icon { color: var(--danger); }
+        .toast.warning .toast-icon { color: var(--warning); }
+        .toast.info .toast-icon { color: var(--info); }
+        .toast-msg { flex: 1; color: var(--text-primary); }
+        .toast-close {
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; font-size: 14px; padding: 2px;
+        }
+        .toast-close:hover { color: var(--text-primary); }
+
+        /* === Portfolio Grid === */
+        .portfolio-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+        }
+        .portfolio-card {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden; transition: var(--transition);
+        }
+        .portfolio-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--border-light); }
+        .portfolio-card img { width: 100%; height: 180px; object-fit: cover; }
+        .portfolio-card-body { padding: 16px; }
+        .portfolio-card-body h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .portfolio-card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .portfolio-card-meta span { font-size: 11px; color: var(--text-muted); }
+        .portfolio-tag {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 11px; font-weight: 500; background: var(--accent-glow); color: var(--accent);
+        }
+        .portfolio-actions { display: flex; gap: 6px; margin-top: 10px; }
+
+        /* === Messages Split View === */
+        .messages-layout { display: grid; grid-template-columns: 320px 1fr; gap: 0; height: calc(100vh - var(--header-h) - 48px); }
+        .msg-list-panel {
+            border-left: 1px solid var(--border); overflow-y: auto;
+        }
+        .msg-list-panel .msg-item { padding: 14px 16px; }
+        .msg-detail-panel { overflow-y: auto; padding: 24px; }
+        .msg-detail-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .msg-detail-header h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .msg-detail-meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); flex-wrap: wrap; }
+        .msg-detail-meta span { display: flex; align-items: center; gap: 5px; }
+        .msg-detail-body { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px; }
+        .msg-reply-area textarea {
+            width: 100%; min-height: 120px; padding: 14px;
+            background: var(--bg-primary); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            outline: none; resize: vertical; font-size: 13px; margin-bottom: 12px;
+        }
+        .msg-reply-area textarea:focus { border-color: var(--accent); }
+        .msg-detail-actions { display: flex; gap: 8px; }
+        .msg-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .msg-empty i { font-size: 48px; margin-bottom: 16px; display: block; opacity: 0.3; }
+
+        /* === Settings Sections === */
+        .settings-section { margin-bottom: 32px; }
+        .settings-section h3 {
+            font-size: 16px; font-weight: 600; margin-bottom: 4px;
+            padding-bottom: 12px; border-bottom: 1px solid var(--border);
+        }
+        .settings-section p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+        .settings-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 0; border-bottom: 1px solid var(--border);
+        }
+        .settings-row:last-child { border-bottom: none; }
+        .settings-row-info h4 { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+        .settings-row-info p { font-size: 12px; color: var(--text-muted); margin-bottom: 0; }
+
+        /* === Color Picker === */
+        .color-options { display: flex; gap: 8px; }
+        .color-opt {
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            border: 3px solid transparent; transition: var(--transition);
+        }
+        .color-opt:hover { transform: scale(1.15); }
+        .color-opt.active { border-color: var(--text-primary); }
+
+        /* === Media Grid === */
+        .media-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .media-card {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); overflow: hidden; transition: var(--transition);
+            cursor: pointer; position: relative;
+        }
+        .media-card:hover { border-color: var(--accent); }
+        .media-card img { width: 100%; height: 140px; object-fit: cover; }
+        .media-card-info { padding: 8px 10px; }
+        .media-card-info p { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .media-card-info span { font-size: 10px; color: var(--text-muted); }
+        .media-card-actions {
+            position: absolute; top: 6px; left: 6px;
+            display: flex; gap: 4px; opacity: 0; transition: var(--transition);
+        }
+        .media-card:hover .media-card-actions { opacity: 1; }
+        .media-card-actions button {
+            width: 28px; height: 28px; border-radius: 6px;
+            background: rgba(0,0,0,0.6); border: none; color: #fff;
+            cursor: pointer; font-size: 11px; display: flex;
+            align-items: center; justify-content: center;
+        }
+
+        /* === Upload Area === */
+        .upload-area {
+            border: 2px dashed var(--border-light); border-radius: var(--radius);
+            padding: 40px 20px; text-align: center; cursor: pointer;
+            transition: var(--transition); margin-bottom: 20px;
+        }
+        .upload-area:hover, .upload-area.dragover { border-color: var(--accent); background: var(--accent-glow); }
+        .upload-area i { font-size: 32px; color: var(--text-muted); margin-bottom: 10px; }
+        .upload-area p { font-size: 13px; color: var(--text-secondary); }
+        .upload-area span { font-size: 11px; color: var(--text-muted); }
+
+        /* === Skeleton === */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+
+        /* === Confirm Modal === */
+        .confirm-icon {
+            width: 56px; height: 56px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px; font-size: 24px;
+        }
+        .confirm-icon.danger { background: var(--danger-glow); color: var(--danger); }
+        .confirm-text { text-align: center; }
+        .confirm-text h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .confirm-text p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+        .confirm-actions { display: flex; gap: 10px; justify-content: center; margin-top: 24px; }
+
+        /* === Responsive === */
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            .media-grid { grid-template-columns: repeat(3, 1fr); }
+            .sidebar { position: fixed; right: 0; top: 0; transform: translateX(100%); z-index: 200; }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar.collapsed { width: var(--sidebar-w); min-width: var(--sidebar-w); }
+            .hamburger { display: flex; }
+        }
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .media-grid { grid-template-columns: repeat(2, 1fr); }
+            .content { padding: 16px; }
+            .header { padding: 0 16px; }
+            .header-search { display: none; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .toolbar-search { min-width: 0; }
+            .form-row { grid-template-columns: 1fr; }
+            .messages-layout { grid-template-columns: 1fr; }
+            .msg-detail-panel { display: none; }
+            .msg-detail-panel.mobile-show { display: block; position: fixed; inset: 0; z-index: 150; background: var(--bg-primary); padding-top: var(--header-h); }
+            .modal { max-width: 95%; }
+            .notif-dropdown { left: -100px; width: 290px; }
+            .table-mobile-cards { display: block; }
+            .table-mobile-cards thead { display: none; }
+            .table-mobile-cards tbody tr {
+                display: block; background: var(--bg-secondary); border: 1px solid var(--border);
+                border-radius: var(--radius-sm); padding: 14px; margin-bottom: 10px;
+            }
+            .table-mobile-cards tbody td {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 6px 0; border-bottom: 1px solid var(--border);
+                white-space: normal;
+            }
+            .table-mobile-cards tbody td:last-child { border-bottom: none; }
+            .table-mobile-cards tbody td::before {
+                content: attr(data-label); font-weight: 600; font-size: 12px;
+                color: var(--text-muted);
+            }
+        }
+
+        /* === Reduced Motion === */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== شاشة تسجيل الدخول ========== -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-bg"></div>
+    <div class="login-card">
+        <div class="login-logo"><i class="fas fa-microphone"></i></div>
+        <h2 class="login-title">دينا رشاد</h2>
+        <p class="login-subtitle">لوحة التحكم الإدارية</p>
+        
+        <div class="login-field">
+            <label>البريد الإلكتروني</label>
+            <div class="login-input-wrap">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="loginEmail" placeholder="admin@dinrashad.com" autocomplete="email">
+            </div>
+            <div class="login-error" id="loginEmailError"><i class="fas fa-exclamation-circle"></i> <span></span></div>
+        </div>
+        
+        <div class="login-field">
+            <label>كلمة المرور</label>
+            <div class="login-input-wrap">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPassword" placeholder="ادخل كلمة المرور" autocomplete="current-password">
+                <button class="toggle-pass" type="button" id="togglePass"><i class="fas fa-eye"></i></button>
+            </div>
+            <div class="login-error" id="loginPassError"><i class="fas fa-exclamation-circle"></i> <span></span></div>
+        </div>
+        
+        <div class="login-remember">
+            <input type="checkbox" id="rememberMe">
+            <label for="rememberMe">تذكرني</label>
+        </div>
+        
+        <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
+    </div>
+</div>
+
+<!-- ========== التطبيق الرئيسي ========== -->
+<div class="app" id="app">
+    
+    <!-- خلفية الشريط الجانبي (موبايل) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- الشريط الجانبي -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><i class="fas fa-microphone"></i></div>
+            <div class="sidebar-brand">
+                <h3>دينا رشاد</h3>
+                <span>لوحة التحكم</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">الرئيسية</div>
+                <div class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-pie"></i><span>لوحة التحكم</span>
+                </div>
+                <div class="nav-item" data-page="bookings">
+                    <i class="fas fa-calendar-alt"></i><span>الحجوزات</span>
+                    <span class="nav-badge" id="bookingsBadge">0</span>
+                </div>
+                <div class="nav-item" data-page="portfolio">
+                    <i class="fas fa-briefcase"></i><span>معرض الأعمال</span>
+                </div>
+                <div class="nav-item" data-page="messages">
+                    <i class="fas fa-envelope"></i><span>الرسائل</span>
+                    <span class="nav-badge" id="messagesBadge">0</span>
+                </div>
+                <div class="nav-item" data-page="clients">
+                    <i class="fas fa-users"></i><span>العملاء</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">المحتوى</div>
+                <div class="nav-item" data-page="pages">
+                    <i class="fas fa-file-alt"></i><span>إدارة الصفحات</span>
+                </div>
+                <div class="nav-item" data-page="media">
+                    <i class="fas fa-images"></i><span>مكتبة الوسائط</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">النظام</div>
+                <div class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i><span>الإعدادات</span>
+                </div>
+                <div class="nav-item" data-page="analytics">
+                    <i class="fas fa-chart-line"></i><span>الإحصائيات</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-item" id="visitSite">
+                    <i class="fas fa-external-link-alt"></i><span>زيارة الموقع</span>
+                </div>
+                <div class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-stat-card">
+                <div class="num" id="sidebarBookingsCount">0</div>
+                <div class="label">حجوزات قادمة</div>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- المنطقة الرئيسية -->
+    <div class="main-area">
+        
+        <!-- الشريط العلوي -->
+        <header class="header">
+            <button class="hamburger" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
+            <h1 class="header-title" id="headerTitle">لوحة التحكم</h1>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="بحث في كل شيء..." id="globalSearch">
+            </div>
+            <div class="header-actions">
+                <div style="position:relative">
+                    <button class="header-icon-btn" id="notifBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notifBadge">0</span>
+                    </button>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <div class="notif-dropdown-header">
+                            <h4>الإشعارات</h4>
+                            <a id="markAllRead">تحديد الكل كمقروء</a>
+                        </div>
+                        <div class="notif-list" id="notifList"></div>
+                    </div>
+                </div>
+                <div class="header-avatar">DR</div>
+            </div>
+        </header>
+        
+        <!-- منطقة المحتوى -->
+        <div class="content" id="contentArea">
+            
+            <!-- ===== لوحة التحكم ===== -->
+            <div class="page-section active" id="page-dashboard">
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header"><h3>الحجوزات الشهرية</h3>
+                            <div style="display:flex;gap:4px">
+                                <button class="btn btn-sm btn-secondary chart-period active" data-period="monthly">شهري</button>
+                                <button class="btn btn-sm btn-secondary chart-period" data-period="weekly">أسبوعي</button>
+                            </div>
+                        </div>
+                        <div class="card-body"><div class="chart-container"><canvas id="bookingsChart"></canvas></div></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>الحجوزات القادمة</h3><a onclick="navigateTo('bookings')">عرض الكل</a></div>
+                        <div class="card-body" id="upcomingBookings"></div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header"><h3>الرسائل الأخيرة</h3><a onclick="navigateTo('messages')">عرض الكل</a></div>
+                        <div class="card-body" id="recentMessages"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>توزيع الخدمات</h3></div>
+                        <div class="card-body"><div class="chart-container"><canvas id="servicesChart"></canvas></div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== الحجوزات ===== -->
+            <div class="page-section" id="page-bookings">
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="openBookingModal()"><i class="fas fa-plus"></i> حجز جديد</button>
+                    <div class="toolbar-search"><i class="fas fa-search"></i><input type="text" placeholder="بحث في الحجوزات..." id="bookingSearch" oninput="filterBookings()"></div>
+                    <select id="bookingStatusFilter" onchange="filterBookings()">
+                        <option value="">كل الحالات</option>
+                        <option value="Confirmed">مؤكد</option>
+                        <option value="Pending">قيد المراجعة</option>
+                        <option value="Cancelled">ملغي</option>
+                        <option value="Completed">مكتمل</option>
+                    </select>
+                    <select id="bookingTypeFilter" onchange="filterBookings()">
+                        <option value="">كل الأنواع</option>
+                        <option value="Simultaneous">فورية</option>
+                        <option value="Consecutive">متتابعة</option>
+                        <option value="Remote">عن بُعد</option>
+                        <option value="Media">إعلامية</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <div class="card-body" style="padding:0">
+                        <div class="table-wrap">
+                            <table class="table-mobile-cards" id="bookingsTable">
+                                <thead><tr>
+                                    <th>#</th><th>العميل</th><th>الفعالية</th><th>النوع</th><th>التاريخ</th><th>الحالة</th><th>الإجراءات</th>
+                                </tr></thead>
+                                <tbody id="bookingsBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" style="padding:16px 20px" id="bookingsPagination"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== معرض الأعمال ===== -->
+            <div class="page-section" id="page-portfolio">
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="openPortfolioModal()"><i class="fas fa-plus"></i> إضافة عنصر</button>
+                    <div class="toolbar-search"><i class="fas fa-search"></i><input type="text" placeholder="بحث..." id="portfolioSearch" oninput="filterPortfolio()"></div>
+                    <select id="portfolioCatFilter" onchange="filterPortfolio()">
+                        <option value="">كل التصنيفات</option>
+                        <option value="Conference">مؤتمرات</option>
+                        <option value="Summit">قمم</option>
+                        <option value="Medical">طبي</option>
+                        <option value="Business">أعمال</option>
+                        <option value="Media">إعلام</option>
+                        <option value="Government">حكومي</option>
+                    </select>
+                </div>
+                <div class="portfolio-grid" id="portfolioGrid"></div>
+            </div>
+            
+            <!-- ===== الرسائل ===== -->
+            <div class="page-section" id="page-messages">
+                <div class="toolbar" style="margin-bottom:0">
+                    <div class="toolbar-search"><i class="fas fa-search"></i><input type="text" placeholder="بحث في الرسائل..." id="msgSearch" oninput="filterMessages()"></div>
+                    <select id="msgFilter" onchange="filterMessages()">
+                        <option value="">الكل</option>
+                        <option value="unread">غير مقروءة</option>
+                        <option value="starred">مميزة</option>
+                    </select>
+                </div>
+                <div class="messages-layout">
+                    <div class="msg-list-panel" id="msgListPanel"></div>
+                    <div class="msg-detail-panel" id="msgDetailPanel">
+                        <div class="msg-empty"><i class="fas fa-envelope-open"></i><p>اختر رسالة لعرضها</p></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== العملاء ===== -->
+            <div class="page-section" id="page-clients">
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="openClientModal()"><i class="fas fa-plus"></i> عميل جديد</button>
+                    <div class="toolbar-search"><i class="fas fa-search"></i><input type="text" placeholder="بحث في العملاء..." id="clientSearch" oninput="filterClients()"></div>
+                </div>
+                <div class="card">
+                    <div class="card-body" style="padding:0">
+                        <div class="table-wrap">
+                            <table class="table-mobile-cards" id="clientsTable">
+                                <thead><tr>
+                                    <th>#</th><th>الاسم</th><th>البريد</th><th>المؤسسة</th><th>الفعاليات</th><th>إجمالي المدفوعات</th><th>الإجراءات</th>
+                                </tr></thead>
+                                <tbody id="clientsBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" style="padding:16px 20px" id="clientsPagination"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== إدارة الصفحات ===== -->
+            <div class="page-section" id="page-pages">
+                <div id="pagesList"></div>
+            </div>
+            
+            <!-- ===== مكتبة الوسائط ===== -->
+            <div class="page-section" id="page-media">
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="document.getElementById('mediaUpload').click()"><i class="fas fa-upload"></i> رفع ملفات</button>
+                    <input type="file" id="mediaUpload" multiple accept="image/*" style="display:none" onchange="handleMediaUpload(event)">
+                    <div class="toolbar-search"><i class="fas fa-search"></i><input type="text" placeholder="بحث..." id="mediaSearch" oninput="filterMedia()"></div>
+                    <select id="mediaTypeFilter" onchange="filterMedia()">
+                        <option value="">الكل</option>
+                        <option value="image">صور</option>
+                    </select>
+                </div>
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>اسحب الملفات هنا أو انقر للرفع</p>
+                    <span>PNG, JPG, GIF حتى 5MB</span>
+                </div>
+                <div class="media-grid" id="mediaGrid"></div>
+            </div>
+            
+            <!-- ===== الإعدادات ===== -->
+            <div class="page-section" id="page-settings">
+                <div class="settings-section">
+                    <h3>المعلومات الشخصية</h3>
+                    <p>البيانات الأساسية المعروضة في الموقع</p>
+                    <div class="form-row">
+                        <div class="form-group"><label>الاسم الكامل</label><input class="form-input" value="دينا رشاد"></div>
+                        <div class="form-group"><label>اللقب المهني</label><input class="form-input" value="مترجمة فورية محترفة"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>البريد الإلكتروني</label><input class="form-input" value="dina@dinrashad.com"></div>
+                        <div class="form-group"><label>رقم الواتساب</label><input class="form-input" value="+20 106 116 0627"></div>
+                    </div>
+                    <div class="form-group"><label>نبذة مختصرة</label><textarea class="form-input">مترجمة فورية محترفة متخصصة في الترجمة الفورية بين العربية والإنجليزية في المؤتمرات والفعاليات الدولية. خبرة تزيد عن 10 سنوات في مجال الترجمة المؤتمراتية.</textarea></div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>معلومات الأعمال</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label>سنوات الخبرة</label><input class="form-input" type="number" value="10"></div>
+                        <div class="form-group"><label>عدد الفعاليات</label><input class="form-input" type="number" value="500"></div>
+                    </div>
+                    <div class="form-group"><label>نسبة رضا العملاء</label><input class="form-input" value="100%"></div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>إعدادات الحجز</h3>
+                    <div class="settings-row">
+                        <div class="settings-row-info"><h4>الحد الأدنى للإشعار</h4><p>أقل فترة قبل الحجز بالساعات</p></div>
+                        <input class="form-input" type="number" value="48" style="width:100px">
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-row-info"><h4>قبول الحجوزات تلقائياً</h4><p>بدون مراجعة يدوية</p></div>
+                        <div class="toggle" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-row-info"><h4>إشعارات البريد الجديدة</h4><p>إرسال بريد عند حجز جديد</p></div>
+                        <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-row-info"><h4>إشعارات الواتساب</h4><p>إرسال إشعار واتساب عند حجز جديد</p></div>
+                        <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>إعدادات المظهر</h3>
+                    <div class="settings-row">
+                        <div class="settings-row-info"><h4>اللون الرئيسي</h4><p>اختر لون العلامة التجارية</p></div>
+                        <div class="color-options">
+                            <div class="color-opt active" style="background:#2563eb" data-hue="blue" onclick="selectAccent(this)"></div>
+                            <div class="color-opt" style="background:#7c3aed" data-hue="purple" onclick="selectAccent(this)"></div>
+                            <div class="color-opt" style="background:#059669" data-hue="green" onclick="selectAccent(this)"></div>
+                            <div class="color-opt" style="background:#d97706" data-hue="amber" onclick="selectAccent(this)"></div>
+                            <div class="color-opt" style="background:#dc2626" data-hue="red" onclick="selectAccent(this)"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>الأمان</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label>كلمة المرور الحالية</label><input class="form-input" type="password" placeholder="ادخل كلمة المرور الحالية"></div>
+                        <div class="form-group"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>كلمة المرور الجديدة</label><input class="form-input" type="password" placeholder="8 أحرف على الأقل"></div>
+                        <div class="form-group"><label>تأكيد كلمة المرور</label><input class="form-input" type="password" placeholder="أعد كتابة كلمة المرور"></div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="showToast('تم حفظ الإعدادات بنجاح','success')" style="margin-top:8px"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+            </div>
+            
+            <!-- ===== الإحصائيات ===== -->
+            <div class="page-section" id="page-analytics">
+                <div class="toolbar">
+                    <div style="display:flex;gap:4px">
+                        <button class="btn btn-sm btn-secondary analytic-period active" data-period="month">هذا الشهر</button>
+                        <button class="btn btn-sm btn-secondary analytic-period" data-period="week">هذا الأسبوع</button>
+                        <button class="btn btn-sm btn-secondary analytic-period" data-period="year">هذا العام</button>
+                    </div>
+                </div>
+                <div class="stats-grid" id="analyticsStats"></div>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header"><h3>الحجوزات حسب الشهر</h3></div>
+                        <div class="card-body"><div class="chart-container"><canvas id="analyticsLineChart"></canvas></div></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>أعلى العملاء</h3></div>
+                        <div class="card-body"><div class="chart-container"><canvas id="topClientsChart"></canvas></div></div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:20px">
+                    <div class="card-header"><h3>توزيع أنواع الخدمات</h3></div>
+                    <div class="card-body"><div class="chart-container" style="height:250px"><canvas id="analyticsDoughnut"></canvas></div></div>
+                </div>
+            </div>
+            
+        </div><!-- /content -->
+    </div><!-- /main-area -->
+</div><!-- /app -->
+
+<!-- ========== مودال الحجز ========== -->
+<div class="modal-overlay" id="bookingModal">
+    <div class="modal modal-lg">
+        <div class="modal-header"><h3 id="bookingModalTitle">حجز جديد</h3><button class="modal-close" onclick="closeModal('bookingModal')"><i class="fas fa-times"></i></button></div>
+        <div class="modal-body">
+            <input type="hidden" id="bookingEditId">
+            <div class="form-row">
+                <div class="form-group"><label>اسم العميل <span class="required">*</span></label><input class="form-input" id="bClientName"><div class="form-error" id="bClientNameErr">هذا الحقل مطلوب</div></div>
+                <div class="form-group"><label>البريد الإلكتروني <span class="required">*</span></label><input class="form-input" id="bClientEmail" type="email"><div class="form-error" id="bClientEmailErr">بريد إلكتروني غير صالح</div></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>رقم الهاتف</label><input class="form-input" id="bClientPhone"></div>
+                <div class="form-group"><label>اسم الفعالية <span class="required">*</span></label><input class="form-input" id="bEventName"><div class="form-error" id="bEventNameErr">هذا الحقل مطلوب</div></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>المكان</label><input class="form-input" id="bLocation"></div>
+                <div class="form-group"><label>نوع الخدمة <span class="required">*</span></label>
+                    <select class="form-input" id="bServiceType">
+                        <option value="">اختر النوع</option>
+                        <option value="Simultaneous">ترجمة فورية</option>
+                        <option value="Consecutive">ترجمة متتابعة</option>
+                        <option value="Remote">ترجمة عن بُعد</option>
+                        <option value="Media">ترجمة إعلامية</option>
+                    </select>
+                    <div class="form-error" id="bServiceTypeErr">اختر نوع الخدمة</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>اتجاه الترجمة <span class="required">*</span></label>
+                    <select class="form-input" id="bLangDir">
+                        <option value="">اختر الاتجاه</option>
+                        <option value="Arabic → English">عربي ← إنجليزي</option>
+                        <option value="English → Arabic">إنجليزي ← عربي</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>الحالة</label>
+                    <select class="form-input" id="bStatus">
+                        <option value="Pending">قيد المراجعة</option>
+                        <option value="Confirmed">مؤكد</option>
+                        <option value="Cancelled">ملغي</option>
+                        <option value="Completed">مكتمل</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>التاريخ <span class="required">*</span></label><input class="form-input" id="bDate" type="date"><div class="form-error" id="bDateErr">اختر التاريخ</div></div>
+                <div class="form-group"><label>وقت البداية <span class="required">*</span></label><input class="form-input" id="bStartTime" type="time"><div class="form-error" id="bStartTimeErr">اختر الوقت</div></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>وقت النهاية</label><input class="form-input" id="bEndTime" type="time"></div>
+                <div class="form-group"><label>الرسوم (دولار)</label><input class="form-input" id="bFee" type="number"></div>
+            </div>
+            <div class="form-group"><label>ملاحظات</label><textarea class="form-input" id="bNotes"></textarea></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="saveBooking()"><i class="fas fa-save"></i> حفظ الحجز</button>
+            <button class="btn btn-secondary" onclick="closeModal('bookingModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== مودال عرض الحجز ========== -->
+<div class="modal-overlay" id="viewBookingModal">
+    <div class="modal modal-lg">
+        <div class="modal-header"><h3>تفاصيل الحجز</h3><button class="modal-close" onclick="closeModal('viewBookingModal')"><i class="fas fa-times"></i></button></div>
+        <div class="modal-body" id="viewBookingBody"></div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" id="editFromView"><i class="fas fa-edit"></i> تعديل</button>
+            <button class="btn btn-danger" id="deleteFromView"><i class="fas fa-trash"></i> حذف</button>
+            <button class="btn btn-secondary" onclick="closeModal('viewBookingModal')">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== مودال تأكيد الحذف ========== -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal" style="max-width:400px">
+        <div class="modal-body" style="text-align:center;padding:32px 24px">
+            <div class="confirm-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="confirm-text">
+                <h3 id="confirmTitle">تأكيد الحذف</h3>
+                <p id="confirmMsg">هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.</p>
+            </div>
+            <div class="confirm-actions">
+                <button class="btn btn-danger" id="confirmYes"><i class="fas fa-trash"></i> حذف</button>
+                <button class="btn btn-secondary" onclick="closeModal('confirmModal')">إلغاء</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== مودال معرض الأعمال ========== -->
+<div class="modal-overlay" id="portfolioModal">
+    <div class="modal modal-lg">
+        <div class="modal-header"><h3 id="portfolioModalTitle">إضافة عنصر</h3><button class="modal-close" onclick="closeModal('portfolioModal')"><i class="fas fa-times"></i></button></div>
+        <div class="modal-body">
+            <input type="hidden" id="portfolioEditId">
+            <div class="form-row">
+                <div class="form-group"><label>اسم الفعالية <span class="required">*</span></label><input class="form-input" id="pEventName"><div class="form-error" id="pEventNameErr">هذا الحقل مطلوب</div></div>
+                <div class="form-group"><label>السنة <span class="required">*</span></label><input class="form-input" id="pYear" type="number"><div class="form-error" id="pYearErr">هذا الحقل مطلوب</div></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>التصنيف <span class="required">*</span></label>
+                    <select class="form-input" id="pCategory">
+                        <option value="">اختر التصنيف</option>
+                        <option value="Conference">مؤتمرات</option>
+                        <option value="Summit">قمم</option>
+                        <option value="Medical">طبي</option>
+                        <option value="Business">أعمال</option>
+                        <option value="Media">إعلام</option>
+                        <option value="Government">حكومي</option>
+                    </select>
+                    <div class="form-error" id="pCategoryErr">اختر التصنيف</div>
+                </div>
+                <div class="form-group"><label>العميل / المؤسسة</label><input class="form-input" id="pClient"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>المكان</label><input class="form-input" id="pLocation"></div>
+                <div class="form-group"><label>نوع الترجمة</label>
+                    <select class="form-input" id="pInterpType">
+                        <option value="Simultaneous">فورية</option>
+                        <option value="Consecutive">متتابعة</option>
+                        <option value="Remote">عن بُعد</option>
+                        <option value="Media">إعلامية</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"><label>الوصف</label><textarea class="form-input" id="pDescription"></textarea></div>
+            <div class="settings-row" style="border:none;padding-top:0">
+                <div class="settings-row-info"><h4>عرض في الصفحة الرئيسية</h4><p>يظهر كعنصر مميز</p></div>
+                <div class="toggle" id="pFeatured" onclick="this.classList.toggle('active')"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="savePortfolio()"><i class="fas fa-save"></i> حفظ</button>
+            <button class="btn btn-secondary" onclick="closeModal('portfolioModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== مودال العميل ========== -->
+<div class="modal-overlay" id="clientModal">
+    <div class="modal">
+        <div class="modal-header"><h3 id="clientModalTitle">عميل جديد</h3><button class="modal-close" onclick="closeModal('clientModal')"><i class="fas fa-times"></i></button></div>
+        <div class="modal-body">
+            <input type="hidden" id="clientEditId">
+            <div class="form-group"><label>الاسم الكامل <span class="required">*</span></label><input class="form-input" id="cName"><div class="form-error" id="cNameErr">هذا الحقل مطلوب</div></div>
+            <div class="form-group"><label>البريد الإلكتروني <span class="required">*</span></label><input class="form-input" id="cEmail" type="email"><div class="form-error" id="cEmailErr">بريد إلكتروني غير صالح</div></div>
+            <div class="form-group"><label>رقم الهاتف</label><input class="form-input" id="cPhone"></div>
+            <div class="form-group"><label>المؤسسة</label><input class="form-input" id="cOrg"></div>
+            <div class="form-group"><label>ملاحظات</label><textarea class="form-input" id="cNotes"></textarea></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="saveClient()"><i class="fas fa-save"></i> حفظ</button>
+            <button class="btn btn-secondary" onclick="closeModal('clientModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== حاوية الإشعارات ========== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ===== إعدادات Supabase =====
+const SUPABASE_URL = 'https://zzzkdtgpeutlmsehdvsz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6emtkdGdwZXV0bG1zZWhkdnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NzkwNjQsImV4cCI6MjA5MTA1NTA2NH0.TrsWqAWSjUR_nmF1fiLh0DCuxqp-K6VHBAbFY2h1duI';
+const SHEADERS = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' };
+
+async function supaGet(table) {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?order=id.desc', { headers: SHEADERS });
+    return await res.json();
+}
+async function supaInsert(table, data) {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table, { method: 'POST', headers: Object.assign({}, SHEADERS, { 'Prefer': 'return=representation' }), body: JSON.stringify(data) });
+    return await res.json();
+}
+async function supaUpdate(table, id, data) {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, { method: 'PATCH', headers: Object.assign({}, SHEADERS, { 'Prefer': 'return=representation' }), body: JSON.stringify(data) });
+    return await res.json();
+}
+async function supaDelete(table, id) {
+    await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, { method: 'DELETE', headers: SHEADERS });
+}
+
+
+// ===== تحميل البيانات من Supabase =====
+async function loadBookings() {
+    var data = await supaGet('bookings');
+    if (Array.isArray(data)) {
+        bookings = data.map(function(b) {
+            return {
+                id: b.id, clientName: b.client_name, clientEmail: b.client_email,
+                clientPhone: b.client_phone, eventName: b.event_name, location: b.location,
+                serviceType: b.service_type, languageDirection: b.language_direction,
+                date: b.date, startTime: b.start_time, endTime: b.end_time,
+                status: b.status, fee: b.fee, notes: b.notes
+            };
+        });
+        nextId.booking = bookings.length > 0 ? Math.max.apply(null, bookings.map(function(b){return b.id;})) + 1 : 1;
+    }
+    var pendingCount = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Pending'; }).length;
+    var bBadge = document.getElementById('bookingsBadge');
+    var sCount = document.getElementById('sidebarBookingsCount');
+    if(bBadge) bBadge.textContent = pendingCount;
+    if(sCount) sCount.textContent = pendingCount;
+    if(pendingCount === 0){
+        if(bBadge) bBadge.style.display = 'none';
+        if(sCount) sCount.parentElement.style.display = 'none';
+    }
+}
+
+async function loadClients() {
+    const { data, error } = await supaGet('clients');
+    if (!error && data) {
+        clients = data.map(function(c) {
+            return {
+                id: c.id, name: c.name, email: c.email, phone: c.phone,
+                org: c.org, totalEvents: c.total_events, totalSpent: c.total_spent, notes: c.notes
+            };
+        });
+        nextId.client = clients.length > 0 ? Math.max(...clients.map(function(c){return c.id;})) + 1 : 1;
+    }
+}
+
+async function loadMessages() {
+    var data = await supaGet('messages');
+    if (Array.isArray(data)) {
+        messages = data.map(function(m) {
+            return {
+                id: m.id, senderName: m.sender_name, senderEmail: m.sender_email,
+                phone: m.phone, subject: m.subject, message: m.message_body,
+                date: m.date, read: m.is_read, starred: m.is_starred, archived: m.is_archived
+            };
+        });
+    }
+    var unreadCount = messages.filter(function(m){ return !m.read; }).length;
+    var mBadge = document.getElementById('messagesBadge');
+    if(mBadge) mBadge.textContent = unreadCount;
+    if(unreadCount === 0 && mBadge) mBadge.style.display = 'none';
+
+    notifications = messages.filter(function(m){ return !m.read; }).slice(0, 5).map(function(m) {
+        return { id: m.id, text: 'رسالة جديدة من ' + m.senderName + ' - ' + m.subject, time: getRelativeTime(m.date), read: false, type: 'info' };
+    });
+    renderNotifications();
+}
+
+async function loadPortfolio() {
+    var data = await supaGet('portfolio');
+    if (Array.isArray(data)) {
+        portfolioItems = data.map(function(p) {
+            return {
+                id: p.id, eventName: p.event_name, image: p.image, year: p.year,
+                category: p.category, client: p.client, location: p.location,
+                interpretationType: p.interpretation_type, description: p.description, featured: p.is_featured
+            };
+        });
+        nextId.portfolio = portfolioItems.length > 0 ? Math.max.apply(null, portfolioItems.map(function(p){return p.id;})) + 1 : 1;
+    }
+}
+
+async function loadMedia() {
+    var data = await supaGet('media');
+    if (Array.isArray(data)) {
+        mediaItems = data.map(function(m) {
+            return { id: m.id, name: m.name, type: m.type, size: m.size, url: m.url };
+        });
+        nextId.media = mediaItems.length > 0 ? Math.max.apply(null, mediaItems.map(function(m){return m.id;})) + 1 : 1;
+    }
+}
+
+async function loadAllData() {
+    await Promise.all([loadBookings(), loadClients(), loadMessages(), loadPortfolio(), loadMedia()]);
+}
+
+// ===== تسجيل الدخول =====
+const loginScreen = document.getElementById('loginScreen');
+const app = document.getElementById('app');
+document.getElementById('loginBtn').addEventListener('click', handleLogin);
+document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
+document.getElementById('togglePass').addEventListener('click', function(){
+    const inp = document.getElementById('loginPassword');
+    const isPass = inp.type === 'password';
+    inp.type = isPass ? 'text' : 'password';
+    this.querySelector('i').className = isPass ? 'fas fa-eye-slash' : 'fas fa-eye';
+});
+
+function handleLogin(){
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPassword').value;
+    const emailErr = document.getElementById('loginEmailError');
+    const passErr = document.getElementById('loginPassError');
+    let valid = true;
+    
+    emailErr.classList.remove('show');
+    passErr.classList.remove('show');
+    document.getElementById('loginEmail').classList.remove('error');
+    document.getElementById('loginPassword').classList.remove('error');
+    
+    if(!email){ emailErr.querySelector('span').textContent='أدخل البريد الإلكتروني'; emailErr.classList.add('show'); document.getElementById('loginEmail').classList.add('error'); valid=false; }
+    else if(email!=='admin@dinrashad.com'){ emailErr.querySelector('span').textContent='بريد إلكتروني غير صحيح'; emailErr.classList.add('show'); document.getElementById('loginEmail').classList.add('error'); valid=false; }
+    if(!pass){ passErr.querySelector('span').textContent='أدخل كلمة المرور'; passErr.classList.add('show'); document.getElementById('loginPassword').classList.add('error'); valid=false; }
+    else if(pass!=='Dina@Admin2025!x'){ passErr.querySelector('span').textContent='كلمة مرور خاطئة'; passErr.classList.add('show'); document.getElementById('loginPassword').classList.add('error'); valid=false; }
+    
+    if(!valid){
+        document.querySelector('.login-card').classList.add('shake');
+        setTimeout(()=>document.querySelector('.login-card').classList.remove('shake'),400);
+        return;
+    }
+    
+    loginScreen.classList.add('hidden');
+    setTimeout(()=>{ app.classList.add('visible'); initDashboard(); },500);
+}
+
+// ===== التنقل =====
+const pageTitles = { dashboard:'لوحة التحكم', bookings:'إدارة الحجوزات', portfolio:'معرض الأعمال', messages:'الرسائل', clients:'العملاء', pages:'إدارة الصفحات', media:'مكتبة الوسائط', settings:'الإعدادات', analytics:'الإحصائيات' };
+let currentPage = 'dashboard';
+
+function navigateTo(page){
+    currentPage = page;
+    document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+    document.getElementById('page-'+page).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    const navItem = document.querySelector(`.nav-item[data-page="${page}"]`);
+    if(navItem) navItem.classList.add('active');
+    document.getElementById('headerTitle').textContent = pageTitles[page] || '';
+    closeSidebar();
+    
+    if(page==='bookings') renderBookings();
+    if(page==='portfolio') renderPortfolio();
+    if(page==='messages') renderMessages();
+    if(page==='clients') renderClients();
+    if(page==='pages') renderPages();
+    if(page==='media') renderMedia();
+    if(page==='analytics') renderAnalytics();
+}
+
+document.querySelectorAll('.nav-item[data-page]').forEach(item=>{
+    item.addEventListener('click', ()=> navigateTo(item.dataset.page));
+});
+
+// ===== الشريط الجانبي (موبايل) =====
+const sidebar = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+document.getElementById('hamburgerBtn').addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebarOverlay.classList.add('show'); });
+function closeSidebar(){ sidebar.classList.remove('open'); sidebarOverlay.classList.remove('show'); }
+sidebarOverlay.addEventListener('click', closeSidebar);
+
+// ===== الإشعارات =====
+document.getElementById('notifBtn').addEventListener('click', e=>{
+    e.stopPropagation();
+    document.getElementById('notifDropdown').classList.toggle('show');
+});
+document.addEventListener('click', ()=> document.getElementById('notifDropdown').classList.remove('show'));
+document.getElementById('markAllRead').addEventListener('click', ()=>{
+    notifications.forEach(n=>n.read=true);
+    renderNotifications();
+    showToast('تم تحديد كل الإشعارات كمقروءة','success');
+});
+
+function renderNotifications(){
+    const list = document.getElementById('notifList');
+    list.innerHTML = notifications.map(n=>`
+        <div class="notif-item ${n.read?'':'unread'}">
+            <div class="notif-dot"></div>
+            <div><div class="notif-text">${n.text}</div><div class="notif-time">${n.time}</div></div>
+        </div>
+    `).join('');
+    const unread = notifications.filter(n=>!n.read).length;
+    const badge = document.getElementById('notifBadge');
+    badge.textContent = unread;
+    badge.style.display = unread ? 'flex' : 'none';
+}
+
+// ===== الإشعارات (Toast) =====
+function showToast(msg, type='info'){
+    const icons = { success:'fa-check-circle', error:'fa-times-circle', warning:'fa-exclamation-circle', info:'fa-info-circle' };
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span class="toast-msg">${msg}</span><button class="toast-close" onclick="removeToast(this.parentElement)"><i class="fas fa-times"></i></button>`;
+    container.appendChild(toast);
+    setTimeout(()=>removeToast(toast), 4000);
+}
+function removeToast(el){ if(!el||!el.parentElement) return; el.classList.add('removing'); setTimeout(()=>el.remove(),300); }
+
+// ===== المودالات =====
+function openModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+    overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.classList.remove('show'); });
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show')); });
+
+// ===== تأكيد الحذف =====
+let confirmCallback = null;
+function showConfirm(title, msg, cb){
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMsg').textContent = msg;
+    confirmCallback = cb;
+    openModal('confirmModal');
+}
+document.getElementById('confirmYes').addEventListener('click', ()=>{
+    if(confirmCallback) confirmCallback();
+    closeModal('confirmModal');
+});
+
+// ===== لوحة التحكم =====
+let bookingsChartInstance = null;
+let servicesChartInstance = null;
+
+async function initDashboard(){
+    await loadAllData();
+    renderNotifications();
+    renderStats();
+    renderUpcomingBookings();
+    renderRecentMessages();
+    initBookingsChart();
+    initServicesChart();
+}
+
+function renderStats() {
+    var total = bookings.length;
+    var confirmed = bookings.filter(function(b){ return b.status==='Confirmed'; }).length;
+    var pending = bookings.filter(function(b){ return b.status==='Pending'; }).length;
+    var completed = bookings.filter(function(b){ return b.status==='Completed'; }).length;
+    var revenue = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Completed'; }).reduce(function(s,b){ return s+(b.fee||0); }, 0);
+    var unreadMsgs = messages.filter(function(m){ return !m.read; }).length;
+    document.getElementById('statsGrid').innerHTML =
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue"><i class="fas fa-calendar-alt"></i></div><div class="stat-change up"><i class="fas fa-arrow-up"></i> 15%</div></div><div class="stat-value">' + total + '</div><div class="stat-label">إجمالي الحجوزات</div></div>' +
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon cyan"><i class="fas fa-envelope"></i></div></div><div class="stat-value">' + unreadMsgs + '</div><div class="stat-label">رسائل جديدة</div></div>' +
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon green"><i class="fas fa-dollar-sign"></i></div><div class="stat-change up"><i class="fas fa-arrow-up"></i> 22%</div></div><div class="stat-value">$' + revenue.toLocaleString() + '</div><div class="stat-label">الإيرادات (مؤكد)</div></div>' +
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon yellow"><i class="fas fa-clock"></i></div></div><div class="stat-value">' + pending + '</div><div class="stat-label">بانتظار المراجعة</div></div>';
+}
+
+function renderUpcomingBookings(){
+    const upcoming = bookings.filter(b=>b.status==='Confirmed'||b.status==='Pending').sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,4);
+    document.getElementById('upcomingBookings').innerHTML = upcoming.map(b=>`
+        <div class="booking-item" onclick="viewBooking(${b.id})">
+            <div class="booking-icon" style="background:${b.serviceType==='Simultaneous'?'var(--accent-glow)':b.serviceType==='Media'?'var(--warning-glow)':'var(--success-glow)'}; color:${b.serviceType==='Simultaneous'?'var(--accent)':b.serviceType==='Media'?'var(--warning)':'var(--success)'}">
+                <i class="fas ${SERVICE_ICONS[b.serviceType]||'fa-calendar'}"></i>
+            </div>
+            <div class="booking-info">
+                <h4>${b.eventName}</h4>
+                <p>${SERVICE_LABELS[b.serviceType]} | ${b.languageDirection}</p>
+            </div>
+            <div class="booking-meta">
+                <div class="date">${b.date}</div>
+                <div class="time">${b.startTime}</div>
+                <span class="status-badge ${STATUS_CLASS[b.status]}">${STATUS_LABELS[b.status]}</span>
+            </div>
+        </div>
+    `).join('') || '<p style="text-align:center;color:var(--text-muted);padding:20px">لا توجد حجوزات قادمة</p>';
+}
+
+function renderRecentMessages(){
+    document.getElementById('recentMessages').innerHTML = messages.slice(0,5).map(m=>`
+        <div class="msg-item" onclick="navigateTo('messages');setTimeout(()=>openMessage(${m.id}),100)">
+            <div class="msg-dot ${m.read?'read':'unread'}"></div>
+            <div class="msg-info"><h4>${m.senderName}</h4><p>${m.subject}</p></div>
+            <div class="msg-time">${getRelativeTime(m.date)}</div>
+        </div>
+    `).join('');
+}
+
+function initBookingsChart(){
+    const ctx = document.getElementById('bookingsChart').getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,0,300);
+    gradient.addColorStop(0,'rgba(37,99,235,0.3)');
+    gradient.addColorStop(1,'rgba(37,99,235,0)');
+    if(bookingsChartInstance) bookingsChartInstance.destroy();
+    bookingsChartInstance = new Chart(ctx,{
+        type:'line',
+        data:{ labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'], datasets:[{ label:'الحجوزات', data:[4,6,5,7,3,8,6,5,9,7,4,6], borderColor:'#2563eb', backgroundColor:gradient, fill:true, tension:0.4, pointBackgroundColor:'#2563eb', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:4 }] },
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ x:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#64748b',font:{size:11}} }, y:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#64748b',font:{size:11}} } } }
+    });
+}
+
+function initServicesChart(){
+    const ctx = document.getElementById('servicesChart').getContext('2d');
+    const counts = {};
+    bookings.forEach(b=>{ counts[b.serviceType]=(counts[b.serviceType]||0)+1; });
+    if(servicesChartInstance) servicesChartInstance.destroy();
+    servicesChartInstance = new Chart(ctx,{
+        type:'doughnut',
+        data:{ labels:Object.keys(counts).map(k=>SERVICE_LABELS[k]), datasets:[{ data:Object.values(counts), backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b'], borderWidth:0, hoverOffset:6 }] },
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{color:'#94a3b8',font:{size:12},padding:16,usePointStyle:true,pointStyleWidth:8} } }, cutout:'65%' }
+    });
+}
+
+// ===== الحجوزات CRUD =====
+let bookingPage = 1;
+const bookingPerPage = 8;
+
+function getFilteredBookings(){
+    let data = [...bookings];
+    const search = document.getElementById('bookingSearch')?.value.toLowerCase()||'';
+    const statusF = document.getElementById('bookingStatusFilter')?.value||'';
+    const typeF = document.getElementById('bookingTypeFilter')?.value||'';
+    if(search) data = data.filter(b=> b.clientName.toLowerCase().includes(search)||b.eventName.toLowerCase().includes(search)||b.location.toLowerCase().includes(search));
+    if(statusF) data = data.filter(b=>b.status===statusF);
+    if(typeF) data = data.filter(b=>b.serviceType===typeF);
+    return data;
+}
+
+function renderBookings(){
+    const data = getFilteredBookings();
+    const total = Math.max(1,Math.ceil(data.length/bookingPerPage));
+    if(bookingPage>total) bookingPage=total;
+    const start = (bookingPage-1)*bookingPerPage;
+    const pageData = data.slice(start, start+bookingPerPage);
+    
+    document.getElementById('bookingsBody').innerHTML = pageData.map((b,i)=>`
+        <tr>
+            <td data-label="#">${start+i+1}</td>
+            <td data-label="العميل"><strong style="color:var(--text-primary)">${b.clientName}</strong><br><span style="font-size:11px">${b.clientEmail}</span></td>
+            <td data-label="الفعالية">${b.eventName}</td>
+            <td data-label="النوع"><span class="portfolio-tag">${SERVICE_LABELS[b.serviceType]}</span></td>
+            <td data-label="التاريخ">${b.date}<br><span style="font-size:11px;color:var(--text-muted)">${b.startTime} - ${b.endTime||'--'}</span></td>
+            <td data-label="الحالة"><span class="status-badge ${STATUS_CLASS[b.status]}">${STATUS_LABELS[b.status]}</span></td>
+            <td data-label="الإجراءات"><div class="actions-cell">
+                <button class="btn-icon" title="عرض" onclick="viewBooking(${b.id})"><i class="fas fa-eye"></i></button>
+                <button class="btn-icon" title="تعديل" onclick="editBooking(${b.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-icon" title="حذف" onclick="deleteBooking(${b.id})" style="color:var(--danger)"><i class="fas fa-trash"></i></button>
+            </div></td>
+        </tr>
+    `).join('');
+    
+    document.getElementById('bookingsPagination').innerHTML = `
+        <span>عرض ${start+1}-${Math.min(start+bookingPerPage,data.length)} من ${data.length}</span>
+        <div class="pagination-btns">
+            <button class="page-btn" onclick="bookingPage--;renderBookings()" ${bookingPage<=1?'disabled':''}><i class="fas fa-chevron-right"></i></button>
+            ${Array.from({length:total},(_,i)=>`<button class="page-btn ${i+1===bookingPage?'active':''}" onclick="bookingPage=${i+1};renderBookings()">${i+1}</button>`).join('')}
+            <button class="page-btn" onclick="bookingPage++;renderBookings()" ${bookingPage>=total?'disabled':''}><i class="fas fa-chevron-left"></i></button>
+        </div>
+    `;
+}
+function filterBookings(){ bookingPage=1; renderBookings(); }
+
+function openBookingModal(id){
+    document.getElementById('bookingEditId').value = '';
+    document.getElementById('bookingModalTitle').textContent = 'حجز جديد';
+    ['bClientName','bClientEmail','bClientPhone','bEventName','bLocation','bStartTime','bEndTime','bFee','bNotes'].forEach(f=>document.getElementById(f).value='');
+    document.getElementById('bServiceType').value='';
+    document.getElementById('bLangDir').value='';
+    document.getElementById('bStatus').value='Pending';
+    document.getElementById('bDate').value='';
+    document.querySelectorAll('#bookingModal .form-error').forEach(e=>e.classList.remove('show'));
+    document.querySelectorAll('#bookingModal .form-input').forEach(e=>e.classList.remove('error'));
+    if(id){
+        const b = bookings.find(x=>x.id===id);
+        if(!b) return;
+        document.getElementById('bookingEditId').value = id;
+        document.getElementById('bookingModalTitle').textContent = 'تعديل الحجز';
+        document.getElementById('bClientName').value=b.clientName;
+        document.getElementById('bClientEmail').value=b.clientEmail;
+        document.getElementById('bClientPhone').value=b.clientPhone||'';
+        document.getElementById('bEventName').value=b.eventName;
+        document.getElementById('bLocation').value=b.location||'';
+        document.getElementById('bServiceType').value=b.serviceType;
+        document.getElementById('bLangDir').value=b.languageDirection;
+        document.getElementById('bDate').value=b.date;
+        document.getElementById('bStartTime').value=b.startTime;
+        document.getElementById('bEndTime').value=b.endTime||'';
+        document.getElementById('bStatus').value=b.status;
+        document.getElementById('bFee').value=b.fee||'';
+        document.getElementById('bNotes').value=b.notes||'';
+    }
+    openModal('bookingModal');
+}
+
+async function saveBooking(){
+    let valid = true;
+    var fields = [['bClientName','bClientNameErr'],['bClientEmail','bClientEmailErr'],['bEventName','bEventNameErr'],['bServiceType','bServiceTypeErr'],['bDate','bDateErr'],['bStartTime','bStartTimeErr']];
+    fields.forEach(function(f){
+        var el = document.getElementById(f[0]);
+        var err = document.getElementById(f[1]);
+        if(!el.value.trim()){ el.classList.add('error'); err.classList.add('show'); valid=false; }
+        else { el.classList.remove('error'); err.classList.remove('show'); }
+    });
+    var emailEl = document.getElementById('bClientEmail');
+    if(emailEl.value && !/\S+@\S+\.\S+/.test(emailEl.value)){ emailEl.classList.add('error'); document.getElementById('bClientEmailErr').classList.add('show'); valid=false; }
+    if(!valid) return;
+    
+    var editId = document.getElementById('bookingEditId').value;
+    var rowData = {
+        client_name: document.getElementById('bClientName').value.trim(),
+        client_email: document.getElementById('bClientEmail').value.trim(),
+        client_phone: document.getElementById('bClientPhone').value.trim(),
+        event_name: document.getElementById('bEventName').value.trim(),
+        location: document.getElementById('bLocation').value.trim(),
+        service_type: document.getElementById('bServiceType').value,
+        language_direction: document.getElementById('bLangDir').value,
+        date: document.getElementById('bDate').value,
+        start_time: document.getElementById('bStartTime').value,
+        end_time: document.getElementById('bEndTime').value,
+        status: document.getElementById('bStatus').value,
+        fee: parseFloat(document.getElementById('bFee').value) || 0,
+        notes: document.getElementById('bNotes').value.trim(),
+    };
+    
+    if(editId){
+        var { error } = await supaUpdate('bookings', parseInt(editId), rowData);
+        if(error){ showToast('حدث خطأ أثناء التعديل', 'error'); return; }
+        showToast('تم تعديل الحجز بنجاح', 'success');
+    } else {
+        var { error } = await supaInsert('bookings', rowData);
+        if(error){ showToast('حدث خطأ أثناء الإضافة', 'error'); return; }
+        showToast('تم إضافة الحجز بنجاح', 'success');
+    }
+    closeModal('bookingModal');
+    await loadBookings();
+    renderBookings();
+    renderStats();
+    renderUpcomingBookings();
+}
+
+function editBooking(id){ openBookingModal(id); }
+
+function viewBooking(id){
+    const b = bookings.find(x=>x.id===id);
+    if(!b) return;
+    document.getElementById('viewBookingBody').innerHTML = `
+        <div class="form-row"><div class="form-group"><label>العميل</label><div style="font-size:14px;color:var(--text-primary)">${b.clientName}</div></div><div class="form-group"><label>البريد</label><div style="font-size:14px;color:var(--text-secondary)">${b.clientEmail}</div></div></div>
+        <div class="form-row"><div class="form-group"><label>الهاتف</label><div style="font-size:14px;color:var(--text-secondary)">${b.clientPhone||'--'}</div></div><div class="form-group"><label>الحالة</label><span class="status-badge ${STATUS_CLASS[b.status]}">${STATUS_LABELS[b.status]}</span></div></div>
+        <div class="form-group"><label>الفعالية</label><div style="font-size:14px;color:var(--text-primary)">${b.eventName}</div></div>
+        <div class="form-row"><div class="form-group"><label>المكان</label><div style="font-size:14px;color:var(--text-secondary)">${b.location||'--'}</div></div><div class="form-group"><label>النوع</label><div><span class="portfolio-tag">${SERVICE_LABELS[b.serviceType]}</span> <span style="font-size:12px;color:var(--text-muted);margin-right:8px">${b.languageDirection}</span></div></div></div>
+        <div class="form-row"><div class="form-group"><label>التاريخ</label><div style="font-size:14px;color:var(--text-secondary)">${b.date}</div></div><div class="form-group"><label>الوقت</label><div style="font-size:14px;color:var(--text-secondary)">${b.startTime} - ${b.endTime||'--'}</div></div></div>
+        <div class="form-row"><div class="form-group"><label>الرسوم</label><div style="font-size:14px;color:var(--success);font-weight:600">$${(b.fee||0).toLocaleString()}</div></div><div class="form-group"></div></div>
+        ${b.notes?`<div class="form-group"><label>ملاحظات</label><div style="font-size:14px;color:var(--text-secondary)">${b.notes}</div></div>`:''}
+    `;
+    document.getElementById('editFromView').onclick = ()=>{ closeModal('viewBookingModal'); setTimeout(()=>editBooking(id),200); };
+    document.getElementById('deleteFromView').onclick = ()=>{ closeModal('viewBookingModal'); deleteBooking(id); };
+    openModal('viewBookingModal');
+}
+
+function deleteBooking(id){
+    showConfirm('حذف الحجز', 'هل أنت متأكد من حذف هذا الحجز؟', async function(){
+        var { error } = await supaDelete('bookings', id);
+        if(error){ showToast('حدث خطأ أثناء الحذف', 'error'); return; }
+        await loadBookings();
+        renderBookings();
+        renderStats();
+        renderUpcomingBookings();
+        showToast('تم حذف الحجز', 'success');
+    });
+}
+
+// ===== معرض الأعمال CRUD =====
+function getFilteredPortfolio(){
+    let data = [...portfolioItems];
+    const search = document.getElementById('portfolioSearch')?.value.toLowerCase()||'';
+    const catF = document.getElementById('portfolioCatFilter')?.value||'';
+    if(search) data = data.filter(p=>p.eventName.toLowerCase().includes(search)||(p.client||'').toLowerCase().includes(search));
+    if(catF) data = data.filter(p=>p.category===catF);
+    return data;
+}
+
+function renderPortfolio(){
+    const data = getFilteredPortfolio();
+    document.getElementById('portfolioGrid').innerHTML = data.map(p=>`
+        <div class="portfolio-card">
+            <img src="${p.image}" alt="${p.eventName}" loading="lazy">
+            <div class="portfolio-card-body">
+                <h4>${p.eventName}</h4>
+                <div class="portfolio-card-meta">
+                    <span>${p.year}</span>
+                    <span>${p.location||''}</span>
+                    ${p.featured?'<span style="color:var(--warning)"><i class="fas fa-star"></i> مميز</span>':''}
+                </div>
+                <span class="portfolio-tag">${CATEGORY_LABELS[p.category]||p.category}</span>
+                <div class="portfolio-actions">
+                    <button class="btn-icon" title="تعديل" onclick="editPortfolio(${p.id})"><i class="fas fa-edit"></i></button>
+                    <button class="btn-icon" title="حذف" onclick="deletePortfolio(${p.id})" style="color:var(--danger)"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+    `).join('') || '<p style="text-align:center;color:var(--text-muted);grid-column:1/-1;padding:40px">لا توجد عناصر</p>';
+}
+function filterPortfolio(){ renderPortfolio(); }
+
+function openPortfolioModal(id){
+    document.getElementById('portfolioEditId').value='';
+    document.getElementById('portfolioModalTitle').textContent='إضافة عنصر';
+    ['pEventName','pYear','pClient','pLocation','pDescription'].forEach(f=>document.getElementById(f).value='');
+    document.getElementById('pCategory').value='';
+    document.getElementById('pInterpType').value='Simultaneous';
+    document.getElementById('pFeatured').classList.remove('active');
+    document.querySelectorAll('#portfolioModal .form-error').forEach(e=>e.classList.remove('show'));
+    if(id){
+        const p = portfolioItems.find(x=>x.id===id);
+        if(!p) return;
+        document.getElementById('portfolioEditId').value=id;
+        document.getElementById('portfolioModalTitle').textContent='تعديل العنصر';
+        document.getElementById('pEventName').value=p.eventName;
+        document.getElementById('pYear').value=p.year;
+        document.getElementById('pCategory').value=p.category;
+        document.getElementById('pClient').value=p.client||'';
+        document.getElementById('pLocation').value=p.location||'';
+        document.getElementById('pInterpType').value=p.interpretationType||'Simultaneous';
+        document.getElementById('pDescription').value=p.description||'';
+        if(p.featured) document.getElementById('pFeatured').classList.add('active');
+    }
+    openModal('portfolioModal');
+}
+
+async function savePortfolio() {
+    var valid = true;
+    [['pEventName','pEventNameErr'],['pYear','pYearErr'],['pCategory','pCategoryErr']].forEach(function(f){
+        var el = document.getElementById(f[0]); var err = document.getElementById(f[1]);
+        if (!el.value.trim()) { el.classList.add('error'); err.classList.add('show'); valid = false; }
+        else { el.classList.remove('error'); err.classList.remove('show'); }
+    });
+    if (!valid) return;
+
+    var editId = document.getElementById('portfolioEditId').value;
+    var rowData = {
+        event_name: document.getElementById('pEventName').value.trim(),
+        year: parseInt(document.getElementById('pYear').value),
+        category: document.getElementById('pCategory').value,
+        client: document.getElementById('pClient').value.trim(),
+        location: document.getElementById('pLocation').value.trim(),
+        interpretation_type: document.getElementById('pInterpType').value,
+        description: document.getElementById('pDescription').value.trim(),
+        is_featured: document.getElementById('pFeatured').classList.contains('active')
+    };
+
+    if (editId) {
+        await supaUpdate('portfolio', parseInt(editId), rowData);
+        showToast('تم تعديل العنصر بنجاح', 'success');
+    } else {
+        rowData.image = 'https://picsum.photos/seed/new-' + Date.now() + '/600/400.jpg';
+        await supaInsert('portfolio', rowData);
+        showToast('تم إضافة العنصر بنجاح', 'success');
+    }
+    closeModal('portfolioModal');
+    await loadPortfolio();
+    renderPortfolio();
+}
+
+function editPortfolio(id){ openPortfolioModal(id); }
+
+function deletePortfolio(id) {
+    showConfirm('حذف العنصر', 'هل أنت متأكد من حذف هذا العنصر من معرض الأعمال؟', async function() {
+        await supaDelete('portfolio', id);
+        await loadPortfolio();
+        renderPortfolio();
+        showToast('تم حذف العنصر', 'success');
+    });
+}
+
+// ===== الرسائل =====
+function getFilteredMessages(){
+    let data = messages.filter(m=>!m.archived);
+    const search = document.getElementById('msgSearch')?.value.toLowerCase()||'';
+    const filter = document.getElementById('msgFilter')?.value||'';
+    if(search) data = data.filter(m=>m.senderName.toLowerCase().includes(search)||m.subject.toLowerCase().includes(search)||m.message.toLowerCase().includes(search));
+    if(filter==='unread') data = data.filter(m=>!m.read);
+    if(filter==='starred') data = data.filter(m=>m.starred);
+    return data;
+}
+
+function renderMessages(){
+    const data = getFilteredMessages();
+    document.getElementById('msgListPanel').innerHTML = data.map(m=>`
+        <div class="msg-item ${m.read?'':'unread'}" onclick="openMessage(${m.id})">
+            <div class="msg-dot ${m.read?'read':'unread'}"></div>
+            <div class="msg-info">
+                <h4>${m.senderName} ${m.starred?'<i class="fas fa-star" style="color:var(--warning);font-size:10px"></i>':''}</h4>
+                <p>${m.subject}</p>
+            </div>
+            <div class="msg-time">${getRelativeTime(m.date)}</div>
+        </div>
+    `).join('') || '<div class="msg-empty"><i class="fas fa-inbox"></i><p>لا توجد رسائل</p></div>';
+    
+    if(window.innerWidth <= 768){
+        document.getElementById('msgDetailPanel').classList.remove('mobile-show');
+    }
+}
+function filterMessages(){ renderMessages(); }
+
+function openMessage(id){
+    const m = messages.find(x=>x.id===id);
+    if(!m) return;
+    m.read = true;
+    renderMessages();
+    
+    const panel = document.getElementById('msgDetailPanel');
+    if(window.innerWidth <= 768) panel.classList.add('mobile-show');
+    
+    panel.innerHTML = `
+        <button class="btn btn-secondary btn-sm" style="margin-bottom:16px;display:none" id="msgBackBtn" onclick="document.getElementById('msgDetailPanel').classList.remove('mobile-show')"><i class="fas fa-arrow-right"></i> رجوع</button>
+        <div class="msg-detail-header">
+            <h3>${m.subject}</h3>
+            <div class="msg-detail-meta">
+                <span><i class="fas fa-user"></i> ${m.senderName}</span>
+                <span><i class="fas fa-envelope"></i> ${m.senderEmail}</span>
+                <span><i class="fas fa-phone"></i> ${m.phone||'--'}</span>
+                <span><i class="fas fa-calendar"></i> ${m.date}</span>
+            </div>
+        </div>
+        <div class="msg-detail-body">${m.message}</div>
+        <div class="msg-reply-area">
+            <textarea placeholder="اكتب ردك هنا..."></textarea>
+            <div class="msg-detail-actions">
+                <button class="btn btn-primary btn-sm" onclick="showToast('تم إرسال الرد','success')"><i class="fas fa-paper-plane"></i> إرسال الرد</button>
+                <button class="btn btn-sm btn-secondary" style="background:var(--whatsapp);color:#fff;border:none" onclick="showToast('تم فتح واتساب','info')"><i class="fab fa-whatsapp"></i> رد عبر واتساب</button>
+                <button class="btn btn-sm btn-secondary" onclick="toggleStar(${m.id})"><i class="fas fa-star"></i> ${m.starred?'إلغاء التمييز':'تمييز'}</button>
+                <button class="btn btn-sm btn-secondary" onclick="archiveMessage(${m.id})"><i class="fas fa-archive"></i> أرشفة</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteMessage(${m.id})"><i class="fas fa-trash"></i> حذف</button>
+            </div>
+        </div>
+    `;
+    
+    const backBtn = document.getElementById('msgBackBtn');
+    if(backBtn) backBtn.style.display = window.innerWidth <= 768 ? 'inline-flex' : 'none';
+}
+
+async function toggleStar(id) {
+    var m = messages.find(function(x){ return x.id === id; });
+    if (!m) return;
+    m.starred = !m.starred;
+    await supaUpdate('messages', id, { is_starred: m.starred });
+    openMessage(id);
+    showToast(m.starred ? 'تم تمييز الرسالة' : 'تم إلغاء التمييز', 'info');
+}
+async function archiveMessage(id) {
+    await supaUpdate('messages', id, { is_archived: true });
+    messages = messages.filter(function(m){ return m.id !== id; });
+    renderMessages();
+    document.getElementById('msgDetailPanel').innerHTML = '<div class="msg-empty"><i class="fas fa-archive"></i><p>تمت أرشفة الرسالة</p></div>';
+    showToast('تمت أرشفة الرسالة', 'success');
+}
+function deleteMessage(id) {
+    showConfirm('حذف الرسالة', 'هل أنت متأكد من حذف هذه الرسالة؟', async function() {
+        await supaDelete('messages', id);
+        messages = messages.filter(function(m){ return m.id !== id; });
+        renderMessages();
+        document.getElementById('msgDetailPanel').innerHTML = '<div class="msg-empty"><i class="fas fa-inbox"></i><p>لا توجد رسائل</p></div>';
+        showToast('تم حذف الرسالة', 'success');
+    });
+}
+
+// ===== العملاء CRUD =====
+let clientPage = 1;
+const clientPerPage = 8;
+
+function getFilteredClients(){
+    let data = [...clients];
+    const search = document.getElementById('clientSearch')?.value.toLowerCase()||'';
+    if(search) data = data.filter(c=>c.name.toLowerCase().includes(search)||(c.org||'').toLowerCase().includes(search)||c.email.toLowerCase().includes(search));
+    return data;
+}
+
+function renderClients(){
+    const data = getFilteredClients();
+    const total = Math.max(1,Math.ceil(data.length/clientPerPage));
+    if(clientPage>total) clientPage=total;
+    const start = (clientPage-1)*clientPerPage;
+    const pageData = data.slice(start,start+clientPerPage);
+    
+    document.getElementById('clientsBody').innerHTML = pageData.map((c,i)=>`
+        <tr>
+            <td data-label="#">${start+i+1}</td>
+            <td data-label="الاسم"><strong style="color:var(--text-primary)">${c.name}</strong></td>
+            <td data-label="البريد">${c.email}</td>
+            <td data-label="المؤسسة">${c.org||'--'}</td>
+            <td data-label="الفعاليات">${c.totalEvents}</td>
+            <td data-label="المدفوعات"><span style="color:var(--success);font-weight:600">$${c.totalSpent.toLocaleString()}</span></td>
+            <td data-label="الإجراءات"><div class="actions-cell">
+                <button class="btn-icon" title="تعديل" onclick="editClient(${c.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-icon" title="حذف" onclick="deleteClient(${c.id})" style="color:var(--danger)"><i class="fas fa-trash"></i></button>
+            </div></td>
+        </tr>
+    `).join('');
+    
+    document.getElementById('clientsPagination').innerHTML = `
+        <span>عرض ${start+1}-${Math.min(start+clientPerPage,data.length)} من ${data.length}</span>
+        <div class="pagination-btns">
+            <button class="page-btn" onclick="clientPage--;renderClients()" ${clientPage<=1?'disabled':''}><i class="fas fa-chevron-right"></i></button>
+            ${Array.from({length:total},(_,i)=>`<button class="page-btn ${i+1===clientPage?'active':''}" onclick="clientPage=${i+1};renderClients()">${i+1}</button>`).join('')}
+            <button class="page-btn" onclick="clientPage++;renderClients()" ${clientPage>=total?'disabled':''}><i class="fas fa-chevron-left"></i></button>
+        </div>
+    `;
+}
+function filterClients(){ clientPage=1; renderClients(); }
+
+function openClientModal(id){
+    document.getElementById('clientEditId').value='';
+    document.getElementById('clientModalTitle').textContent='عميل جديد';
+    ['cName','cEmail','cPhone','cOrg','cNotes'].forEach(f=>document.getElementById(f).value='');
+    document.querySelectorAll('#clientModal .form-error').forEach(e=>e.classList.remove('show'));
+    if(id){
+        const c=clients.find(x=>x.id===id);
+        if(!c)return;
+        document.getElementById('clientEditId').value=id;
+        document.getElementById('clientModalTitle').textContent='تعديل العميل';
+        document.getElementById('cName').value=c.name;
+        document.getElementById('cEmail').value=c.email;
+        document.getElementById('cPhone').value=c.phone||'';
+        document.getElementById('cOrg').value=c.org||'';
+        document.getElementById('cNotes').value=c.notes||'';
+    }
+    openModal('clientModal');
+}
+
+async function saveClient(){
+    let valid = true;
+    [['cName','cNameErr'],['cEmail','cEmailErr']].forEach(function(f){
+        var el = document.getElementById(f[0]); var err = document.getElementById(f[1]);
+        if(!el.value.trim()){el.classList.add('error');err.classList.add('show');valid=false;}
+        else{el.classList.remove('error');err.classList.remove('show');}
+    });
+    var emailEl = document.getElementById('cEmail');
+    if(emailEl.value && !/\S+@\S+\.\S+/.test(emailEl.value)){emailEl.classList.add('error');document.getElementById('cEmailErr').classList.add('show');valid=false;}
+    if(!valid) return;
+    
+    var editId = document.getElementById('clientEditId').value;
+    var rowData = {
+        name: document.getElementById('cName').value.trim(),
+        email: document.getElementById('cEmail').value.trim(),
+        phone: document.getElementById('cPhone').value.trim(),
+        org: document.getElementById('cOrg').value.trim(),
+        notes: document.getElementById('cNotes').value.trim(),
+    };
+    
+    if(editId){
+        var { error } = await supaUpdate('clients', parseInt(editId), rowData);
+        if(error){ showToast('حدث خطأ', 'error'); return; }
+        showToast('تم تعديل بيانات العميل', 'success');
+    } else {
+        rowData.total_events = 0;
+        rowData.total_spent = 0;
+        var { error } = await supaInsert('clients', rowData);
+        if(error){ showToast('حدث خطأ', 'error'); return; }
+        showToast('تم إضافة العميل بنجاح', 'success');
+    }
+    closeModal('clientModal');
+    await loadClients();
+    renderClients();
+}
+
+function editClient(id){ openClientModal(id); }
+
+function deleteClient(id){
+    showConfirm('حذف العميل', 'هل أنت متأكد؟', async function(){
+        var { error } = await supaDelete('clients', id);
+        if(error){ showToast('حدث خطأ', 'error'); return; }
+        await loadClients();
+        renderClients();
+        showToast('تم حذف العميل', 'success');
+    });
+}
+
+const pagesData = [
+    { id:'home', name:'الصفحة الرئيسية', icon:'fa-home', lastEdited:'منذ ساعتين' },
+    { id:'about', name:'صفحة "عن دينا"', icon:'fa-user', lastEdited:'منذ 3 أيام' },
+    { id:'portfolio', name:'صفحة معرض الأعمال', icon:'fa-briefcase', lastEdited:'منذ أسبوع' },
+    { id:'booking', name:'صفحة الحجز', icon:'fa-calendar-check', lastEdited:'منذ 5 أيام' },
+    { id:'contact', name:'صفحة التواصل', icon:'fa-envelope', lastEdited:'منذ أسبوع' },
+];
+
+function renderPages(){
+    document.getElementById('pagesList').innerHTML = pagesData.map(function(p){
+        return '<div class="card" style="margin-bottom:12px;cursor:pointer" onclick="showToast(\'محرر ' + p.name + ' - قريباً\',\'info\')"><div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px"><div style="display:flex;align-items:center;gap:14px"><div style="width:42px;height:42px;border-radius:10px;background:var(--accent-glow);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas ' + p.icon + '"></i></div><div><h4 style="font-size:14px;font-weight:600">' + p.name + '</h4><p style="font-size:12px;color:var(--text-muted)">آخر تعديل: ' + p.lastEdited + '</p></div></div><button class="btn-icon"><i class="fas fa-edit"></i></button></div></div>';
+    }).join('');
+}
+
+function getFilteredMedia(){
+    var data = mediaItems.slice();
+    var search = (document.getElementById('mediaSearch') || {}).value || '';
+    search = search.toLowerCase();
+    var typeF = (document.getElementById('mediaTypeFilter') || {}).value || '';
+    if(search) data = data.filter(function(m){ return m.name.toLowerCase().indexOf(search) > -1; });
+    if(typeF) data = data.filter(function(m){ return m.type === typeF; });
+    return data;
+}
+
+function renderMedia(){
+    var data = getFilteredMedia();
+    var html = '';
+    for(var i = 0; i < data.length; i++){
+        var m = data[i];
+        html += '<div class="media-card"><img src="' + m.url + '" alt="' + m.name + '" loading="lazy"><div class="media-card-actions"><button title="نسخ الرابط" onclick="navigator.clipboard.writeText(\'' + m.url + '\');showToast(\'تم نسخ الرابط\',\'success\')"><i class="fas fa-link"></i></button><button title="حذف" onclick="deleteMedia(' + m.id + ')" style="color:var(--danger)"><i class="fas fa-trash"></i></button></div><div class="media-card-info"><p>' + m.name + '</p><span>' + m.size + '</span></div></div>';
+    }
+    if(!html) html = '<p style="text-align:center;color:var(--text-muted);grid-column:1/-1;padding:40px">لا توجد ملفات</p>';
+    document.getElementById('mediaGrid').innerHTML = html;
+}
+
+function filterMedia(){ renderMedia(); }
+
+async function handleMediaUpload(e) {
+    var files = e.target.files;
+    if (!files || !files.length) return;
+    for (var i = 0; i < files.length; i++) {
+        var f = files[i];
+        var url = URL.createObjectURL(f);
+        var rowData = {
+            name: f.name,
+            type: 'image',
+            size: (f.size / 1024).toFixed(0) + ' KB',
+            url: url
+        };
+        await supaInsert('media', rowData);
+        mediaItems.unshift({ id: nextId.media++, name: f.name, type: 'image', size: (f.size / 1024).toFixed(0) + ' KB', url: url });
+    }
+    renderMedia();
+    showToast('تم رفع ' + files.length + ' ملف بنجاح', 'success');
+    e.target.value = '';
+}
+
+function deleteMedia(id) {
+    showConfirm('حذف الملف', 'هل أنت متأكد من حذف هذا الملف؟', async function() {
+        await supaDelete('media', id);
+        await loadMedia();
+        renderMedia();
+        showToast('تم حذف الملف', 'success');
+    });
+}
+
+var analyticsLineChart = null, topClientsChart = null, analyticsDoughnut = null;
+
+function renderAnalytics(){
+    var revenue = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Completed'; }).reduce(function(s,b){ return s+(b.fee||0); }, 0);
+    document.getElementById('analyticsStats').innerHTML =
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue"><i class="fas fa-calendar-alt"></i></div></div><div class="stat-value">' + bookings.length + '</div><div class="stat-label">إجمالي الحجوزات</div></div>' +
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div></div><div class="stat-value">' + bookings.filter(function(b){ return b.status==='Completed'; }).length + '</div><div class="stat-label">حجوزات مكتملة</div></div>' +
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon cyan"><i class="fas fa-users"></i></div></div><div class="stat-value">' + clients.length + '</div><div class="stat-label">إجمالي العملاء</div></div>' +
+        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon yellow"><i class="fas fa-dollar-sign"></i></div></div><div class="stat-value">$' + revenue.toLocaleString() + '</div><div class="stat-label">إجمالي الإيرادات</div></div>';
+    initAnalyticsLineChart();
+    initTopClientsChart();
+    initAnalyticsDoughnut();
+}
+
+function initAnalyticsLineChart(){
+    var ctx = document.getElementById('analyticsLineChart').getContext('2d');
+    var g = ctx.createLinearGradient(0,0,0,300);
+    g.addColorStop(0,'rgba(37,99,235,0.3)');
+    g.addColorStop(1,'rgba(37,99,235,0)');
+    if(analyticsLineChart) analyticsLineChart.destroy();
+    analyticsLineChart = new Chart(ctx,{type:'line',data:{labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],datasets:[{label:'الحجوزات',data:[4,6,5,7,3,8,6,5,9,7,4,6],borderColor:'#2563eb',backgroundColor:g,fill:true,tension:0.4,pointBackgroundColor:'#2563eb',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}}}}});
+}
+
+function initTopClientsChart(){
+    var ctx = document.getElementById('topClientsChart').getContext('2d');
+    if(topClientsChart) topClientsChart.destroy();
+    var sorted = clients.slice().sort(function(a,b){ return b.totalEvents - a.totalEvents; });
+    var top = sorted.slice(0,5);
+    topClientsChart = new Chart(ctx,{type:'bar',data:{labels:top.map(function(c){return c.name;}),datasets:[{label:'الفعاليات',data:top.map(function(c){return c.totalEvents;}),backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b','#7c3aed'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b'}},y:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:12}}}}}});
+}
+
+function initAnalyticsDoughnut(){
+    var ctx = document.getElementById('analyticsDoughnut').getContext('2d');
+    var counts = {};
+    bookings.forEach(function(b){ counts[b.serviceType] = (counts[b.serviceType]||0) + 1; });
+    if(analyticsDoughnut) analyticsDoughnut.destroy();
+    analyticsDoughnut = new Chart(ctx,{type:'doughnut',data:{labels:Object.keys(counts).map(function(k){return SERVICE_LABELS[k];}),datasets:[{data:Object.values(counts),backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:12},padding:16,usePointStyle:true,pointStyleWidth:8}}},cutout:'65%'}});
+}
+
+function getRelativeTime(dateStr){
+    var now = new Date();
+    var d = new Date(dateStr);
+    var diff = Math.floor((now - d) / 1000);
+    if(diff < 60) return 'الآن';
+    if(diff < 3600) return 'منذ ' + Math.floor(diff/60) + ' دقيقة';
+    if(diff < 86400) return 'منذ ' + Math.floor(diff/3600) + ' ساعة';
+    if(diff < 604800) return 'منذ ' + Math.floor(diff/86400) + ' يوم';
+    return dateStr.split(' ')[0];
+}
+
+function selectAccent(el){
+    document.querySelectorAll('.color-opt').forEach(function(c){ c.classList.remove('active'); });
+    el.classList.add('active');
+    showToast('تم تغيير اللون الرئيسي', 'success');
+}
+
+document.getElementById('visitSite').addEventListener('click', function(){ window.open('index.html', '_blank'); });
+document.getElementById('logoutBtn').addEventListener('click', function(){
+    showConfirm('تسجيل الخروج', 'هل أنت متأكد من تسجيل الخروج؟', function(){
+        app.classList.remove('visible');
+        setTimeout(function(){
+            loginScreen.classList.remove('hidden');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }, 500);
+    });
+});
+
+var uploadArea = document.getElementById('uploadArea');
+if(uploadArea){
+    ['dragenter','dragover'].forEach(function(e){ uploadArea.addEventListener(e, function(ev){ ev.preventDefault(); uploadArea.classList.add('dragover'); }); });
+    ['dragleave','drop'].forEach(function(e){ uploadArea.addEventListener(e, function(ev){ ev.preventDefault(); uploadArea.classList.remove('dragover'); }); });
+uploadArea.addEventListener('drop', async function(e){
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    var files = e.dataTransfer.files;
+    if(files && files.length){
+        for(var i = 0; i < files.length; i++){
+            var f = files[i];
+            var url = URL.createObjectURL(f);
+            await supaInsert('media', { name: f.name, type: 'image', size: (f.size/1024).toFixed(0) + ' KB', url: url });
+            mediaItems.unshift({id: nextId.media++, name: f.name, type: 'image', size: (f.size/1024).toFixed(0) + ' KB', url: url});
+        }
+        renderMedia();
+        showToast('تم رفع ' + files.length + ' ملف', 'success');
+    }
+});
+
+    uploadArea.addEventListener('click', function(){ document.getElementById('mediaUpload').click(); });
+}
+
+document.querySelectorAll('.chart-period').forEach(function(btn){
+    btn.addEventListener('click', function(){
+        document.querySelectorAll('.chart-period').forEach(function(b){ b.classList.remove('active'); });
+        this.classList.add('active');
+    });
+});
+document.querySelectorAll('.analytic-period').forEach(function(btn){
+    btn.addEventListener('click', function(){
+        document.querySelectorAll('.analytic-period').forEach(function(b){ b.classList.remove('active'); });
+        this.classList.add('active');
+        renderAnalytics();
+    });
+});
+
+var globalSearchEl = document.getElementById('globalSearch');
+if(globalSearchEl){
+    globalSearchEl.addEventListener('input', function(){
+        var q = this.value.toLowerCase();
+        if(!q) return;
+        var found = false;
+        for(var i = 0; i < bookings.length; i++){
+            if(bookings[i].clientName.toLowerCase().indexOf(q) > -1 || bookings[i].eventName.toLowerCase().indexOf(q) > -1){
+                navigateTo('bookings');
+                document.getElementById('bookingSearch').value = q;
+                filterBookings();
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            for(var j = 0; j < messages.length; j++){
+                if(messages[j].senderName.toLowerCase().indexOf(q) > -1 || messages[j].subject.toLowerCase().indexOf(q) > -1){
+                    navigateTo('messages');
+                    document.getElementById('msgSearch').value = q;
+                    filterMessages();
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if(!found){
+            for(var k = 0; k < clients.length; k++){
+                if(clients[k].name.toLowerCase().indexOf(q) > -1){
+                    navigateTo('clients');
+                    document.getElementById('clientSearch').value = q;
+                    filterClients();
+                    break;
+                }
+            }
+        }
+    });
+}
+
+document.addEventListener('click', function(){
+    document.getElementById('notifDropdown').classList.remove('show');
+});
+</script>
+</body>
+</html>
