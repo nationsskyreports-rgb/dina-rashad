@@ -1,15 +1,8 @@
 /* ============================================================
-   DINA RASHAD — Smart Service Worker
-   
-   الاستراتيجية:
-   - HTML  → دايماً من النت (network-first, مش بيتكاش)
-   - CSS/JS → من الكاش أول (cache-first) — بنكسره بـ ?v=
-   - Images → من الكاش أول مع تحديث في الخلفية
-   - CDN   → من الكاش أول
+   DINA RASHAD — Smart Service Worker v2.4.0
    ============================================================ */
 
-// ⬆️ غيّر الرقم ده بس لما تحدّث CSS أو JS
-const VERSION = "2.2.0";
+const VERSION = "2.4.0";
 const CACHE_NAME = `dina-interpreter-v${VERSION}`;
 
 const PRECACHE_ASSETS = [
@@ -26,9 +19,6 @@ const PRECACHE_ASSETS = [
     "/images/icons/icon-512x512.png"
 ];
 
-// ============================================================
-//  INSTALL — cache الـ assets بس (مش الـ HTML)
-// ============================================================
 self.addEventListener("install", event => {
     console.log(`[SW] Installing v${VERSION}`);
     event.waitUntil(
@@ -39,9 +29,6 @@ self.addEventListener("install", event => {
     );
 });
 
-// ============================================================
-//  ACTIVATE — احذف الكاش القديم أوتوماتيك
-// ============================================================
 self.addEventListener("activate", event => {
     console.log(`[SW] Activating v${VERSION} — cleaning old caches`);
     event.waitUntil(
@@ -58,25 +45,21 @@ self.addEventListener("activate", event => {
     );
 });
 
-// ============================================================
-//  FETCH — القواعد الذكية
-// ============================================================
 self.addEventListener("fetch", event => {
     const { request } = event;
     const url = new URL(request.url);
 
-    // تجاهل غير GET
     if (request.method !== "GET") return;
     if (!url.protocol.startsWith("http")) return;
-    if (url.pathname.startsWith("/cdn-cgi/")) return; // Cloudflare internal paths
+    if (url.pathname.startsWith("/cdn-cgi/")) return;
 
-    // ── HTML: دايماً من النت، مش بيتكاش في SW ──────────────
+    // HTML: دايماً من النت
     if (request.mode === "navigate" || url.pathname.endsWith(".html")) {
         event.respondWith(networkOnly(request));
         return;
     }
 
-    // ── CSS / JS: من الكاش (cache-first) ────────────────────
+    // CSS / JS: cache-first
     if (
         url.pathname.startsWith("/CSS/") ||
         url.pathname.startsWith("/Js/") ||
@@ -87,13 +70,13 @@ self.addEventListener("fetch", event => {
         return;
     }
 
-    // ── Images: Stale-While-Revalidate ───────────────────────
+    // Images: network-first عشان التحديثات تظهر فوراً
     if (url.pathname.startsWith("/images/")) {
-        event.respondWith(staleWhileRevalidate(request));
+        event.respondWith(networkFirst(request));
         return;
     }
 
-    // ── CDN (fonts, icons): Cache-First ─────────────────────
+    // CDN: cache-first
     if (
         url.hostname.includes("googleapis.com") ||
         url.hostname.includes("gstatic.com") ||
@@ -103,21 +86,13 @@ self.addEventListener("fetch", event => {
         return;
     }
 
-    // ── الباقي: Network-First ────────────────────────────────
     event.respondWith(networkFirst(request));
 });
 
-// ============================================================
-//  STRATEGIES
-// ============================================================
-
-/** HTML — من النت دايماً، لو الشبكة وقعت يرجع الـ cache */
 async function networkOnly(request) {
     try {
-        const response = await fetch(request, { cache: "no-store" });
-        return response;
+        return await fetch(request, { cache: "no-store" });
     } catch {
-        // Offline fallback — ارجع index من الكاش لو موجود
         const cached = await caches.match("/index.html");
         return cached || new Response("Offline — please check your connection.", {
             status: 503,
@@ -126,11 +101,9 @@ async function networkOnly(request) {
     }
 }
 
-/** CSS/JS — من الكاش أول، لو مش موجود اجيبه من النت وحفظه */
 async function cacheFirst(request) {
     const cached = await caches.match(request);
     if (cached) return cached;
-
     try {
         const response = await fetch(request);
         if (response.ok) {
@@ -143,20 +116,6 @@ async function cacheFirst(request) {
     }
 }
 
-/** Images — ارجع من الكاش فوراً وحدّث في الخلفية */
-async function staleWhileRevalidate(request) {
-    const cache = await caches.open(CACHE_NAME);
-    const cached = await cache.match(request);
-
-    const fetchPromise = fetch(request).then(response => {
-        if (response.ok) cache.put(request, response.clone());
-        return response;
-    }).catch(() => null);
-
-    return cached || await fetchPromise || new Response("", { status: 503 });
-}
-
-/** Network-First مع Cache Fallback */
 async function networkFirst(request) {
     try {
         const response = await fetch(request);
@@ -175,9 +134,6 @@ async function networkFirst(request) {
     }
 }
 
-// ============================================================
-//  MESSAGES
-// ============================================================
 self.addEventListener("message", event => {
     if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
     if (event.data?.type === "CLEAR_CACHE") {
@@ -185,15 +141,11 @@ self.addEventListener("message", event => {
             event.source.postMessage({ type: "CACHE_CLEARED" })
         );
     }
-    // طلب الـ version الحالي
     if (event.data?.type === "GET_VERSION") {
         event.source.postMessage({ type: "VERSION", version: VERSION });
     }
 });
 
-// ============================================================
-//  PUSH NOTIFICATIONS
-// ============================================================
 self.addEventListener("push", event => {
     const data = event.data?.json() || {
         title: "Dina Rashad Interpreter",
