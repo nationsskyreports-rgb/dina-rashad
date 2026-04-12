@@ -110,9 +110,9 @@
                         </div>
                         <h3>Send an Email</h3>
                         <p class="contact-note">Prefer email? Reach out directly and I'll get back to you shortly.</p>
-                        <a href="/cdn-cgi/l/email-protection#bcd8d5d2ddceddcfd4ddd885fcdbd1ddd5d092dfd3d1" class="btn btn-outline btn-block" style="margin-top: var(--spacing-md);">
+                        <a href="mailto:dinarashad9@gmail.com" class="btn btn-outline btn-block" style="margin-top: var(--spacing-md);">
                             <i class="fas fa-envelope"></i>
-                            <span class="__cf_email__" data-cfemail="63070a0d021102100b02075a23040e020a0f4d000c0e">[email&#160;protected]</span>
+                            dinarashad9@gmail.com
                         </a>
                     </div>
 
@@ -244,7 +244,7 @@
                                     <i class="fas fa-paper-plane"></i>
                                     <span>Send Message</span>
                                 </button>
-                                <a href="/cdn-cgi/l/email-protection#8befe2e5eaf9eaf8e3eaefb2cbece6eae2e7a5e8e4e6" class="btn btn-outline btn-lg">
+                                <a href="mailto:dinarashad9@gmail.com" class="btn btn-outline btn-lg">
                                     <i class="fas fa-envelope"></i>
                                     Open in Mail App
                                 </a>
@@ -356,7 +356,7 @@
                         <a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon youtube-social">
                             <i class="fab fa-youtube"></i>
                         </a>
-                        <a href="/cdn-cgi/l/email-protection#7e1a17101f0c1f0d161f1a473e19131f1712501d1113" aria-label="Email" class="social-icon email-social">
+                        <a href="mailto:dinarashad9@gmail.com" aria-label="Email" class="social-icon email-social">
                             <i class="fas fa-envelope"></i>
                         </a>
                     </div>
@@ -385,9 +385,9 @@
                         <i class="fab fa-whatsapp"></i>
                         <span>+20 101 116 0627</span>
                     </a>
-                    <a href="/cdn-cgi/l/email-protection#d6b2bfb8b7a4b7a5beb7b2ef96b1bbb7bfbaf8b5b9bb" class="footer-email" style="display:flex; align-items:center; gap:8px; margin-top:8px; color:inherit; font-size:var(--font-size-sm);">
+                    <a href="mailto:dinarashad9@gmail.com" class="footer-email" style="display:flex; align-items:center; gap:8px; margin-top:8px; color:inherit; font-size:var(--font-size-sm);">
                         <i class="fas fa-envelope"></i>
-                        <span><span class="__cf_email__" data-cfemail="eb8f82858a998a98838a8fd2ab8c868a8287c5888486">[email&#160;protected]</span></span>
+                        <span>dinarashad9@gmail.com</span>
                     </a>
                     <p class="availability" style="margin-top:8px;">
                         <i class="fas fa-clock"></i>
@@ -407,7 +407,7 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="Js/main.js?v=2.0"></script>
+    <script src="Js/main.js?v=2.0"></script>
     <script src="Js/pwa.js?v=2.0"></script>
 
     <script>
@@ -494,8 +494,16 @@
         .breadcrumb a { color: white; }
 
         /* Layout */
-        .contact-layout { display: grid; grid-template-columns: minmax(0, 400px) 1fr; gap: var(--spacing-2xl); align-items: start; }
-        .contact-info-col { display: flex; flex-direction: column; gap: var(--spacing-lg); position: sticky; top: 100px; }
+        /* Mobile-first: single column by default */
+        .contact-layout { display: flex; flex-direction: column; gap: var(--spacing-2xl); }
+        .contact-info-col { display: flex; flex-direction: column; gap: var(--spacing-lg); order: 2; }
+        .contact-actions-col { order: 1; }
+        /* Desktop only: two-column grid */
+        @media (min-width: 1025px) {
+            .contact-layout { display: grid; grid-template-columns: 400px 1fr; align-items: start; }
+            .contact-info-col { position: sticky; top: 100px; order: unset; }
+            .contact-actions-col { order: unset; }
+        }
 
         /* Cards */
         .contact-card { background: var(--white); border-radius: var(--radius-xl); padding: var(--spacing-xl); box-shadow: var(--shadow-md); transition: all var(--transition-base); }
