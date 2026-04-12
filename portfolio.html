@@ -107,6 +107,17 @@
 
         @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2,1fr); } .testimonials-grid { grid-template-columns: 1fr; } }
         @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } .filter-btn { padding: var(--spacing-xs) var(--spacing-md); font-size: var(--font-size-xs); } }
+    
+        /* Scroll Animation — self-contained */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -411,7 +422,12 @@
             window.addEventListener('load', function() {
                 checkCounters();
                 setTimeout(checkCounters, 300);
+                setTimeout(checkCounters, 800);
+                setTimeout(checkCounters, 1500);
             });
+            // لو الـ section ظاهرة من أول ما الصفحة تفتح
+            setTimeout(checkCounters, 100);
+            setTimeout(checkCounters, 500);
         });
 
         function openLightbox(button) {
