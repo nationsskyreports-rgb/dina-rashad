@@ -9,7 +9,7 @@
    ============================================================ */
 
 // ⬆️ غيّر الرقم ده بس لما تحدّث CSS أو JS
-const VERSION = "2.0.0";
+const VERSION = "2.2.0";
 const CACHE_NAME = `dina-interpreter-v${VERSION}`;
 
 const PRECACHE_ASSETS = [
