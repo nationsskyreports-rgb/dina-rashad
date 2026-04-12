@@ -613,7 +613,8 @@ async function loadMessages() {
     var unread = messages.filter(function(m){ return !m.read&&!m.archived; }).length;
     var badge = document.getElementById('messagesBadge');
     if(badge){ badge.textContent=unread; badge.style.display=unread?'inline-flex':'none'; }
-    notifications = messages.filter(function(m){ return !m.read; }).slice(0,5).map(function(m){
+    var unreadMsgs = messages.filter(function(m){ return !m.read && !m.archived; });
+    notifications = unreadMsgs.slice(0,5).map(function(m){
         return { id:m.id, text:'رسالة من '+m.senderName+': '+m.subject, time:getRelativeTime(m.date), read:false };
     });
     renderNotifications();
@@ -745,7 +746,6 @@ document.getElementById('confirmYes').addEventListener('click', function(){ if(c
 var bookingsChartInst=null, servicesChartInst=null;
 
 async function initDashboard() {
-    showToast('جاري تحميل البيانات...','info');
     await loadAllData();
     renderStats(); renderUpcomingBookings(); renderRecentMessages();
     initBookingsChart(); initServicesChart();
