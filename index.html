@@ -5,39 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dina Rashad | Simultaneous Interpreter</title>
     <meta name="description" content="Professional Freelance Conference Interpreter - 10+ Years Experience in Arabic-English Simultaneous Interpretation">
-    
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
     <link rel="icon" type="image/png" sizes="32x32" href="images/profile.jpg">
     <link rel="apple-touch-icon" href="images/profile.jpg">
     <link rel="manifest" href="manifest.json">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/responsive.css">
     <link rel="stylesheet" href="CSS/animations.css">
+    <style>
+        .video-section { background: var(--gray-900); color: white; }
+        .video-section .section-tag { background: rgba(255,0,0,0.15); color: #ff6b6b; border: 1px solid rgba(255,0,0,0.2); }
+        .video-section .section-title { color: white; }
+        .video-section .section-subtitle { color: var(--gray-400); }
+        .video-wrapper { position: relative; width: 100%; max-width: 860px; margin: 0 auto var(--spacing-2xl); border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.5); aspect-ratio: 16/9; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .video-footer { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg); text-align: center; }
+        .video-footer p { color: var(--gray-400); font-size: var(--font-size-base); max-width: 540px; }
+        .btn-youtube { display: inline-flex; align-items: center; gap: var(--spacing-sm); background: #FF0000; color: white; padding: var(--spacing-md) var(--spacing-xl); border-radius: var(--radius-full); font-weight: 700; font-size: var(--font-size-base); transition: all var(--transition-base); text-decoration: none; }
+        .btn-youtube:hover { background: #cc0000; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,0,0,0.35); color: white; }
+        .btn-youtube i { font-size: var(--font-size-xl); }
+        .footer-social { display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-md); }
+        .social-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all var(--transition-base); color: white; }
+        .whatsapp-social { background: #25D366; }
+        .whatsapp-social:hover { background: #128C7E; transform: translateY(-2px); }
+        .youtube-social { background: #FF0000; }
+        .youtube-social:hover { background: #cc0000; transform: translateY(-2px); }
+        .email-social { background: var(--primary-600); }
+        .email-social:hover { background: var(--primary-700); transform: translateY(-2px); }
+    </style>
 </head>
 <body>
 
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="nav-logo">
-                <i class="fas fa-language"></i>
-                <span>Dina Rashad</span>
-            </a>
-            
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            
+            <a href="index.html" class="nav-logo"><i class="fas fa-language"></i><span>Dina Rashad</span></a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link active">Home</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
@@ -52,73 +60,31 @@
         <div class="hero-bg-overlay"></div>
         <div class="container hero-container">
             <div class="hero-content">
-                <div class="hero-badge animate-fadeInUp">
-                    <i class="fas fa-star"></i>
-                    <span>10+ Years Experience</span>
-                </div>
-                
-                <h1 class="hero-title animate-fadeInUp delay-1">
-                    Professional <span class="highlight">Simultaneous</span> Interpreter
-                </h1>
-                
-                <p class="hero-subtitle animate-fadeInUp delay-2">
-                    Expert Arabic ↔ English Conference Interpretation for International Events, 
-                    Press Conferences, Business Meetings & More
-                </p>
-                
+                <div class="hero-badge animate-fadeInUp"><i class="fas fa-star"></i><span>10+ Years Experience</span></div>
+                <h1 class="hero-title animate-fadeInUp delay-1">Professional <span class="highlight">Simultaneous</span> Interpreter</h1>
+                <p class="hero-subtitle animate-fadeInUp delay-2">Expert Arabic ↔ English Conference Interpretation for International Events, Press Conferences, Business Meetings & More</p>
                 <div class="hero-buttons animate-fadeInUp delay-3">
-                    <a href="booking.html" class="btn btn-primary btn-lg">
-                        <i class="fas fa-calendar-check"></i>
-                        Book Your Session
-                    </a>
-                    <a href="portfolio.html" class="btn btn-outline btn-lg">
-                        <i class="fas fa-images"></i>
-                        View Portfolio
-                    </a>
+                    <a href="booking.html" class="btn btn-primary btn-lg"><i class="fas fa-calendar-check"></i> Book Your Session</a>
+                    <a href="portfolio.html" class="btn btn-outline btn-lg"><i class="fas fa-images"></i> View Portfolio</a>
                 </div>
-                
                 <div class="hero-stats animate-fadeInUp delay-4">
-                    <div class="stat-item">
-                        <span class="stat-number">10+</span>
-                        <span class="stat-label">Years Experience</span>
-                    </div>
+                    <div class="stat-item"><span class="stat-number">10+</span><span class="stat-label">Years Experience</span></div>
                     <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-number">500+</span>
-                        <span class="stat-label">Events Covered</span>
-                    </div>
+                    <div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">Events Covered</span></div>
                     <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-number">100%</span>
-                        <span class="stat-label">Client Satisfaction</span>
-                    </div>
+                    <div class="stat-item"><span class="stat-number">100%</span><span class="stat-label">Client Satisfaction</span></div>
                 </div>
             </div>
-            
             <div class="hero-image animate-fadeInRight">
                 <div class="hero-image-wrapper">
                     <img src="images/profile.jpg" alt="Dina Rashad - Professional Interpreter" loading="eager">
                     <div class="hero-image-border"></div>
                 </div>
-                
-                <div class="floating-card card-1">
-                    <i class="fas fa-microphone"></i>
-                    <span>Live Interpretation</span>
-                </div>
-                
-                <div class="floating-card card-2">
-                    <i class="fas fa-globe"></i>
-                    <span>Arabic ↔ English</span>
-                </div>
+                <div class="floating-card card-1"><i class="fas fa-microphone"></i><span>Live Interpretation</span></div>
+                <div class="floating-card card-2"><i class="fas fa-globe"></i><span>Arabic ↔ English</span></div>
             </div>
         </div>
-        
-        <div class="hero-scroll-indicator">
-            <a href="#services">
-                <span>Scroll Down</span>
-                <i class="fas fa-chevron-down"></i>
-            </a>
-        </div>
+        <div class="hero-scroll-indicator"><a href="#services"><span>Scroll Down</span><i class="fas fa-chevron-down"></i></a></div>
     </section>
 
     <section class="section services" id="services">
@@ -128,66 +94,42 @@
                 <h2 class="section-title">Interpretation Services</h2>
                 <p class="section-subtitle">Professional language solutions for your international communication needs</p>
             </div>
-            
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-headset"></i></div>
                     <h3 class="service-title">Simultaneous Interpretation</h3>
-                    <p class="service-description">
-                        Real-time interpretation in soundproof booths for conferences, 
-                        summits, and large-scale events with multiple languages.
-                    </p>
+                    <p class="service-description">Real-time interpretation in soundproof booths for conferences, summits, and large-scale events.</p>
                     <ul class="service-features">
                         <li><i class="fas fa-check"></i> Conference Settings</li>
                         <li><i class="fas fa-check"></i> Multi-language Events</li>
                         <li><i class="fas fa-check"></i> Professional Equipment</li>
                     </ul>
                 </div>
-                
                 <div class="service-card featured">
                     <div class="featured-badge">Most Popular</div>
-                    <div class="service-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-users"></i></div>
                     <h3 class="service-title">Consecutive Interpretation</h3>
-                    <p class="service-description">
-                        Interpretation after the speaker pauses, ideal for business meetings, 
-                        negotiations, and smaller gatherings.
-                    </p>
+                    <p class="service-description">Interpretation after the speaker pauses, ideal for business meetings and smaller gatherings.</p>
                     <ul class="service-features">
                         <li><i class="fas fa-check"></i> Business Meetings</li>
                         <li><i class="fas fa-check"></i> Legal Proceedings</li>
                         <li><i class="fas fa-check"></i> Medical Appointments</li>
                     </ul>
                 </div>
-                
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-video"></i></div>
                     <h3 class="service-title">Remote Interpretation</h3>
-                    <p class="service-description">
-                        Virtual interpretation services for online events, webinars, 
-                        and remote conferences via Zoom, Teams, or custom platforms.
-                    </p>
+                    <p class="service-description">Virtual interpretation services for online events via Zoom, Teams, or custom platforms.</p>
                     <ul class="service-features">
                         <li><i class="fas fa-check"></i> Virtual Events</li>
                         <li><i class="fas fa-check"></i> Webinars</li>
                         <li><i class="fas fa-check"></i> Hybrid Events</li>
                     </ul>
                 </div>
-                
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-newspaper"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-newspaper"></i></div>
                     <h3 class="service-title">Media & Press</h3>
-                    <p class="service-description">
-                        Specialized interpretation for press conferences, TV interviews, 
-                        and media coverage requiring quick, accurate translation.
-                    </p>
+                    <p class="service-description">Specialized interpretation for press conferences, TV interviews, and media coverage.</p>
                     <ul class="service-features">
                         <li><i class="fas fa-check"></i> Press Conferences</li>
                         <li><i class="fas fa-check"></i> TV Interviews</li>
@@ -195,13 +137,9 @@
                     </ul>
                 </div>
             </div>
-            
             <div class="services-cta">
                 <p>Need a customized solution for your event?</p>
-                <a href="contact.html" class="btn btn-primary">
-                    <i class="fab fa-whatsapp"></i>
-                    Discuss Your Requirements
-                </a>
+                <a href="contact.html" class="btn btn-primary"><i class="fab fa-whatsapp"></i> Discuss Your Requirements</a>
             </div>
         </div>
     </section>
@@ -212,56 +150,16 @@
                 <div class="why-me-content">
                     <span class="section-tag">Why Choose Me</span>
                     <h2 class="section-title text-left">Your Trusted Language Partner</h2>
-                    
                     <div class="why-me-features">
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-certificate"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h4>Certified Professional</h4>
-                                <p>Recognized credentials and continuous professional development</p>
-                            </div>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h4>Punctual & Reliable</h4>
-                                <p>Always on time, fully prepared, and professionally equipped</p>
-                            </div>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h4>Confidentiality Guaranteed</h4>
-                                <p>Strict adherence to professional code of ethics and discretion</p>
-                            </div>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-comments"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h4>Cultural Nuance Expert</h4>
-                                <p>Beyond words - understanding context, tone, and cultural subtleties</p>
-                            </div>
-                        </div>
+                        <div class="feature-item"><div class="feature-icon"><i class="fas fa-certificate"></i></div><div class="feature-text"><h4>Certified Professional</h4><p>Recognized credentials and continuous professional development</p></div></div>
+                        <div class="feature-item"><div class="feature-icon"><i class="fas fa-clock"></i></div><div class="feature-text"><h4>Punctual & Reliable</h4><p>Always on time, fully prepared, and professionally equipped</p></div></div>
+                        <div class="feature-item"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><div class="feature-text"><h4>Confidentiality Guaranteed</h4><p>Strict adherence to professional code of ethics and discretion</p></div></div>
+                        <div class="feature-item"><div class="feature-icon"><i class="fas fa-comments"></i></div><div class="feature-text"><h4>Cultural Nuance Expert</h4><p>Beyond words — understanding context, tone, and cultural subtleties</p></div></div>
                     </div>
                 </div>
-                
                 <div class="why-me-image">
                     <img src="images/hero-bg.jpg" alt="Professional interpretation in action" loading="lazy">
-                    <div class="experience-badge">
-                        <span class="years">10+</span>
-                        <span class="text">Years of Excellence</span>
-                    </div>
+                    <div class="experience-badge"><span class="years">10+</span><span class="text">Years of Excellence</span></div>
                 </div>
             </div>
         </div>
@@ -273,31 +171,39 @@
                 <span class="section-tag">Language Pairs</span>
                 <h2 class="section-title">Languages I Work With</h2>
             </div>
-            
             <div class="languages-showcase">
-                <div class="language-card primary">
-                    <div class="language-flag">🇸🇦</div>
-                    <h3>Arabic</h3>
-                    <p>Modern Standard Arabic & Dialects</p>
-                    <span class="language-direction">Source / Target</span>
-                </div>
-                
-                <div class="language-arrow">
-                    <i class="fas fa-exchange-alt"></i>
-                </div>
-                
-                <div class="language-card secondary">
-                    <div class="language-flag">🇬🇧</div>
-                    <h3>English</h3>
-                    <p>British & American English</p>
-                    <span class="language-direction">Source / Target</span>
-                </div>
+                <div class="language-card primary"><div class="language-flag">&#127462;&#127466;</div><h3>Arabic</h3><p>Modern Standard Arabic & Dialects</p><span class="language-direction">Source / Target</span></div>
+                <div class="language-arrow"><i class="fas fa-exchange-alt"></i></div>
+                <div class="language-card secondary"><div class="language-flag">&#127468;&#127463;</div><h3>English</h3><p>British & American English</p><span class="language-direction">Source / Target</span></div>
             </div>
-            
-            <p class="languages-note">
-                <i class="fas fa-info-circle"></i>
-                Bidirectional interpretation with native-level fluency in both languages
-            </p>
+            <p class="languages-note"><i class="fas fa-info-circle"></i> Bidirectional interpretation with native-level fluency in both languages</p>
+        </div>
+    </section>
+
+    <!-- VIDEO SECTION -->
+    <section class="section video-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"><i class="fab fa-youtube"></i> Watch Me Work</span>
+                <h2 class="section-title">See My Interpretation in Action</h2>
+                <p class="section-subtitle">Watch a real example of my simultaneous interpretation work</p>
+            </div>
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/hF5-fc-CakI"
+                    title="Dina Rashad - Simultaneous Interpretation"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div class="video-footer">
+                <p>Enjoyed what you saw? Visit my YouTube channel for more interpretation work and insights.</p>
+                <a href="https://youtube.com/@dinarashadthelinguist421" class="btn-youtube" target="_blank" rel="noopener">
+                    <i class="fab fa-youtube"></i>
+                    Visit My YouTube Channel
+                </a>
+            </div>
         </div>
     </section>
 
@@ -309,14 +215,8 @@
                     <p>Let's discuss your upcoming event and how I can help make your communication seamless.</p>
                 </div>
                 <div class="cta-buttons">
-                    <a href="booking.html" class="btn btn-white btn-lg">
-                        <i class="fas fa-calendar-alt"></i>
-                        Book Now
-                    </a>
-                    <a href="https://wa.me/201011160627" class="btn btn-outline-white btn-lg" target="_blank" rel="noopener">
-                        <i class="fab fa-whatsapp"></i>
-                        WhatsApp Me
-                    </a>
+                    <a href="booking.html" class="btn btn-white btn-lg"><i class="fas fa-calendar-alt"></i> Book Now</a>
+                    <a href="https://wa.me/201011160627" class="btn btn-outline-white btn-lg" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp Me</a>
                 </div>
             </div>
         </div>
@@ -326,16 +226,14 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="index.html" class="footer-logo">
-                        <i class="fas fa-language"></i>
-                        <span>Dina Rashad</span>
-                    </a>
-                    <p class="footer-description">
-                        Professional freelance conference interpreter specializing in 
-                        Arabic-English simultaneous interpretation.
-                    </p>
+                    <a href="index.html" class="footer-logo"><i class="fas fa-language"></i><span>Dina Rashad</span></a>
+                    <p class="footer-description">Professional freelance conference interpreter specializing in Arabic-English simultaneous interpretation.</p>
+                    <div class="footer-social">
+                        <a href="https://wa.me/201011160627" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-icon whatsapp-social"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon youtube-social"><i class="fab fa-youtube"></i></a>
+                        <a href="mailto:dinarashad9@gmail.com" aria-label="Email" class="social-icon email-social"><i class="fas fa-envelope"></i></a>
+                    </div>
                 </div>
-                
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
@@ -343,14 +241,9 @@
                         <li><a href="about.html">About Me</a></li>
                         <li><a href="portfolio.html">Portfolio</a></li>
                         <li><a href="booking.html">Book Now</a></li>
-                        <li>
-                            <button id="pwa-install-btn" style="display:none; cursor:pointer; background:none; border:none; color:inherit; font:inherit; padding:0; text-align:left;">
-                                <i class="fas fa-download"></i> Install App
-                            </button>
-                        </li>
+                        <li><button id="pwa-install-btn" style="display:none;cursor:pointer;background:none;border:none;color:inherit;font:inherit;padding:0;text-align:left;"><i class="fas fa-download"></i> Install App</button></li>
                     </ul>
                 </div>
-
                 <div class="footer-services">
                     <h4>Services</h4>
                     <ul>
@@ -360,21 +253,13 @@
                         <li><a href="booking.html">Media & Press</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <!-- FIX: corrected phone number from +20 106 116 0627 -->
-                    <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>+20 101 116 0627</span>
-                    </a>
-                    <p class="availability">
-                        <i class="fas fa-clock"></i>
-                        Available 7 days a week
-                    </p>
+                    <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i><span>+20 101 116 0627</span></a>
+                    <a href="mailto:dinarashad9@gmail.com" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span>dinarashad9@gmail.com</span></a>
+                    <p class="availability" style="margin-top:8px;"><i class="fas fa-clock"></i> Available 7 days a week</p>
                 </div>
             </div>
-            
             <div class="footer-bottom">
                 <p>&copy; 2025 Dina Rashad. All rights reserved.</p>
                 <p class="footer-credit">Professional Conference Interpreter</p>
@@ -382,16 +267,9 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'm%20interested%20in%20your%20interpretation%20services" 
-       class="whatsapp-float" 
-       target="_blank" 
-       rel="noopener"
-       aria-label="Contact on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'm%20interested%20in%20your%20interpretation%20services" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contact on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
     <script src="Js/main.js"></script>
     <script src="Js/pwa.js"></script>
-
 </body>
 </html>
