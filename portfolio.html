@@ -314,7 +314,7 @@
                     <div class="footer-social">
                         <a href="https://wa.me/201011160627" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-icon whatsapp-social"><i class="fab fa-whatsapp"></i></a>
                         <a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon youtube-social"><i class="fab fa-youtube"></i></a>
-                        <a href="mailto:dinarashad9@gmail.com" aria-label="Email" class="social-icon email-social"><i class="fas fa-envelope"></i></a>
+                        <a href="/cdn-cgi/l/email-protection#0e6a67606f7c6f7d666f6a374e69636f6762206d6163" aria-label="Email" class="social-icon email-social"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
@@ -338,7 +338,7 @@
                 <div class="footer-contact">
                     <h4>Contact</h4>
                     <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i><span>+20 101 116 0627</span></a>
-                    <a href="mailto:dinarashad9@gmail.com" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span>dinarashad9@gmail.com</span></a>
+                    <a href="/cdn-cgi/l/email-protection#90f4f9fef1e2f1e3f8f1f4a9d0f7fdf1f9fcbef3fffd" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span><span class="__cf_email__" data-cfemail="8eeae7e0effceffde6efeab7cee9e3efe7e2a0ede1e3">[email&#160;protected]</span></span></a>
                     <p class="availability" style="margin-top:8px;"><i class="fas fa-clock"></i> Available 7 days a week</p>
                 </div>
             </div>
@@ -359,10 +359,11 @@
         <div class="lightbox-content"><img id="lightbox-image" src="" alt="Portfolio Image"></div>
     </div>
 
-    <script src="Js/main.js?v=2.1"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="Js/main.js?v=2.1"></script>
     <script src="Js/pwa.js?v=2.1"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Portfolio Filter
             const filterBtns = document.querySelectorAll('.filter-btn');
             const portfolioItems = document.querySelectorAll('.portfolio-item');
             filterBtns.forEach(btn => {
@@ -381,7 +382,36 @@
                     });
                 });
             });
-            animateStats();
+
+            // Counter animation - reliable scroll approach
+            function checkCounters() {
+                document.querySelectorAll('.stat-number[data-count]:not(.animated)').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+                        el.classList.add('animated');
+                        const target = parseInt(el.dataset.count);
+                        let current = 0;
+                        const increment = target / 80;
+                        function update() {
+                            current += increment;
+                            if (current < target) {
+                                el.textContent = Math.floor(current).toLocaleString();
+                                requestAnimationFrame(update);
+                            } else {
+                                el.textContent = target.toLocaleString() + '+';
+                            }
+                        }
+                        requestAnimationFrame(update);
+                    }
+                });
+            }
+
+            checkCounters();
+            window.addEventListener('scroll', checkCounters, { passive: true });
+            window.addEventListener('load', function() {
+                checkCounters();
+                setTimeout(checkCounters, 300);
+            });
         });
 
         function openLightbox(button) {
@@ -407,11 +437,4 @@
                     }
                 });
             }, { threshold: 0.5 });
-            document.querySelectorAll('.stat-number[data-count]').forEach(s => observer.observe(s));
-        }
-        function animateCounter(el, target) {
-            let current = 0;
-            const step = target / 60;
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) { el.textContent =
+            document.querySelectorAll('.stat-number[data-count]').for
