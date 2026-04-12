@@ -1,11 +1,16 @@
 /* ===================================
    DINA RASHAD - INTERPRETER PWA
-   PWA (Progressive Web App) JavaScript
+   PWA JavaScript v2.3 — Fixed
+   
+   الإصلاحات:
+   1. SW path ديناميكي — بيشتغل على GitHub Pages وCloudflare
+   2. iOS Safari — شاشة Add to Home Screen منفصلة
+   3. Android — beforeinstallprompt صح
    =================================== */
 
 let deferredPrompt = null;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initPWA();
     initServiceWorker();
     initInstallPrompt();
@@ -17,9 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
    =================================== */
 function initPWA() {
     console.log('🚀 Initializing PWA...');
-    if ('serviceWorker' in navigator) {
-        console.log('✅ Service Workers are supported');
-    }
     if (isStandalone()) {
         console.log('📱 Running in standalone mode (installed PWA)');
         document.body.classList.add('pwa-standalone');
@@ -28,18 +30,25 @@ function initPWA() {
 
 /* ===================================
    SERVICE WORKER REGISTRATION
+   المشكلة كانت: المسار كان hard-coded على /dina-rashad/sw.js
+   الحل: بنحسب المسار ديناميكياً من مكان الصفحة الحالية
    =================================== */
 function initServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/dina-rashad/sw.js')
-            .then(function(registration) {
+    // احسب المسار الصح للـ sw.js بناءً على مكان الموقع
+    // لو على /dina-rashad/ → /dina-rashad/sw.js
+    // لو على root /       → /sw.js
+    const swPath = getSwPath();
+
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register(swPath)
+            .then(function (registration) {
                 console.log('✅ Service Worker registered:', registration.scope);
 
-                registration.addEventListener('updatefound', function() {
+                registration.addEventListener('updatefound', function () {
                     const newWorker = registration.installing;
-                    newWorker.addEventListener('statechange', function() {
+                    newWorker.addEventListener('statechange', function () {
                         if (newWorker.state === 'activated') {
                             console.log('🔄 New Service Worker activated');
                             showUpdateNotification();
@@ -47,20 +56,32 @@ function initServiceWorker() {
                     });
                 });
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error('❌ Service Worker registration failed:', error);
             });
     });
 
-    navigator.serviceWorker.addEventListener('message', function(event) {
+    navigator.serviceWorker.addEventListener('message', function (event) {
         if (event.data && event.data.type === 'CACHE_UPDATED') {
             showUpdateNotification();
         }
     });
 }
 
+function getSwPath() {
+    // خد الـ pathname وشيل اسم الصفحة، خلّي الـ directory بس
+    const pathname = window.location.pathname;
+    // لو pathname = /dina-rashad/index.html → نرجع /dina-rashad/sw.js
+    // لو pathname = /index.html أو / → نرجع /sw.js
+    const lastSlash = pathname.lastIndexOf('/');
+    const dir = pathname.substring(0, lastSlash + 1); // "/dina-rashad/" أو "/"
+    return dir + 'sw.js';
+}
+
 /* ===================================
    INSTALL PROMPT
+   Android: beforeinstallprompt
+   iOS: دليل يدوي منفصل
    =================================== */
 function initInstallPrompt() {
     if (isStandalone()) {
@@ -68,17 +89,18 @@ function initInstallPrompt() {
         return;
     }
 
-    window.addEventListener('beforeinstallprompt', function(e) {
+    // ── Android / Chrome ──────────────────────────────────────
+    window.addEventListener('beforeinstallprompt', function (e) {
         e.preventDefault();
         deferredPrompt = e;
-        console.log('📲 Install prompt available');
+        console.log('📲 Android install prompt available');
 
-        setTimeout(function() {
-            showInstallBanner();
+        setTimeout(function () {
+            showInstallBanner('android');
         }, 3000);
     });
 
-    window.addEventListener('appinstalled', function() {
+    window.addEventListener('appinstalled', function () {
         console.log('✅ App installed successfully');
         deferredPrompt = null;
         hideInstallBanner();
@@ -86,19 +108,37 @@ function initInstallPrompt() {
         showNotification('🎉 App installed! Access it from your home screen.', 'success', 6000);
         localStorage.setItem('pwa_installed', JSON.stringify({
             date: new Date().toISOString(),
-            version: '1.0.0'
+            version: '2.3.0'
         }));
     });
 
+    // ── iOS Safari ────────────────────────────────────────────
+    // Safari مش بيطلق beforeinstallprompt خالص
+    // بنشوف لو iOS وبنعرض دليل يدوي
+    if (isIos() && !isStandalone()) {
+        setTimeout(function () {
+            showInstallBanner('ios');
+        }, 4000);
+    }
+
+    // زرار Install لو موجود في الـ HTML
     const installBtn = document.getElementById('pwa-install-btn');
     if (installBtn) {
-        window.addEventListener('beforeinstallprompt', function() {
+        window.addEventListener('beforeinstallprompt', function () {
             installBtn.style.display = 'block';
         });
-        installBtn.addEventListener('click', async function() {
+        installBtn.addEventListener('click', async function () {
             await installApp();
         });
     }
+}
+
+function isIos() {
+    return (
+        /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+        // iPad على iOS 13+ بيبان كـ Mac
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    );
 }
 
 async function installApp() {
@@ -130,14 +170,12 @@ function hidePwaInstallBtn() {
 
 /* ===================================
    INSTALL BANNER UI
-   FIX: بدل ما تتخفى للأبد، بترجع بعد 7 أيام
+   نوعين: android (زرار install) و ios (دليل خطوات)
    =================================== */
 function wasDismissedRecently() {
     const dismissed = localStorage.getItem('install_banner_dismissed');
     if (!dismissed) return false;
-    const dismissedDate = new Date(dismissed);
-    const daysSince = (Date.now() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
-    // لو اتدسمس من أكتر من 7 أيام، امسح وارجع اعرضه
+    const daysSince = (Date.now() - new Date(dismissed).getTime()) / (1000 * 60 * 60 * 24);
     if (daysSince > 7) {
         localStorage.removeItem('install_banner_dismissed');
         return false;
@@ -145,7 +183,7 @@ function wasDismissedRecently() {
     return true;
 }
 
-function showInstallBanner() {
+function showInstallBanner(type) {
     if (wasDismissedRecently()) return;
     if (localStorage.getItem('pwa_installed')) return;
     if (document.getElementById('install-banner')) return;
@@ -155,26 +193,49 @@ function showInstallBanner() {
     const banner = document.createElement('div');
     banner.id = 'install-banner';
     banner.className = 'install-banner';
-    banner.innerHTML = `
-        <div class="install-banner-content">
-            <div class="install-banner-icon">
-                <i class="fas fa-download"></i>
-            </div>
-            <div class="install-banner-text">
-                <h4>Install App</h4>
-                <p>Add Dina Rashad Interpreter to your home screen for quick access!</p>
-            </div>
-            <div class="install-banner-actions">
-                <button class="btn-install" onclick="installApp()">Install</button>
+
+    if (type === 'ios') {
+        // iOS: دليل خطوات يدوي
+        banner.innerHTML = `
+            <div class="install-banner-content">
+                <div class="install-banner-icon ios-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="install-banner-text">
+                    <h4>Add to Home Screen</h4>
+                    <p>
+                        Tap <span class="ios-share-icon"><i class="fas fa-arrow-up-from-bracket"></i></span>
+                        then <strong>"Add to Home Screen"</strong>
+                    </p>
+                </div>
                 <button class="btn-dismiss" onclick="dismissInstallBanner()" aria-label="Dismiss">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        // Android: زرار Install عادي
+        banner.innerHTML = `
+            <div class="install-banner-content">
+                <div class="install-banner-icon">
+                    <i class="fas fa-download"></i>
+                </div>
+                <div class="install-banner-text">
+                    <h4>Install App</h4>
+                    <p>Add Dina Rashad Interpreter to your home screen!</p>
+                </div>
+                <div class="install-banner-actions">
+                    <button class="btn-install" onclick="installApp()">Install</button>
+                    <button class="btn-dismiss" onclick="dismissInstallBanner()" aria-label="Dismiss">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
 
     document.body.appendChild(banner);
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
         banner.classList.add('visible');
     });
 }
@@ -183,12 +244,11 @@ function hideInstallBanner() {
     const banner = document.getElementById('install-banner');
     if (banner) {
         banner.classList.remove('visible');
-        setTimeout(function() { banner.remove(); }, 300);
+        setTimeout(function () { banner.remove(); }, 300);
     }
 }
 
 function dismissInstallBanner() {
-    // FIX: بنحفظ التاريخ مش مجرد true — عشان نرجع نظهره بعد 7 أيام
     localStorage.setItem('install_banner_dismissed', new Date().toISOString());
     hideInstallBanner();
 }
@@ -201,7 +261,7 @@ function addInstallBannerStyles() {
     styles.textContent = `
         .install-banner {
             position: fixed;
-            bottom: -120px;
+            bottom: -160px;
             left: 0;
             right: 0;
             background: linear-gradient(135deg, #1e40af, #2563eb);
@@ -212,22 +272,70 @@ function addInstallBannerStyles() {
             transition: bottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .install-banner.visible { bottom: 0; }
-        .install-banner-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 16px; }
-        .install-banner-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .install-banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+        }
+        .install-banner-icon {
+            width: 48px; height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .install-banner-icon.ios-icon { background: rgba(255,255,255,0.15); }
+        .install-banner-text { flex: 1; }
         .install-banner-text h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 600; }
-        .install-banner-text p { margin: 0; font-size: 13px; opacity: 0.9; }
+        .install-banner-text p { margin: 0; font-size: 13px; opacity: 0.95; line-height: 1.5; }
+        .ios-share-icon {
+            display: inline-flex; align-items: center;
+            background: rgba(255,255,255,0.25);
+            padding: 2px 8px; border-radius: 6px;
+            font-size: 12px; margin: 0 2px;
+        }
         .install-banner-actions { display: flex; gap: 8px; margin-left: auto; align-items: center; }
-        .btn-install { background: white; color: #2563eb; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; transition: transform 0.2s, box-shadow 0.2s; }
+        .btn-install {
+            background: white; color: #2563eb;
+            border: none; padding: 10px 24px;
+            border-radius: 8px; font-weight: 600;
+            cursor: pointer; font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
+        }
         .btn-install:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .btn-dismiss { background: rgba(255,255,255,0.2); color: white; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+        .btn-dismiss {
+            background: rgba(255,255,255,0.2); color: white;
+            border: none; width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+        }
         .btn-dismiss:hover { background: rgba(255,255,255,0.35); }
+
+        /* لو فيه whatsapp float button — ارفع الـ banner فوقه */
         body:has(.whatsapp-float) .install-banner.visible { bottom: 80px; }
+
         @media (max-width: 768px) {
             .install-banner { padding: 14px 16px; }
-            .install-banner-content { flex-wrap: wrap; gap: 10px; position: relative; }
-            .install-banner-text { flex: 1; min-width: 180px; }
+            .install-banner-content { flex-wrap: wrap; gap: 10px; }
+            .install-banner-text { flex: 1; min-width: 200px; padding-right: 40px; }
             .install-banner-actions { width: 100%; justify-content: center; }
-            .btn-dismiss { position: absolute; top: -8px; right: 0; width: 30px; height: 30px; font-size: 12px; }
+            /* زرار الـ dismiss في الكورنر على موبايل */
+            .btn-dismiss {
+                position: absolute;
+                top: 0; right: 0;
+                width: 32px; height: 32px;
+                font-size: 11px;
+            }
+            /* لو ios مفيش actions — الـ dismiss يبقى في الكورنر */
+            .install-banner-content:not(:has(.install-banner-actions)) .btn-dismiss {
+                position: absolute; top: 0; right: 0;
+            }
         }
     `;
     document.head.appendChild(styles);
@@ -243,14 +351,35 @@ function showUpdateNotification() {
         const styles = document.createElement('style');
         styles.id = 'update-notification-styles';
         styles.textContent = `
-            .update-notification { position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-150px); background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 14px 20px; border-radius: 12px; display: flex; align-items: center; gap: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); z-index: 10001; animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+            .update-notification {
+                position: fixed; top: 90px; left: 50%;
+                transform: translateX(-50%) translateY(-150px);
+                background: linear-gradient(135deg, #059669, #10b981);
+                color: white; padding: 14px 20px; border-radius: 12px;
+                display: flex; align-items: center; gap: 14px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+                z-index: 10001;
+                animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            }
             @keyframes slideDown { to { transform: translateX(-50%) translateY(0); } }
             .update-content { display: flex; align-items: center; gap: 10px; font-size: 14px; }
             .update-content i { animation: spin 1s linear infinite; }
             @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-            .btn-update { background: white; color: #059669; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; transition: transform 0.2s; }
+            .btn-update {
+                background: white; color: #059669;
+                border: none; padding: 8px 18px;
+                border-radius: 6px; font-weight: 600;
+                cursor: pointer; font-size: 13px;
+                transition: transform 0.2s;
+            }
             .btn-update:hover { transform: scale(1.05); }
-            .btn-dismiss-update { background: rgba(255,255,255,0.2); color: white; border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+            .btn-dismiss-update {
+                background: rgba(255,255,255,0.2); color: white;
+                border: none; width: 28px; height: 28px;
+                border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                cursor: pointer;
+            }
         `;
         document.head.appendChild(styles);
     }
@@ -279,11 +408,11 @@ function reloadPage() {
    OFFLINE / ONLINE STATUS
    =================================== */
 function initOnlineStatus() {
-    window.addEventListener('online', function() {
+    window.addEventListener('online', function () {
         showNotification('🌐 You\'re back online!', 'success');
         document.body.classList.remove('offline');
     });
-    window.addEventListener('offline', function() {
+    window.addEventListener('offline', function () {
         showNotification('⚠️ You\'re offline. Some features may be limited.', 'error', 5000);
         document.body.classList.add('offline');
     });
@@ -306,14 +435,14 @@ function showNotification(message, type, duration) {
     `;
     notification.textContent = message;
     document.body.appendChild(notification);
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
         notification.style.opacity = '1';
         notification.style.transform = 'translateY(0)';
     });
-    setTimeout(function() {
+    setTimeout(function () {
         notification.style.opacity = '0';
         notification.style.transform = 'translateY(-10px)';
-        setTimeout(function() { notification.remove(); }, 300);
+        setTimeout(function () { notification.remove(); }, 300);
     }, duration);
 }
 
