@@ -9,7 +9,7 @@
    ============================================================ */
 
 // ⬆️ غيّر الرقم ده بس لما تحدّث CSS أو JS
-const VERSION = "2.1.0";
+const VERSION = "2.0.0";
 const CACHE_NAME = `dina-interpreter-v${VERSION}`;
 
 const PRECACHE_ASSETS = [
@@ -68,6 +68,7 @@ self.addEventListener("fetch", event => {
     // تجاهل غير GET
     if (request.method !== "GET") return;
     if (!url.protocol.startsWith("http")) return;
+    if (url.pathname.startsWith("/cdn-cgi/")) return; // Cloudflare internal paths
 
     // ── HTML: دايماً من النت، مش بيتكاش في SW ──────────────
     if (request.mode === "navigate" || url.pathname.endsWith(".html")) {
