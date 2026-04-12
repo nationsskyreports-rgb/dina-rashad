@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #06b6d4 100%);
+            background: #0f1729;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -18,119 +18,260 @@
             overflow: hidden;
         }
 
+        /* ── خلفية متحركة ── */
+        .bg {
+            position: fixed; inset: 0; z-index: 0;
+            background: linear-gradient(135deg, #0f1729 0%, #1e3a8a 50%, #0f1729 100%);
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0;
+            animation: orbFloat 3s ease forwards;
+        }
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(37,99,235,0.5), transparent 70%);
+            top: -100px; right: -100px;
+            animation-delay: 0.2s;
+        }
+        .orb-2 {
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(6,182,212,0.4), transparent 70%);
+            bottom: -80px; left: -80px;
+            animation-delay: 0.4s;
+        }
+        .orb-3 {
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(124,58,237,0.3), transparent 70%);
+            top: 40%; left: 10%;
+            animation-delay: 0.6s;
+        }
+        @keyframes orbFloat {
+            from { opacity: 0; transform: scale(0.8); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        /* ── حلقات الـ ripple ── */
+        .ripple-container {
+            position: fixed; inset: 0; z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(37,99,235,0.2);
+            animation: rippleAnim 3s ease-out infinite;
+        }
+        .ripple:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
+        .ripple:nth-child(2) { width: 320px; height: 320px; animation-delay: 0.6s; }
+        .ripple:nth-child(3) { width: 440px; height: 440px; animation-delay: 1.2s; }
+        .ripple:nth-child(4) { width: 560px; height: 560px; animation-delay: 1.8s; }
+        @keyframes rippleAnim {
+            0%   { transform: scale(0.6); opacity: 0.6; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+
+        /* ── المحتوى الرئيسي ── */
         .splash-container {
+            position: relative; z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.8s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to   { opacity: 1; transform: scale(1); }
+        /* ── اللوجو ── */
+        .logo-ring {
+            position: relative;
+            width: 180px; height: 180px;
+            margin-bottom: 32px;
+        }
+
+        .logo-ring svg {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            animation: rotateSvg 4s linear infinite;
+        }
+        @keyframes rotateSvg {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
         }
 
         .logo-wrapper {
-            width: 160px;
-            height: 160px;
-            border-radius: 36px;
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
             overflow: hidden;
-            box-shadow:
-                0 20px 60px rgba(0,0,0,0.3),
-                0 0 0 1px rgba(255,255,255,0.15);
-            margin-bottom: 28px;
-            animation: logoIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+            box-shadow: 0 0 40px rgba(37,99,235,0.5), 0 20px 60px rgba(0,0,0,0.4);
+            animation: logoIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
         }
-
         @keyframes logoIn {
-            from { opacity: 0; transform: scale(0.7) translateY(20px); }
-            to   { opacity: 1; transform: scale(1) translateY(0); }
+            from { opacity: 0; transform: scale(0.5); }
+            to   { opacity: 1; transform: scale(1); }
         }
 
         .logo-wrapper img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
         }
 
+        /* ── النص ── */
         .app-name {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 30px;
+            font-weight: 800;
             color: white;
             letter-spacing: -0.5px;
-            margin-bottom: 6px;
-            animation: textIn 0.6s ease 0.4s both;
+            margin-bottom: 8px;
+            animation: slideUp 0.7s ease 0.7s both;
         }
 
         .app-tagline {
-            font-size: 14px;
-            color: rgba(255,255,255,0.75);
-            letter-spacing: 0.3px;
-            animation: textIn 0.6s ease 0.5s both;
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: slideUp 0.7s ease 0.85s both;
         }
 
-        @keyframes textIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        .loader {
-            margin-top: 48px;
-            display: flex;
-            gap: 8px;
-            animation: textIn 0.6s ease 0.7s both;
+        /* ── شريط التحميل ── */
+        .progress-wrap {
+            margin-top: 52px;
+            width: 160px;
+            animation: slideUp 0.7s ease 1s both;
+        }
+        .progress-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2563eb, #06b6d4);
+            border-radius: 99px;
+            animation: fillBar 1.8s cubic-bezier(0.4, 0, 0.2, 1) 1s forwards;
+        }
+        @keyframes fillBar {
+            0%   { width: 0%; }
+            60%  { width: 75%; }
+            100% { width: 100%; }
         }
 
-        .loader span {
-            width: 8px;
-            height: 8px;
+        /* ── نقاط ── */
+        .dots {
+            display: flex; gap: 6px;
+            margin-top: 14px;
+            justify-content: center;
+        }
+        .dots span {
+            width: 5px; height: 5px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.6);
-            animation: bounce 1.2s ease-in-out infinite;
+            background: rgba(255,255,255,0.4);
+            animation: dotPulse 1.4s ease-in-out infinite;
         }
-        .loader span:nth-child(2) { animation-delay: 0.15s; }
-        .loader span:nth-child(3) { animation-delay: 0.3s; }
-
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-            40%            { transform: scale(1.0); opacity: 1; }
+        .dots span:nth-child(2) { animation-delay: 0.2s; }
+        .dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50%       { opacity: 1;   transform: scale(1.3); background: #06b6d4; }
         }
 
-        /* Decorative circles */
-        .deco {
-            position: fixed;
+        /* ── جزيئات طايرة ── */
+        .particles { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+        .particle {
+            position: absolute;
+            width: 3px; height: 3px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.04);
-            pointer-events: none;
+            background: rgba(255,255,255,0.5);
+            animation: particleFloat linear infinite;
         }
-        .deco-1 { width: 400px; height: 400px; top: -100px; right: -100px; }
-        .deco-2 { width: 300px; height: 300px; bottom: -80px; left: -80px; }
-        .deco-3 { width: 150px; height: 150px; top: 40%; left: -40px; }
     </style>
 </head>
 <body>
-    <div class="deco deco-1"></div>
-    <div class="deco deco-2"></div>
-    <div class="deco deco-3"></div>
+    <div class="bg"></div>
 
+    <!-- Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Ripples -->
+    <div class="ripple-container">
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+    </div>
+
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Content -->
     <div class="splash-container">
-        <div class="logo-wrapper">
-            <img src="images/icons/icon-512x512.png" alt="Dina Rashad">
+        <div class="logo-ring">
+            <!-- حلقة دوارة حوالين اللوجو -->
+            <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="90" cy="90" r="86" stroke="url(#grad)" stroke-width="2" stroke-linecap="round" stroke-dasharray="12 8"/>
+                <defs>
+                    <linearGradient id="grad" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#2563eb"/>
+                        <stop offset="50%" stop-color="#06b6d4"/>
+                        <stop offset="100%" stop-color="#2563eb" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="logo-wrapper">
+                <img src="images/icons/icon-512x512.png" alt="Dina Rashad">
+            </div>
         </div>
+
         <div class="app-name">Dina Rashad</div>
-        <div class="app-tagline">Professional Conference Interpreter</div>
-        <div class="loader">
-            <span></span><span></span><span></span>
+        <div class="app-tagline">Conference Interpreter</div>
+
+        <div class="progress-wrap">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="dots">
+                <span></span><span></span><span></span>
+            </div>
         </div>
     </div>
 
     <script>
-        // لو الصفحة دي بتتفتح كـ standalone PWA، تنقل للـ index بعد ثانيتين
+        // جزيئات طايرة
+        var container = document.getElementById('particles');
+        for (var i = 0; i < 20; i++) {
+            var p = document.createElement('div');
+            p.className = 'particle';
+            var x = Math.random() * 100;
+            var duration = 6 + Math.random() * 8;
+            var delay = Math.random() * 4;
+            var size = 1 + Math.random() * 3;
+            p.style.cssText = 'left:'+x+'%;bottom:-10px;width:'+size+'px;height:'+size+'px;opacity:'+(0.2+Math.random()*0.5)+';animation-duration:'+duration+'s;animation-delay:'+delay+'s;';
+            p.style.animationName = 'particleFloat';
+            container.appendChild(p);
+        }
+
+        // إضافة keyframe للجزيئات
+        var style = document.createElement('style');
+        style.textContent = '@keyframes particleFloat { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 0.5; } 100% { transform: translateY(-100vh) translateX('+(Math.random()>0.5?'':'-')+'30px); opacity: 0; } }';
+        document.head.appendChild(style);
+
+        // انتقل لـ index بعد انتهاء الـ progress
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
             setTimeout(function() {
                 window.location.replace('index.html');
-            }, 2000);
+            }, 2800);
         }
     </script>
 </body>
