@@ -30,9 +30,8 @@
         .portfolio-filters { display: flex; justify-content: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-2xl); flex-wrap: wrap; }
         .filter-btn { padding: var(--spacing-sm) var(--spacing-lg); border: 2px solid var(--gray-200); background: var(--white); border-radius: var(--radius-full); font-weight: 600; font-size: var(--font-size-sm); color: var(--gray-600); cursor: pointer; transition: all var(--transition-base); }
         .filter-btn:hover, .filter-btn.active { background: var(--primary-600); border-color: var(--primary-600); color: var(--white); }
-
         .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-xl); }
-        .portfolio-item { transition: all 0.3s ease; }
+        .portfolio-item { transition: opacity 0.3s ease, transform 0.3s ease; }
         .portfolio-card { background: var(--white); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-md); transition: all var(--transition-base); position: relative; }
         .portfolio-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); }
         .featured-project { border: 2px solid var(--primary-200); }
@@ -374,26 +373,47 @@
     <script src="Js/pwa.js?v=2.1"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Portfolio Filter
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const portfolioItems = document.querySelectorAll('.portfolio-item');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    const filter = this.dataset.filter;
-                    portfolioItems.forEach(item => {
-                        if (filter === 'all' || item.dataset.category.includes(filter)) {
-                            item.style.display = 'block';
-                            setTimeout(() => item.style.opacity = '1', 10);
-                        } else {
-                            item.style.opacity = '0';
-                            setTimeout(() => item.style.display = 'none', 300);
-                        }
-                    });
-                });
-            });
+// Portfolio Filter — Fixed
+const filterBtns = document.querySelectorAll('.filter-btn');
+const portfolioItems = document.querySelectorAll('.portfolio-item');
 
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Update active button
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+
+        portfolioItems.forEach(item => {
+            const categories = item.dataset.category
+                                   .split(' ')
+                                   .map(c => c.trim());
+
+            const isVisible = filter === 'all' || categories.includes(filter);
+
+            if (isVisible) {
+                item.style.display = 'block';
+                // Force reflow before adding opacity
+                item.offsetHeight;
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    // Double-check still should be hidden
+                    const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                    const cats = item.dataset.category.split(' ').map(c => c.trim());
+                    if (currentFilter !== 'all' && !cats.includes(currentFilter)) {
+                        item.style.display = 'none';
+                    }
+                }, 300);
+            }
+        });
+    });
+});
+            
             // Counter animation - reliable scroll approach
             function checkCounters() {
                 document.querySelectorAll('.stat-number[data-count]:not(.animated)').forEach(el => {
