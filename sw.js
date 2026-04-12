@@ -1,247 +1,217 @@
-/* ===================================
-   DINA RASHAD - INTERPRETER PWA
-   Service Worker
-   Handles caching and offline functionality
-   =================================== */
+/* ============================================================
+   DINA RASHAD — Smart Service Worker
+   
+   الاستراتيجية:
+   - HTML  → دايماً من النت (network-first, مش بيتكاش)
+   - CSS/JS → من الكاش أول (cache-first) — بنكسره بـ ?v=
+   - Images → من الكاش أول مع تحديث في الخلفية
+   - CDN   → من الكاش أول
+   ============================================================ */
 
-// Cache name with version for easy updates
-const CACHE_NAME = 'dina-interpreter-v1.0.0';
+// ⬆️ غيّر الرقم ده بس لما تحدّث CSS أو JS
+const VERSION = "2.1.0";
+const CACHE_NAME = `dina-interpreter-v${VERSION}`;
 
-// Assets to pre-cache during installation
 const PRECACHE_ASSETS = [
-    '/',
-    '/index.html',
-    '/about.html',
-    '/portfolio.html',
-    '/booking.html',
-    '/contact.html',
-    '/CSS/style.css',
-    '/CSS/responsive.css',
-    '/CSS/animations.css',
-    '/Js/main.js',
-    '/Js/booking.js',
-    '/Js/pwa.js',
-    '/manifest.json',
-    
-    // Images
-    '/images/profile.jpg',
-    '/images/hero-bg.jpg',
-    
-    // Icons
-    '/images/icons/icon-192x192.png',
-    '/images/icons/icon-512x512.png'
+    "/CSS/style.css",
+    "/CSS/responsive.css",
+    "/CSS/animations.css",
+    "/Js/main.js",
+    "/Js/booking.js",
+    "/Js/pwa.js",
+    "/manifest.json",
+    "/images/profile.jpg",
+    "/images/hero-bg.jpg",
+    "/images/icons/icon-192x192.png",
+    "/images/icons/icon-512x512.png"
 ];
 
-// External resources to cache (CDN)
-const EXTERNAL_ASSETS = [
-    'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
-];
-
-/* ===================================
-   INSTALL EVENT
-   Pre-cache essential assets
-   =================================== */
-self.addEventListener('install', function(event) {
-    console.log('[ServiceWorker] Install');
-    
+// ============================================================
+//  INSTALL — cache الـ assets بس (مش الـ HTML)
+// ============================================================
+self.addEventListener("install", event => {
+    console.log(`[SW] Installing v${VERSION}`);
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(function(cache) {
-                console.log('[ServiceWorker] Pre-caching assets');
-                return cache.addAll(PRECACHE_ASSETS);
-            })
-            .then(function() {
-                return self.skipWaiting();
-            })
-            .catch(function(error) {
-                console.error('[ServiceWorker] Pre-cache failed:', error);
-            })
+            .then(cache => cache.addAll(PRECACHE_ASSETS))
+            .then(() => self.skipWaiting())
+            .catch(err => console.error("[SW] Pre-cache failed:", err))
     );
 });
 
-/* ===================================
-   ACTIVATE EVENT
-   Clean up old caches
-   =================================== */
-self.addEventListener('activate', function(event) {
-    console.log('[ServiceWorker] Activate');
-    
+// ============================================================
+//  ACTIVATE — احذف الكاش القديم أوتوماتيك
+// ============================================================
+self.addEventListener("activate", event => {
+    console.log(`[SW] Activating v${VERSION} — cleaning old caches`);
     event.waitUntil(
-        caches.keys()
-            .then(function(cacheNames) {
-                return Promise.all(
-                    cacheNames.map(function(cacheName) {
-                        if (cacheName !== CACHE_NAME) {
-                            console.log('[ServiceWorker] Removing old cache:', cacheName);
-                            return caches.delete(cacheName);
-                        }
+        caches.keys().then(keys =>
+            Promise.all(
+                keys
+                    .filter(key => key !== CACHE_NAME)
+                    .map(key => {
+                        console.log("[SW] Deleting old cache:", key);
+                        return caches.delete(key);
                     })
-                );
-            })
-            .then(function() {
-                return self.clients.claim();
-            })
+            )
+        ).then(() => self.clients.claim())
     );
 });
 
-/* ===================================
-   FETCH EVENT
-   Network-first strategy with cache fallback
-   =================================== */
-self.addEventListener('fetch', function(event) {
-    const requestUrl = new URL(event.request.url);
-    
-    if (event.request.method !== 'GET') return;
-    if (!requestUrl.protocol.startsWith('http')) return;
-    
-    if (event.request.mode === 'navigate') {
-        event.respondWith(networkFirst(event.request));
+// ============================================================
+//  FETCH — القواعد الذكية
+// ============================================================
+self.addEventListener("fetch", event => {
+    const { request } = event;
+    const url = new URL(request.url);
+
+    // تجاهل غير GET
+    if (request.method !== "GET") return;
+    if (!url.protocol.startsWith("http")) return;
+
+    // ── HTML: دايماً من النت، مش بيتكاش في SW ──────────────
+    if (request.mode === "navigate" || url.pathname.endsWith(".html")) {
+        event.respondWith(networkOnly(request));
         return;
     }
-    
+
+    // ── CSS / JS: من الكاش (cache-first) ────────────────────
     if (
-        requestUrl.pathname.endsWith('.css') ||
-        requestUrl.pathname.endsWith('.js') ||
-        requestUrl.pathname.startsWith('/images/') ||
-        requestUrl.pathname.startsWith('/CSS/') ||
-        requestUrl.pathname.startsWith('/Js/')
+        url.pathname.startsWith("/CSS/") ||
+        url.pathname.startsWith("/Js/") ||
+        url.pathname.endsWith(".css") ||
+        url.pathname.endsWith(".js")
     ) {
-        event.respondWith(staleWhileRevalidate(event.request));
+        event.respondWith(cacheFirst(request));
         return;
     }
-    
+
+    // ── Images: Stale-While-Revalidate ───────────────────────
+    if (url.pathname.startsWith("/images/")) {
+        event.respondWith(staleWhileRevalidate(request));
+        return;
+    }
+
+    // ── CDN (fonts, icons): Cache-First ─────────────────────
     if (
-        requestUrl.hostname.includes('googleapis.com') ||
-        requestUrl.hostname.includes('gstatic.com') ||
-        requestUrl.hostname.includes('cdnjs.cloudflare.com')
+        url.hostname.includes("googleapis.com") ||
+        url.hostname.includes("gstatic.com") ||
+        url.hostname.includes("cdnjs.cloudflare.com")
     ) {
-        event.respondWith(cacheFirst(event.request));
+        event.respondWith(cacheFirst(request));
         return;
     }
-    
-    event.respondWith(networkFirst(event.request));
+
+    // ── الباقي: Network-First ────────────────────────────────
+    event.respondWith(networkFirst(request));
 });
 
-/* ===================================
-   CACHING STRATEGIES
-   =================================== */
+// ============================================================
+//  STRATEGIES
+// ============================================================
 
-async function networkFirst(request) {
+/** HTML — من النت دايماً، لو الشبكة وقعت يرجع الـ cache */
+async function networkOnly(request) {
     try {
-        const networkResponse = await fetch(request);
-        if (networkResponse.ok) {
-            const cache = await caches.open(CACHE_NAME);
-            cache.put(request, networkResponse.clone());
-        }
-        return networkResponse;
-    } catch (error) {
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) return cachedResponse;
-        if (request.mode === 'navigate') return caches.match('/index.html');
-        throw error;
+        const response = await fetch(request, { cache: "no-store" });
+        return response;
+    } catch {
+        // Offline fallback — ارجع index من الكاش لو موجود
+        const cached = await caches.match("/index.html");
+        return cached || new Response("Offline — please check your connection.", {
+            status: 503,
+            headers: { "Content-Type": "text/plain" }
+        });
     }
 }
 
+/** CSS/JS — من الكاش أول، لو مش موجود اجيبه من النت وحفظه */
+async function cacheFirst(request) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+
+    try {
+        const response = await fetch(request);
+        if (response.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, response.clone());
+        }
+        return response;
+    } catch {
+        return new Response("Asset unavailable offline.", { status: 503 });
+    }
+}
+
+/** Images — ارجع من الكاش فوراً وحدّث في الخلفية */
 async function staleWhileRevalidate(request) {
     const cache = await caches.open(CACHE_NAME);
-    const cachedResponse = await cache.match(request);
-    
-    const fetchPromise = fetch(request)
-        .then(function(networkResponse) {
-            if (networkResponse.ok) {
-                cache.put(request, networkResponse.clone());
-            }
-            return networkResponse;
-        })
-        .catch(function() {
-            if (!cachedResponse && request.destination === 'image') {
-                return new Response('', {
-                    status: 200,
-                    headers: { 'Content-Type': 'image/svg+xml' }
-                });
-            }
-        });
-    
-    return cachedResponse || fetchPromise;
+    const cached = await cache.match(request);
+
+    const fetchPromise = fetch(request).then(response => {
+        if (response.ok) cache.put(request, response.clone());
+        return response;
+    }).catch(() => null);
+
+    return cached || await fetchPromise || new Response("", { status: 503 });
 }
 
-async function cacheFirst(request) {
-    const cache = await caches.open(CACHE_NAME);
-    const cachedResponse = await cache.match(request);
-    if (cachedResponse) return cachedResponse;
-    
+/** Network-First مع Cache Fallback */
+async function networkFirst(request) {
     try {
-        const networkResponse = await fetch(request);
-        if (networkResponse.ok) {
-            cache.put(request, networkResponse.clone());
+        const response = await fetch(request);
+        if (response.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, response.clone());
         }
-        return networkResponse;
-    } catch (error) {
-        throw error;
+        return response;
+    } catch {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        if (request.mode === "navigate") {
+            return caches.match("/index.html");
+        }
+        throw new Error("Network and cache both failed");
     }
 }
 
-/* ===================================
-   MESSAGE HANDLING
-   =================================== */
-self.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
+// ============================================================
+//  MESSAGES
+// ============================================================
+self.addEventListener("message", event => {
+    if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
+    if (event.data?.type === "CLEAR_CACHE") {
+        caches.delete(CACHE_NAME).then(() =>
+            event.source.postMessage({ type: "CACHE_CLEARED" })
+        );
     }
-    if (event.data && event.data.type === 'CLEAR_CACHE') {
-        caches.delete(CACHE_NAME).then(function() {
-            event.source.postMessage({ type: 'CACHE_CLEARED' });
-        });
-    }
-});
-
-/* ===================================
-   BACKGROUND SYNC
-   =================================== */
-self.addEventListener('sync', function(event) {
-    if (event.tag === 'sync-bookings') {
-        event.waitUntil(syncBookings());
+    // طلب الـ version الحالي
+    if (event.data?.type === "GET_VERSION") {
+        event.source.postMessage({ type: "VERSION", version: VERSION });
     }
 });
 
-async function syncBookings() {
-    console.log('[ServiceWorker] Syncing bookings...');
-}
-
-/* ===================================
-   PUSH NOTIFICATIONS
-   =================================== */
-self.addEventListener('push', function(event) {
-    let data = {
-        title: 'Dina Rashad Interpreter',
-        body: 'You have a new notification!',
-        icon: '/images/icons/icon-192x192.png',
-        badge: '/images/icons/icon-192x192.png'
+// ============================================================
+//  PUSH NOTIFICATIONS
+// ============================================================
+self.addEventListener("push", event => {
+    const data = event.data?.json() || {
+        title: "Dina Rashad Interpreter",
+        body: "You have a new notification!",
+        icon: "/images/icons/icon-192x192.png"
     };
-    
-    if (event.data) data = event.data.json();
-    
-    const options = {
-        body: data.body,
-        icon: data.icon,
-        badge: data.badge,
-        vibrate: [100, 50, 100],
-        data: { dateOfArrival: Date.now(), primaryKey: 1 },
-        actions: [
-            { action: 'open', title: 'Open App' },
-            { action: 'close', title: 'Close' }
-        ]
-    };
-    
-    event.waitUntil(self.registration.showNotification(data.title, options));
+    event.waitUntil(
+        self.registration.showNotification(data.title, {
+            body: data.body,
+            icon: data.icon || "/images/icons/icon-192x192.png",
+            badge: "/images/icons/icon-192x192.png",
+            vibrate: [100, 50, 100]
+        })
+    );
 });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener("notificationclick", event => {
     event.notification.close();
-    if (event.action === 'open' || !event.action) {
-        event.waitUntil(clients.openWindow('/'));
-    }
+    event.waitUntil(clients.openWindow("/"));
 });
 
-console.log('[ServiceWorker] Service Worker loaded');
+console.log(`[SW] Service Worker v${VERSION} loaded`);
