@@ -5,23 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me | Dina Rashad - Professional Interpreter</title>
     <meta name="description" content="Learn more about Dina Rashad - Freelance Conference Interpreter with 10+ years of experience in Arabic-English simultaneous interpretation.">
-    
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    
     <link rel="icon" type="image/png" sizes="32x32" href="images/profile.jpg">
     <link rel="apple-touch-icon" href="images/profile.jpg">
     <link rel="manifest" href="manifest.json">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="CSS/style.css?v=2.0">
-    <link rel="stylesheet" href="CSS/responsive.css?v=2.0">
-    <link rel="stylesheet" href="CSS/animations.css?v=2.0">
-
+    <link rel="stylesheet" href="CSS/style.css?v=2.1">
+    <link rel="stylesheet" href="CSS/responsive.css?v=2.1">
+    <link rel="stylesheet" href="CSS/animations.css?v=2.1">
     <style>
         .page-header { background: linear-gradient(135deg, var(--primary-900), var(--primary-700)); padding: 140px 0 80px; color: white; }
         .page-header-content { text-align: center; max-width: 700px; margin: 0 auto; }
@@ -31,26 +26,21 @@
         .breadcrumb { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-xl); font-size: var(--font-size-sm); opacity: 0.8; }
         .breadcrumb a { color: white; }
         .breadcrumb a:hover { opacity: 1; }
-
         .about-grid { display: grid; grid-template-columns: 400px 1fr; gap: var(--spacing-3xl); align-items: start; }
-
         .about-profile-card { position: relative; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-xl); aspect-ratio: 3/4; }
         .about-profile-card img { width: 100%; height: 100%; object-fit: cover; }
         .profile-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg); color: white; }
         .profile-info h3 { font-size: var(--font-size-2xl); font-weight: 700; margin-bottom: var(--spacing-xs); }
         .profile-info p { opacity: 0.9; font-size: var(--font-size-sm); }
-
         .quick-stats-card { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); padding: var(--spacing-xl); margin-top: var(--spacing-xl); display: grid; grid-template-columns: repeat(2,1fr); gap: var(--spacing-md); }
         .stat-box { text-align: center; padding: var(--spacing-md); background: var(--gray-50); border-radius: var(--radius-lg); }
         .stat-box i { font-size: var(--font-size-2xl); color: var(--primary-600); margin-bottom: var(--spacing-sm); display: block; }
         .stat-number { display: block; font-size: var(--font-size-2xl); font-weight: 800; color: var(--gray-900); }
         .stat-text { font-size: var(--font-size-xs); color: var(--gray-500); }
-
         .bio-section { margin-bottom: var(--spacing-2xl); }
         .bio-section h2 { font-size: var(--font-size-3xl); font-weight: 800; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
         .bio-section .lead { font-size: var(--font-size-lg); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--spacing-lg); }
         .bio-section p { color: var(--gray-600); line-height: 1.8; margin-bottom: var(--spacing-md); }
-
         .expertise-section { margin-bottom: var(--spacing-2xl); }
         .expertise-section h3 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
         .expertise-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--spacing-md); }
@@ -58,7 +48,6 @@
         .expertise-item:hover { background: var(--primary-100); transform: translateY(-2px); }
         .expertise-item i { color: var(--primary-600); font-size: var(--font-size-lg); }
         .expertise-item span { font-weight: 500; color: var(--gray-800); font-size: var(--font-size-sm); }
-
         .certifications-section { margin-bottom: var(--spacing-2xl); }
         .certifications-section h3 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
         .certifications-list { display: flex; flex-direction: column; gap: var(--spacing-md); }
@@ -67,8 +56,6 @@
         .certifications-list li i { color: var(--warning); font-size: var(--font-size-2xl); flex-shrink: 0; }
         .certifications-list strong { display: block; color: var(--gray-900); margin-bottom: var(--spacing-xs); }
         .certifications-list span { font-size: var(--font-size-sm); color: var(--gray-500); }
-
-        /* === FIX: Recommendation Cards CSS (was fully missing) === */
         .recommendations-section { margin-bottom: var(--spacing-2xl); }
         .recommendations-section h3 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
         .recommendation-card { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); overflow: hidden; transition: box-shadow var(--transition-base); cursor: pointer; border: 1px solid var(--gray-200); }
@@ -87,12 +74,10 @@
         .recommendation-source > span { display: block; font-size: var(--font-size-sm); color: var(--gray-600); margin-bottom: var(--spacing-sm); line-height: 1.5; }
         .source-badge { display: inline-flex; align-items: center; gap: var(--spacing-xs); background: var(--primary-50); color: var(--primary-700); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: 500; border: 1px solid var(--primary-100); }
         .source-badge i { font-size: 10px; }
-
         .about-cta { background: linear-gradient(135deg, var(--primary-50), var(--primary-100)); padding: var(--spacing-2xl); border-radius: var(--radius-xl); text-align: center; }
         .about-cta h4 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-sm); }
         .about-cta p { color: var(--gray-600); margin-bottom: var(--spacing-lg); }
         .cta-buttons { display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap; }
-
         .values-section { background: var(--gray-50); }
         .values-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--spacing-xl); }
         .value-card { background: var(--white); padding: var(--spacing-2xl); border-radius: var(--radius-xl); text-align: center; box-shadow: var(--shadow-md); transition: all var(--transition-base); }
@@ -102,23 +87,28 @@
         .value-card h3 { font-size: var(--font-size-xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-sm); }
         .value-card p { color: var(--gray-600); font-size: var(--font-size-sm); line-height: 1.7; }
 
+        /* THE FIX: scroll-animate defined here so it works regardless of animations.css */
+        .scroll-animate { opacity: 0; transform: translateY(25px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .scroll-animate.visible { opacity: 1 !important; transform: translateY(0) !important; }
+
+        /* Footer social */
+        .footer-social { display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-md); }
+        .social-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all var(--transition-base); color: white; text-decoration: none; }
+        .whatsapp-social { background: #25D366; } .whatsapp-social:hover { background: #128C7E; transform: translateY(-2px); }
+        .youtube-social { background: #FF0000; } .youtube-social:hover { background: #cc0000; transform: translateY(-2px); }
+        .email-social { background: var(--primary-600); } .email-social:hover { background: var(--primary-700); transform: translateY(-2px); }
+
         @media (max-width: 1024px) { .about-grid { grid-template-columns: 1fr; } .about-image-col { max-width: 400px; margin: 0 auto; } .values-grid { grid-template-columns: repeat(2,1fr); } }
         @media (max-width: 768px) { .expertise-grid { grid-template-columns: repeat(2,1fr); } .values-grid { grid-template-columns: 1fr; } .quick-stats-card { grid-template-columns: 1fr; } }
         @media (max-width: 480px) { .expertise-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
-
 <body>
 
     <nav class="navbar scrolled" id="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="nav-logo">
-                <i class="fas fa-language"></i>
-                <span>Dina Rashad</span>
-            </a>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span><span></span><span></span>
-            </button>
+            <a href="index.html" class="nav-logo"><i class="fas fa-language"></i><span>Dina Rashad</span></a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link active">About</a></li>
@@ -147,63 +137,27 @@
     <section class="section about-section">
         <div class="container">
             <div class="about-grid">
-
-                <!-- Profile Image -->
                 <div class="about-image-col">
                     <div class="about-profile-card">
                         <img src="images/profile.jpg" alt="Dina Rashad - Professional Interpreter" loading="eager">
                         <div class="profile-overlay">
-                            <div class="profile-info">
-                                <h3>Dina Rashad</h3>
-                                <p>Conference Interpreter</p>
-                            </div>
+                            <div class="profile-info"><h3>Dina Rashad</h3><p>Conference Interpreter</p></div>
                         </div>
                     </div>
                     <div class="quick-stats-card">
-                        <div class="stat-box">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="stat-number">10+</span>
-                            <span class="stat-text">Years Experience</span>
-                        </div>
-                        <div class="stat-box">
-                            <i class="fas fa-microphone-alt"></i>
-                            <span class="stat-number">500+</span>
-                            <span class="stat-text">Events Covered</span>
-                        </div>
-                        <div class="stat-box">
-                            <i class="fas fa-globe-americas"></i>
-                            <span class="stat-number">2</span>
-                            <span class="stat-text">Language Pairs</span>
-                        </div>
-                        <div class="stat-box">
-                            <i class="fas fa-smile"></i>
-                            <span class="stat-number">100%</span>
-                            <span class="stat-text">Satisfaction Rate</span>
-                        </div>
+                        <div class="stat-box"><i class="fas fa-calendar-alt"></i><span class="stat-number">10+</span><span class="stat-text">Years Experience</span></div>
+                        <div class="stat-box"><i class="fas fa-microphone-alt"></i><span class="stat-number">500+</span><span class="stat-text">Events Covered</span></div>
+                        <div class="stat-box"><i class="fas fa-globe-americas"></i><span class="stat-number">2</span><span class="stat-text">Language Pairs</span></div>
+                        <div class="stat-box"><i class="fas fa-smile"></i><span class="stat-number">100%</span><span class="stat-text">Satisfaction Rate</span></div>
                     </div>
                 </div>
 
-                <!-- Bio Content -->
                 <div class="about-content-col">
-
                     <div class="bio-section">
                         <h2>Professional Journey</h2>
-                        <p class="lead">
-                            With over a decade of dedicated experience in the field of conference interpretation,
-                            I have had the privilege of serving as the linguistic bridge between Arabic and English
-                            speakers at some of the most prestigious events and organizations.
-                        </p>
-                        <p>
-                            My career in simultaneous interpretation began with a deep passion for languages and
-                            cross-cultural communication. Over the years, I have honed my skills through rigorous
-                            training, continuous professional development, and hands-on experience across diverse
-                            sectors including government, media, technology, and international business.
-                        </p>
-                        <p>
-                            I specialize in providing real-time interpretation services that go beyond literal
-                            translation – capturing nuances, cultural context, and the speaker's intended tone
-                            to ensure your message resonates authentically with your audience.
-                        </p>
+                        <p class="lead">With over a decade of dedicated experience in the field of conference interpretation, I have had the privilege of serving as the linguistic bridge between Arabic and English speakers at some of the most prestigious events and organizations.</p>
+                        <p>My career in simultaneous interpretation began with a deep passion for languages and cross-cultural communication. Over the years, I have honed my skills through rigorous training, continuous professional development, and hands-on experience across diverse sectors including government, media, technology, and international business.</p>
+                        <p>I specialize in providing real-time interpretation services that go beyond literal translation – capturing nuances, cultural context, and the speaker's intended tone to ensure your message resonates authentically with your audience.</p>
                     </div>
 
                     <div class="expertise-section">
@@ -221,86 +175,28 @@
                     <div class="certifications-section">
                         <h3>Certifications & Training</h3>
                         <ul class="certifications-list">
-                            <li>
-                                <i class="fas fa-certificate"></i>
-                                <div>
-                                    <strong>Professional Conference Interpretation Certification</strong>
-                                    <span>Advanced training in simultaneous and consecutive interpretation techniques</span>
-                                </div>
-                            </li>
-                            <li>
-                                <i class="fas fa-award"></i>
-                                <div>
-                                    <strong>Industry-Specific Training</strong>
-                                    <span>Specialized workshops for legal, medical, and technical interpretation</span>
-                                </div>
-                            </li>
-                            <li>
-                                <i class="fas fa-graduation-cap"></i>
-                                <div>
-                                    <strong>Continuous Professional Development</strong>
-                                    <span>Ongoing education to stay current with industry best practices</span>
-                                </div>
-                            </li>
+                            <li><i class="fas fa-certificate"></i><div><strong>Professional Conference Interpretation Certification</strong><span>Advanced training in simultaneous and consecutive interpretation techniques</span></div></li>
+                            <li><i class="fas fa-award"></i><div><strong>Industry-Specific Training</strong><span>Specialized workshops for legal, medical, and technical interpretation</span></div></li>
+                            <li><i class="fas fa-graduation-cap"></i><div><strong>Continuous Professional Development</strong><span>Ongoing education to stay current with industry best practices</span></div></li>
                         </ul>
                     </div>
 
-                    <!-- FIX #1: Orphaned HTML removed — clean recommendations section -->
                     <div class="recommendations-section">
                         <h3>Recommendations</h3>
-
                         <div class="recommendation-card" id="recCard1" onclick="toggleRecommendation('recCard1')" style="margin-bottom: var(--spacing-xl);">
-                            <div class="recommendation-img-wrap">
-                                <img src="images/recommendation-coa.jpg" alt="Letter of Recommendation - COA Netherlands" loading="lazy">
-                            </div>
-                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard1')">
-                                <i class="fas fa-chevron-down"></i>
-                                <span>View Full Letter</span>
-                            </button>
-                            <div class="recommendation-source">
-                                <strong>Letter of Recommendation</strong>
-                                <span>Martin Hobers — Facilitator Cultural Orientation The Netherlands</span>
-                                <div class="source-badge">
-                                    <i class="fas fa-building"></i>
-                                    COA (Centraal Orgaan opvang asielzoekers) — Netherlands
-                                </div>
-                            </div>
+                            <div class="recommendation-img-wrap"><img src="images/recommendation-coa.jpg" alt="Letter of Recommendation - COA Netherlands" loading="lazy"></div>
+                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard1')"><i class="fas fa-chevron-down"></i><span>View Full Letter</span></button>
+                            <div class="recommendation-source"><strong>Letter of Recommendation</strong><span>Martin Hobers — Facilitator Cultural Orientation The Netherlands</span><div class="source-badge"><i class="fas fa-building"></i> COA (Centraal Orgaan opvang asielzoekers) — Netherlands</div></div>
                         </div>
-
                         <div class="recommendation-card" id="recCard2" onclick="toggleRecommendation('recCard2')" style="margin-bottom: var(--spacing-xl);">
-                            <div class="recommendation-img-wrap">
-                                <img src="images/recommendation-tuncay.jpg" alt="Recommendation - Tuncay Bayburt" loading="lazy">
-                            </div>
-                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard2')">
-                                <i class="fas fa-chevron-down"></i>
-                                <span>View Full Letter</span>
-                            </button>
-                            <div class="recommendation-source">
-                                <strong>Professional Recommendation</strong>
-                                <span>Tuncay Bayburt — Creative Growth Partner | Founder at Descre</span>
-                                <div class="source-badge">
-                                    <i class="fas fa-lightbulb"></i>
-                                    Descre — April 2022
-                                </div>
-                            </div>
+                            <div class="recommendation-img-wrap"><img src="images/recommendation-tuncay.jpg" alt="Recommendation - Tuncay Bayburt" loading="lazy"></div>
+                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard2')"><i class="fas fa-chevron-down"></i><span>View Full Letter</span></button>
+                            <div class="recommendation-source"><strong>Professional Recommendation</strong><span>Tuncay Bayburt — Creative Growth Partner | Founder at Descre</span><div class="source-badge"><i class="fas fa-lightbulb"></i> Descre — April 2022</div></div>
                         </div>
-
                         <div class="recommendation-card" id="recCard3" onclick="toggleRecommendation('recCard3')">
-                            <div class="recommendation-img-wrap">
-                                <img src="images/recommendation-barry.jpg" alt="Recommendation - Barry Donadio" loading="lazy">
-                            </div>
-                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard3')">
-                                <i class="fas fa-chevron-down"></i>
-                                <span>View Full Letter</span>
-                            </button>
-                            <div class="recommendation-source">
-                                <strong>Professional Recommendation</strong>
-                                <span>Barry Donadio — Former U.S. Secret Service | News Commentator</span>
-                                <div class="source-badge">
-                                    <i class="fas fa-star"></i>
-                                    Alghad TV Interview — February 2025
-                                </div>
-                            </div>
+                            <div class="recommendation-img-wrap"><img src="images/recommendation-barry.jpg" alt="Recommendation - Barry Donadio" loading="lazy"></div>
+                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard3')"><i class="fas fa-chevron-down"></i><span>View Full Letter</span></button>
+                            <div class="recommendation-source"><strong>Professional Recommendation</strong><span>Barry Donadio — Former U.S. Secret Service | News Commentator</span><div class="source-badge"><i class="fas fa-star"></i> Alghad TV Interview — February 2025</div></div>
                         </div>
                     </div>
 
@@ -308,17 +204,10 @@
                         <h4>Let's Work Together</h4>
                         <p>I'm ready to bring professional interpretation expertise to your next event.</p>
                         <div class="cta-buttons">
-                            <a href="booking.html" class="btn btn-primary">
-                                <i class="fas fa-calendar-check"></i>
-                                Book Your Session
-                            </a>
-                            <a href="portfolio.html" class="btn btn-outline">
-                                <i class="fas fa-images"></i>
-                                View My Work
-                            </a>
+                            <a href="booking.html" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Book Your Session</a>
+                            <a href="portfolio.html" class="btn btn-outline"><i class="fas fa-images"></i> View My Work</a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -359,14 +248,13 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="index.html" class="footer-logo">
-                        <i class="fas fa-language"></i>
-                        <span>Dina Rashad</span>
-                    </a>
-                    <p class="footer-description">
-                        Professional freelance conference interpreter specializing in
-                        Arabic-English simultaneous interpretation.
-                    </p>
+                    <a href="index.html" class="footer-logo"><i class="fas fa-language"></i><span>Dina Rashad</span></a>
+                    <p class="footer-description">Professional freelance conference interpreter specializing in Arabic-English simultaneous interpretation.</p>
+                    <div class="footer-social">
+                        <a href="https://wa.me/201011160627" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-icon whatsapp-social"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon youtube-social"><i class="fab fa-youtube"></i></a>
+                        <a href="mailto:dinarashad9@gmail.com" aria-label="Email" class="social-icon email-social"><i class="fas fa-envelope"></i></a>
+                    </div>
                 </div>
                 <div class="footer-links">
                     <h4>Quick Links</h4>
@@ -388,15 +276,9 @@
                 </div>
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <!-- FIX: was ++20 101 116 0627 -->
-                    <div class="footer-social" style="display:flex;gap:8px;margin-top:12px;"><a href="https://wa.me/201011160627" target="_blank" rel="noopener" aria-label="WhatsApp" style="width:38px;height:38px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;text-decoration:none;transition:all 0.2s;"><i class="fab fa-whatsapp"></i></a><a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" aria-label="YouTube" style="width:38px;height:38px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;text-decoration:none;transition:all 0.2s;"><i class="fab fa-youtube"></i></a><a href="mailto:dinarashad9@gmail.com" aria-label="Email" style="width:38px;height:38px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;text-decoration:none;transition:all 0.2s;"><i class="fas fa-envelope"></i></a></div><a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>+20 101 116 0627</span>
-                    </a>
-                    <p class="availability">
-                        <i class="fas fa-clock"></i>
-                        Available 7 days a week
-                    </p>
+                    <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i><span>+20 101 116 0627</span></a>
+                    <a href="mailto:dinarashad9@gmail.com" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span>dinarashad9@gmail.com</span></a>
+                    <p class="availability" style="margin-top:8px;"><i class="fas fa-clock"></i> Available 7 days a week</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -406,10 +288,7 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'd%20love%20to%20learn%20more%20about%20your%20services"
-       class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contact on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'd%20love%20to%20learn%20more%20about%20your%20services" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contact on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
     <script>
     function toggleRecommendation(id) {
@@ -417,4 +296,23 @@
         var isExpanded = card.classList.contains('expanded');
         card.classList.toggle('expanded');
         var btn = card.querySelector('.recommendation-toggle span');
-        btn.textContent = isExpanded ? 'V
+        btn.textContent = isExpanded ? 'View Full Letter' : 'Collapse Letter';
+    }
+
+    /* THE FIX — show all scroll-animate elements immediately */
+    !function(){
+        function show(){
+            document.querySelectorAll('.scroll-animate').forEach(function(el){
+                el.classList.add('visible');
+            });
+        }
+        show();
+        document.addEventListener('DOMContentLoaded', show);
+        window.addEventListener('load', show);
+    }();
+    </script>
+
+    <script src="Js/main.js?v=2.1"></script>
+    <script src="Js/pwa.js?v=2.1"></script>
+</body>
+</html>
