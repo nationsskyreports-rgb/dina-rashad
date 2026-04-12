@@ -30,8 +30,11 @@
         .portfolio-filters { display: flex; justify-content: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-2xl); flex-wrap: wrap; }
         .filter-btn { padding: var(--spacing-sm) var(--spacing-lg); border: 2px solid var(--gray-200); background: var(--white); border-radius: var(--radius-full); font-weight: 600; font-size: var(--font-size-sm); color: var(--gray-600); cursor: pointer; transition: all var(--transition-base); }
         .filter-btn:hover, .filter-btn.active { background: var(--primary-600); border-color: var(--primary-600); color: var(--white); }
+
+        /* ✅ FIX: transition على portfolio-item عشان الـ filter animation تشتغل */
         .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-xl); }
         .portfolio-item { transition: opacity 0.3s ease, transform 0.3s ease; }
+
         .portfolio-card { background: var(--white); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-md); transition: all var(--transition-base); position: relative; }
         .portfolio-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); }
         .featured-project { border: 2px solid var(--primary-200); }
@@ -106,17 +109,10 @@
 
         @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2,1fr); } .testimonials-grid { grid-template-columns: 1fr; } }
         @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } .filter-btn { padding: var(--spacing-xs) var(--spacing-md); font-size: var(--font-size-xs); } }
-    
-        /* Scroll Animation — self-contained */
-        .scroll-animate {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .scroll-animate.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+
+        /* Scroll Animation */
+        .scroll-animate { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .scroll-animate.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
@@ -161,6 +157,8 @@
             </div>
 
             <div class="portfolio-grid">
+
+                <!-- Item 1: conference + media -->
                 <div class="portfolio-item scroll-animate" data-category="conference media">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
@@ -179,6 +177,7 @@
                     </div>
                 </div>
 
+                <!-- Item 2: media -->
                 <div class="portfolio-item scroll-animate" data-category="media">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
@@ -197,6 +196,7 @@
                     </div>
                 </div>
 
+                <!-- Item 3: certification -->
                 <div class="portfolio-item scroll-animate" data-category="certification">
                     <div class="portfolio-card featured-project">
                         <div class="featured-badge">Certified Professional</div>
@@ -216,7 +216,8 @@
                     </div>
                 </div>
 
-                <div class="portfolio-item scroll-animate" data-category="press">
+                <!-- Item 4: press + sports -->
+                <div class="portfolio-item scroll-animate" data-category="press sports">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
                             <img src="https://z-cdn-media.chatglm.cn/files/a02c1b9f-b8ad-4d7c-be24-c18c6924a6db.jpeg?auth_key=1875422981-36e21ce063ba41fc8e2bc9db02e497e2-0-afb39d35654a66c315a8a2b172dc6c9d" alt="CAF Press Conference Interpretation" loading="lazy">
@@ -233,6 +234,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -369,60 +371,94 @@
         <div class="lightbox-content"><img id="lightbox-image" src="" alt="Portfolio Image"></div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="Js/main.js?v=2.1"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="Js/main.js?v=2.1"></script>
     <script src="Js/pwa.js?v=2.1"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-// Portfolio Filter — Fixed
-const filterBtns = document.querySelectorAll('.filter-btn');
-const portfolioItems = document.querySelectorAll('.portfolio-item');
+        /* ============================================================
+           PORTFOLIO FILTER — Fixed
+           المشكلة القديمة: الكود بيعمل display:none/block بس مش
+           بيكسب الـ opacity transition وقت الرجوع للـ visible state
+           الحل: split() على space → includes() على array كاملة
+        ============================================================ */
+        document.addEventListener('DOMContentLoaded', function () {
 
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        // Update active button
-        filterBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
+            // ── Filter ───────────────────────────────────────────────
+            const filterBtns    = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-        const filter = this.dataset.filter;
+            filterBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    // 1. تحديث الـ active button
+                    filterBtns.forEach(function (b) { b.classList.remove('active'); });
+                    this.classList.add('active');
 
-        portfolioItems.forEach(item => {
-            const categories = item.dataset.category
-                                   .split(' ')
-                                   .map(c => c.trim());
+                    var filter = this.dataset.filter;
 
-            const isVisible = filter === 'all' || categories.includes(filter);
+                    portfolioItems.forEach(function (item) {
+                        // 2. split الـ categories على space → array نظيف
+                        var cats = item.dataset.category
+                            .split(' ')
+                            .map(function (c) { return c.trim(); })
+                            .filter(Boolean);
 
-            if (isVisible) {
-                item.style.display = 'block';
-                // Force reflow before adding opacity
-                item.offsetHeight;
-                item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
-            } else {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(10px)';
-                setTimeout(() => {
-                    // Double-check still should be hidden
-                    const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
-                    const cats = item.dataset.category.split(' ').map(c => c.trim());
-                    if (currentFilter !== 'all' && !cats.includes(currentFilter)) {
-                        item.style.display = 'none';
+                        var show = (filter === 'all') || cats.includes(filter);
+
+                        if (show) {
+                            // أظهر: display:block الأول، بعدين opacity في frame تاني
+                            item.style.display = 'block';
+                            requestAnimationFrame(function () {
+                                requestAnimationFrame(function () {
+                                    item.style.opacity   = '1';
+                                    item.style.transform = 'translateY(0)';
+                                });
+                            });
+                        } else {
+                            // اخفي: opacity أول، بعدين display:none بعد الـ transition
+                            item.style.opacity   = '0';
+                            item.style.transform = 'translateY(12px)';
+                            setTimeout(function () {
+                                // تأكد إن الـ filter ما اتغيرش وسط الـ animation
+                                var activeFilter = document.querySelector('.filter-btn.active');
+                                var currentFilter = activeFilter ? activeFilter.dataset.filter : 'all';
+                                var currentCats = item.dataset.category
+                                    .split(' ')
+                                    .map(function (c) { return c.trim(); })
+                                    .filter(Boolean);
+                                if (currentFilter !== 'all' && !currentCats.includes(currentFilter)) {
+                                    item.style.display = 'none';
+                                }
+                            }, 310);
+                        }
+                    });
+                });
+            });
+
+            // ── Scroll Animations ────────────────────────────────────
+            function checkScrollAnimate() {
+                document.querySelectorAll('.scroll-animate:not(.visible)').forEach(function (el) {
+                    var rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+                        el.classList.add('visible');
                     }
-                }, 300);
+                });
             }
-        });
-    });
-});
-            
-            // Counter animation - reliable scroll approach
+            checkScrollAnimate();
+            window.addEventListener('scroll', checkScrollAnimate, { passive: true });
+            window.addEventListener('load', function () {
+                checkScrollAnimate();
+                setTimeout(checkScrollAnimate, 400);
+            });
+
+            // ── Counter Animation ────────────────────────────────────
             function checkCounters() {
-                document.querySelectorAll('.stat-number[data-count]:not(.animated)').forEach(el => {
-                    const rect = el.getBoundingClientRect();
+                document.querySelectorAll('.stat-number[data-count]:not(.animated)').forEach(function (el) {
+                    var rect = el.getBoundingClientRect();
                     if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
                         el.classList.add('animated');
-                        const target = parseInt(el.dataset.count);
-                        let current = 0;
-                        const increment = target / 80;
+                        var target    = parseInt(el.dataset.count);
+                        var current   = 0;
+                        var increment = target / 80;
                         function update() {
                             current += increment;
                             if (current < target) {
@@ -436,41 +472,43 @@ filterBtns.forEach(btn => {
                     }
                 });
             }
-
             checkCounters();
             window.addEventListener('scroll', checkCounters, { passive: true });
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
                 checkCounters();
                 setTimeout(checkCounters, 300);
                 setTimeout(checkCounters, 800);
                 setTimeout(checkCounters, 1500);
             });
-            // لو الـ section ظاهرة من أول ما الصفحة تفتح
             setTimeout(checkCounters, 100);
             setTimeout(checkCounters, 500);
+
         });
 
+        /* ============================================================
+           LIGHTBOX
+        ============================================================ */
         function openLightbox(button) {
-            const img = button.closest('.portfolio-card').querySelector('.portfolio-image img');
+            var img = button.closest('.portfolio-card').querySelector('.portfolio-image img');
             document.getElementById('lightbox-image').src = img.src;
             document.getElementById('lightbox-image').alt = img.alt;
             document.getElementById('lightbox-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
+
         function closeLightbox() {
             document.getElementById('lightbox-modal').classList.remove('active');
             document.body.style.overflow = '';
         }
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-        document.getElementById('lightbox-modal').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
 
-        function animateStats() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        animateCounter(entry.target, parseInt(entry.target.dataset.count));
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            document.querySelectorAll('.stat-number[data-count]').for
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        document.getElementById('lightbox-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeLightbox();
+        });
+    </script>
+
+</body>
+</html>
