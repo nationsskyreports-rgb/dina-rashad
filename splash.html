@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dina Rashad</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #06b6d4 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        .splash-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        .logo-wrapper {
+            width: 160px;
+            height: 160px;
+            border-radius: 36px;
+            overflow: hidden;
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.15);
+            margin-bottom: 28px;
+            animation: logoIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+        }
+
+        @keyframes logoIn {
+            from { opacity: 0; transform: scale(0.7) translateY(20px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .app-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            animation: textIn 0.6s ease 0.4s both;
+        }
+
+        .app-tagline {
+            font-size: 14px;
+            color: rgba(255,255,255,0.75);
+            letter-spacing: 0.3px;
+            animation: textIn 0.6s ease 0.5s both;
+        }
+
+        @keyframes textIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .loader {
+            margin-top: 48px;
+            display: flex;
+            gap: 8px;
+            animation: textIn 0.6s ease 0.7s both;
+        }
+
+        .loader span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.6);
+            animation: bounce 1.2s ease-in-out infinite;
+        }
+        .loader span:nth-child(2) { animation-delay: 0.15s; }
+        .loader span:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40%            { transform: scale(1.0); opacity: 1; }
+        }
+
+        /* Decorative circles */
+        .deco {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+            pointer-events: none;
+        }
+        .deco-1 { width: 400px; height: 400px; top: -100px; right: -100px; }
+        .deco-2 { width: 300px; height: 300px; bottom: -80px; left: -80px; }
+        .deco-3 { width: 150px; height: 150px; top: 40%; left: -40px; }
+    </style>
+</head>
+<body>
+    <div class="deco deco-1"></div>
+    <div class="deco deco-2"></div>
+    <div class="deco deco-3"></div>
+
+    <div class="splash-container">
+        <div class="logo-wrapper">
+            <img src="images/icons/icon-512x512.png" alt="Dina Rashad">
+        </div>
+        <div class="app-name">Dina Rashad</div>
+        <div class="app-tagline">Professional Conference Interpreter</div>
+        <div class="loader">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <script>
+        // لو الصفحة دي بتتفتح كـ standalone PWA، تنقل للـ index بعد ثانيتين
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            setTimeout(function() {
+                window.location.replace('index.html');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
