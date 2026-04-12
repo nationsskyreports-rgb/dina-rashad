@@ -6,410 +6,119 @@
     <title>About Me | Dina Rashad - Professional Interpreter</title>
     <meta name="description" content="Learn more about Dina Rashad - Freelance Conference Interpreter with 10+ years of experience in Arabic-English simultaneous interpretation.">
     
-    <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="images/profile.jpg">
     <link rel="apple-touch-icon" href="images/profile.jpg">
-    
-    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/responsive.css">
     <link rel="stylesheet" href="CSS/animations.css">
 
-    <!-- Page Specific Styles -->
     <style>
-        /* Page Header */
-        .page-header {
-            background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
-            padding: 140px 0 80px;
-            color: white;
-        }
-        
-        .page-header-content {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .page-header-content h1 {
-            font-size: clamp(2.5rem, 5vw, var(--font-size-5xl));
-            font-weight: 800;
-            margin-bottom: var(--spacing-md);
-        }
-        
-        .page-header-content p {
-            font-size: var(--font-size-lg);
-            opacity: 0.9;
-        }
-        
-        .page-header .section-tag {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-        
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-sm);
-            margin-top: var(--spacing-xl);
-            font-size: var(--font-size-sm);
-            opacity:0.8;
-        }
-        
+        .page-header { background: linear-gradient(135deg, var(--primary-900), var(--primary-700)); padding: 140px 0 80px; color: white; }
+        .page-header-content { text-align: center; max-width: 700px; margin: 0 auto; }
+        .page-header-content h1 { font-size: clamp(2.5rem, 5vw, var(--font-size-5xl)); font-weight: 800; margin-bottom: var(--spacing-md); }
+        .page-header-content p { font-size: var(--font-size-lg); opacity: 0.9; }
+        .page-header .section-tag { background: rgba(255,255,255,0.2); color: white; }
+        .breadcrumb { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-xl); font-size: var(--font-size-sm); opacity: 0.8; }
         .breadcrumb a { color: white; }
-        .breadcrumb a:hover { opacity:1; }
+        .breadcrumb a:hover { opacity: 1; }
 
-        /* About Section Grid */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: var(--spacing-3xl);
-            align-items: start;
-        }
+        .about-grid { display: grid; grid-template-columns: 400px 1fr; gap: var(--spacing-3xl); align-items: start; }
 
-        /* Profile Card */
-        .about-profile-card {
-            position: relative;
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-xl);
-            aspect-ratio: 3/4;
-        }
+        .about-profile-card { position: relative; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-xl); aspect-ratio: 3/4; }
+        .about-profile-card img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg); color: white; }
+        .profile-info h3 { font-size: var(--font-size-2xl); font-weight: 700; margin-bottom: var(--spacing-xs); }
+        .profile-info p { opacity: 0.9; font-size: var(--font-size-sm); }
 
-        .about-profile-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .quick-stats-card { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); padding: var(--spacing-xl); margin-top: var(--spacing-xl); display: grid; grid-template-columns: repeat(2,1fr); gap: var(--spacing-md); }
+        .stat-box { text-align: center; padding: var(--spacing-md); background: var(--gray-50); border-radius: var(--radius-lg); }
+        .stat-box i { font-size: var(--font-size-2xl); color: var(--primary-600); margin-bottom: var(--spacing-sm); display: block; }
+        .stat-number { display: block; font-size: var(--font-size-2xl); font-weight: 800; color: var(--gray-900); }
+        .stat-text { font-size: var(--font-size-xs); color: var(--gray-500); }
 
-        .profile-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
-            color: white;
-        }
+        .bio-section { margin-bottom: var(--spacing-2xl); }
+        .bio-section h2 { font-size: var(--font-size-3xl); font-weight: 800; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
+        .bio-section .lead { font-size: var(--font-size-lg); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--spacing-lg); }
+        .bio-section p { color: var(--gray-600); line-height: 1.8; margin-bottom: var(--spacing-md); }
 
-        .profile-info h3 {
-            font-size: var(--font-size-2xl);
-            font-weight: 700;
-            margin-bottom: var(--spacing-xs);
-        }
+        .expertise-section { margin-bottom: var(--spacing-2xl); }
+        .expertise-section h3 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
+        .expertise-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--spacing-md); }
+        .expertise-item { display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-md); background: var(--gray-50); border-radius: var(--radius-lg); transition: all var(--transition-base); }
+        .expertise-item:hover { background: var(--primary-100); transform: translateY(-2px); }
+        .expertise-item i { color: var(--primary-600); font-size: var(--font-size-lg); }
+        .expertise-item span { font-weight: 500; color: var(--gray-800); font-size: var(--font-size-sm); }
 
-        .profile-info p {
-            opacity: 0.9;
-            font-size: var(--font-size-sm);
-        }
+        .certifications-section { margin-bottom: var(--spacing-2xl); }
+        .certifications-section h3 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
+        .certifications-list { display: flex; flex-direction: column; gap: var(--spacing-md); }
+        .certifications-list li { display: flex; gap: var(--spacing-md); padding: var(--spacing-lg); background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: all var(--transition-base); }
+        .certifications-list li:hover { box-shadow: var(--shadow-md); transform: translateX(5px); }
+        .certifications-list li i { color: var(--warning); font-size: var(--font-size-2xl); flex-shrink: 0; }
+        .certifications-list strong { display: block; color: var(--gray-900); margin-bottom: var(--spacing-xs); }
+        .certifications-list span { font-size: var(--font-size-sm); color: var(--gray-500); }
 
-        /* Quick Stats Card */
-        .quick-stats-card {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-md);
-            padding: var(--spacing-xl);
-            margin-top: var(--spacing-xl);
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--spacing-md);
-        }
+        /* === FIX: Recommendation Cards CSS (was fully missing) === */
+        .recommendations-section { margin-bottom: var(--spacing-2xl); }
+        .recommendations-section h3 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-lg); }
+        .recommendation-card { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); overflow: hidden; transition: box-shadow var(--transition-base); cursor: pointer; border: 1px solid var(--gray-200); }
+        .recommendation-card:hover { box-shadow: var(--shadow-lg); }
+        .recommendation-img-wrap { position: relative; overflow: hidden; max-height: 200px; transition: max-height 0.5s ease; }
+        .recommendation-img-wrap::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: linear-gradient(to top, #fff, transparent); pointer-events: none; transition: opacity 0.3s; }
+        .recommendation-card.expanded .recommendation-img-wrap { max-height: 3000px; }
+        .recommendation-card.expanded .recommendation-img-wrap::after { opacity: 0; }
+        .recommendation-img-wrap img { width: 100%; height: auto; display: block; }
+        .recommendation-toggle { display: flex; align-items: center; gap: var(--spacing-sm); width: 100%; padding: var(--spacing-md) var(--spacing-lg); background: var(--gray-50); border: none; border-top: 1px solid var(--gray-200); cursor: pointer; font-family: inherit; font-size: var(--font-size-sm); font-weight: 600; color: var(--primary-600); transition: all var(--transition-fast); text-align: left; }
+        .recommendation-toggle:hover { background: var(--primary-50); color: var(--primary-700); }
+        .recommendation-toggle i { transition: transform var(--transition-base); font-size: 12px; }
+        .recommendation-card.expanded .recommendation-toggle i { transform: rotate(180deg); }
+        .recommendation-source { padding: var(--spacing-md) var(--spacing-lg); border-top: 1px solid var(--gray-100); background: var(--white); }
+        .recommendation-source strong { display: block; font-size: var(--font-size-sm); color: var(--gray-900); font-weight: 600; margin-bottom: var(--spacing-xs); }
+        .recommendation-source > span { display: block; font-size: var(--font-size-sm); color: var(--gray-600); margin-bottom: var(--spacing-sm); line-height: 1.5; }
+        .source-badge { display: inline-flex; align-items: center; gap: var(--spacing-xs); background: var(--primary-50); color: var(--primary-700); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: 500; border: 1px solid var(--primary-100); }
+        .source-badge i { font-size: 10px; }
 
-        .stat-box {
-            text-align: center;
-            padding: var(--spacing-md);
-            background: var(--gray-50);
-            border-radius: var(--radius-lg);
-        }
+        .about-cta { background: linear-gradient(135deg, var(--primary-50), var(--primary-100)); padding: var(--spacing-2xl); border-radius: var(--radius-xl); text-align: center; }
+        .about-cta h4 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-sm); }
+        .about-cta p { color: var(--gray-600); margin-bottom: var(--spacing-lg); }
+        .cta-buttons { display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap; }
 
-        .stat-box i {
-            font-size: var(--font-size-2xl);
-            color: var(--primary-600);
-            margin-bottom: var(--spacing-sm);
-            display: block;
-        }
+        .values-section { background: var(--gray-50); }
+        .values-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--spacing-xl); }
+        .value-card { background: var(--white); padding: var(--spacing-2xl); border-radius: var(--radius-xl); text-align: center; box-shadow: var(--shadow-md); transition: all var(--transition-base); }
+        .value-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); }
+        .value-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-100), var(--primary-200)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); }
+        .value-icon i { font-size: var(--font-size-3xl); color: var(--primary-700); }
+        .value-card h3 { font-size: var(--font-size-xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-sm); }
+        .value-card p { color: var(--gray-600); font-size: var(--font-size-sm); line-height: 1.7; }
 
-        .stat-number {
-            display: block;
-            font-size: var(--font-size-2xl);
-            font-weight: 800;
-            color: var(--gray-900);
-        }
-
-        .stat-text {
-            font-size: var(--font-size-xs);
-            color: var(--gray-500);
-        }
-
-        /* Bio Section */
-        .bio-section { 
-            margin-bottom: var(--spacing-2xl); 
-        }
-
-        .bio-section h2 {
-            font-size: var(--font-size-3xl);
-            font-weight: 800;
-            color: var(--gray-900);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .bio-section .lead {
-            font-size: var(--font-size-lg);
-            color: var(--gray-700);
-            line-height: 1.8;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .bio-section p {
-            color: var(--gray-600);
-            line-height: 1.8;
-            margin-bottom: var(--spacing-md);
-        }
-
-        /* Expertise Section */
-        .expertise-section { 
-            margin-bottom: var(--spacing-2xl); 
-        }
-
-        .expertise-section h3 {
-            font-size: var(--font-size-2xl);
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .expertise-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--spacing-md);
-        }
-
-        .expertise-item {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-md);
-            background: var(--gray-50);
-            border-radius: var(--radius-lg);
-            transition: all var(--transition-base);
-        }
-
-        .expertise-item:hover {
-            background: var(--primary-100);
-            transform: translateY(-2px);
-        }
-
-        .expertise-item i { 
-            color: var(--primary-600); 
-            font-size: var(--font-size-lg); 
-        }
-
-        .expertise-item span { 
-            font-weight: 500; 
-            color: var(--gray-800); 
-            font-size: var(--font-size-sm); 
-        }
-
-        /* Certifications */
-        .certifications-section { 
-            margin-bottom: var(--spacing-2xl); 
-        }
-
-        .certifications-section h3 {
-            font-size: var(--font-size-2xl);
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .certifications-list { 
-            display: flex; 
-            flex-direction: column; 
-            gap: var(--spacing-md); 
-        }
-
-        .certifications-list li {
-            display: flex;
-            gap: var(--spacing-md);
-            padding: var(--spacing-lg);
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            transition: all var(--transition-base);
-        }
-
-        .certifications-list li:hover { 
-            box-shadow: var(--shadow-md); 
-            transform: translateX(5px); 
-        }
-
-        .certifications-list li i { 
-            color: var(--warning); 
-            font-size: var(--font-size-2xl); 
-            flex-shrink: 0; 
-        }
-
-        .certifications-list strong { 
-            display: block; 
-            color: var(--gray-900); 
-            margin-bottom: var(--spacing-xs); 
-        }
-
-        .certifications-list span { 
-            font-size: var(--font-size-sm); 
-            color: var(--gray-500); 
-        }
-
-        /* About CTA */
-        .about-cta {
-            background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
-            padding: var(--spacing-2xl);
-            border-radius: var(--radius-xl);
-            text-align: center;
-        }
-
-        .about-cta h4 { 
-            font-size: var(--font-size-2xl); 
-            font-weight: 700; 
-            color: var(--gray-900); 
-            margin-bottom: var(--spacing-sm); 
-        }
-
-        .about-cta p { 
-            color: var(--gray-600); 
-            margin-bottom: var(--spacing-lg); 
-        }
-
-        .cta-buttons { 
-            display: flex; 
-            gap: var(--spacing-md); 
-            justify-content: center; 
-            flex-wrap: wrap; 
-        }
-
-        /* Values Section */
-        .values-section { 
-            background: var(--gray-50); 
-        }
-
-        .values-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: var(--spacing-xl); 
-        }
-
-        .value-card { 
-            background: var(--white); 
-            padding: var(--spacing-2xl); 
-            border-radius: var(--radius-xl); 
-            text-align: center; 
-            box-shadow: var(--shadow-md); 
-            transition: all var(--transition-base); 
-        }
-
-        .value-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: var(--shadow-xl); 
-        }
-
-        .value-icon { 
-            width: 80px; 
-            height: 80px; 
-            background: linear-gradient(135deg, var(--primary-100), var(--primary-200)); 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin: 0 auto var(--spacing-lg); 
-        }
-
-        .value-icon i { 
-            font-size: var(--font-size-3xl); 
-            color: var(--primary-700); 
-        }
-
-        .value-card h3 { 
-            font-size: var(--font-size-xl); 
-            font-weight: 700; 
-            color: var(--gray-900); 
-            margin-bottom: var(--spacing-sm); 
-        }
-
-        .value-card p { 
-            color: var(--gray-600); 
-            font-size: var(--font-size-sm); 
-            line-height: 1.7; 
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .about-grid { 
-                grid-template-columns: 1fr; 
-            } 
-            
-            .about-image-col { 
-                max-width: 400px; 
-                margin: 0 auto; 
-            } 
-            
-            .values-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-            } 
-        }
-
-        @media (max-width: 768px) {
-            .expertise-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-            } 
-            
-            .values-grid { 
-                grid-template-columns: 1fr; 
-            } 
-
-            .quick-stats-card { 
-                grid-template-columns: 1fr; 
-            } 
-        }
-
-        @media (max-width: 480px) {
-            .expertise-grid { 
-                grid-template-columns: 1fr; 
-            } 
-        }
+        @media (max-width: 1024px) { .about-grid { grid-template-columns: 1fr; } .about-image-col { max-width: 400px; margin: 0 auto; } .values-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 768px) { .expertise-grid { grid-template-columns: repeat(2,1fr); } .values-grid { grid-template-columns: 1fr; } .quick-stats-card { grid-template-columns: 1fr; } }
+        @media (max-width: 480px) { .expertise-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 
 <body>
 
-    <!-- ========== NAVIGATION ========== -->
     <nav class="navbar scrolled" id="navbar">
         <div class="container nav-container">
             <a href="index.html" class="nav-logo">
                 <i class="fas fa-language"></i>
                 <span>Dina Rashad</span>
             </a>
-            
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
-            
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link active">About</a></li>
@@ -420,7 +129,6 @@
         </div>
     </nav>
 
-    <!-- ========== PAGE HEADER ========== -->
     <section class="page-header">
         <div class="container">
             <div class="page-header-content">
@@ -428,7 +136,6 @@
                 <h1>About Dina Rashad</h1>
                 <p>Passionate about bridging language barriers and facilitating seamless communication across cultures</p>
             </div>
-            
             <div class="breadcrumb">
                 <a href="index.html"><i class="fas fa-home"></i> Home</a>
                 <span>/</span>
@@ -437,12 +144,11 @@
         </div>
     </section>
 
-    <!-- ========== ABOUT CONTENT ========== -->
     <section class="section about-section">
         <div class="container">
             <div class="about-grid">
-                
-                <!-- Profile Image & Info -->
+
+                <!-- Profile Image -->
                 <div class="about-image-col">
                     <div class="about-profile-card">
                         <img src="images/profile.jpg" alt="Dina Rashad - Professional Interpreter" loading="eager">
@@ -453,7 +159,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="quick-stats-card">
                         <div class="stat-box">
                             <i class="fas fa-calendar-alt"></i>
@@ -477,64 +182,42 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Bio Content -->
                 <div class="about-content-col">
+
                     <div class="bio-section">
                         <h2>Professional Journey</h2>
-                        
                         <p class="lead">
-                            With over a decade of dedicated experience in the field of conference interpretation, 
-                            I have had the privilege of serving as the linguistic bridge between Arabic and English 
+                            With over a decade of dedicated experience in the field of conference interpretation,
+                            I have had the privilege of serving as the linguistic bridge between Arabic and English
                             speakers at some of the most prestigious events and organizations.
                         </p>
-                        
                         <p>
-                            My career in simultaneous interpretation began with a deep passion for languages and 
-                            cross-cultural communication. Over the years, I have honed my skills through rigorous 
-                            training, continuous professional development, and hands-on experience across diverse 
+                            My career in simultaneous interpretation began with a deep passion for languages and
+                            cross-cultural communication. Over the years, I have honed my skills through rigorous
+                            training, continuous professional development, and hands-on experience across diverse
                             sectors including government, media, technology, and international business.
                         </p>
-                        
                         <p>
-                            I specialize in providing real-time interpretation services that go beyond literal 
-                            translation – capturing nuances, cultural context, and the speaker's intended tone 
+                            I specialize in providing real-time interpretation services that go beyond literal
+                            translation – capturing nuances, cultural context, and the speaker's intended tone
                             to ensure your message resonates authentically with your audience.
                         </p>
                     </div>
-                    
-                    <!-- Expertise Areas -->
+
                     <div class="expertise-section">
                         <h3>Areas of Expertise</h3>
                         <div class="expertise-grid">
-                            <div class="expertise-item">
-                                <i class="fas fa-broadcast-tower"></i>
-                                <span>Live Conferences</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-newspaper"></i>
-                                <span>Press Events</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-tv"></i>
-                                <span>Media & Broadcasting</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-video"></i>
-                                <span>Remote/Virtual Events</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-building"></i>
-                                <span>Corporate Meetings</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-gavel"></i>
-                                <span>Legal & Diplomatic</span>
-                            </div>
+                            <div class="expertise-item"><i class="fas fa-broadcast-tower"></i><span>Live Conferences</span></div>
+                            <div class="expertise-item"><i class="fas fa-newspaper"></i><span>Press Events</span></div>
+                            <div class="expertise-item"><i class="fas fa-tv"></i><span>Media & Broadcasting</span></div>
+                            <div class="expertise-item"><i class="fas fa-video"></i><span>Remote/Virtual Events</span></div>
+                            <div class="expertise-item"><i class="fas fa-building"></i><span>Corporate Meetings</span></div>
+                            <div class="expertise-item"><i class="fas fa-gavel"></i><span>Legal & Diplomatic</span></div>
                         </div>
                     </div>
-                    
-                    <!-- Certifications -->
+
                     <div class="certifications-section">
                         <h3>Certifications & Training</h3>
                         <ul class="certifications-list">
@@ -561,11 +244,11 @@
                             </li>
                         </ul>
                     </div>
-<!-- Recommendations -->
+
+                    <!-- FIX #1: Orphaned HTML removed — clean recommendations section -->
                     <div class="recommendations-section">
                         <h3>Recommendations</h3>
-                        
-                        <!-- Recommendation 1 - COA -->
+
                         <div class="recommendation-card" id="recCard1" onclick="toggleRecommendation('recCard1')" style="margin-bottom: var(--spacing-xl);">
                             <div class="recommendation-img-wrap">
                                 <img src="images/recommendation-coa.jpg" alt="Letter of Recommendation - COA Netherlands" loading="lazy">
@@ -584,7 +267,6 @@
                             </div>
                         </div>
 
-                        <!-- Recommendation 2 - Tuncay Bayburt -->
                         <div class="recommendation-card" id="recCard2" onclick="toggleRecommendation('recCard2')" style="margin-bottom: var(--spacing-xl);">
                             <div class="recommendation-img-wrap">
                                 <img src="images/recommendation-tuncay.jpg" alt="Recommendation - Tuncay Bayburt" loading="lazy">
@@ -603,7 +285,6 @@
                             </div>
                         </div>
 
-                        <!-- Recommendation 3 - Barry Donadio -->
                         <div class="recommendation-card" id="recCard3" onclick="toggleRecommendation('recCard3')">
                             <div class="recommendation-img-wrap">
                                 <img src="images/recommendation-barry.jpg" alt="Recommendation - Barry Donadio" loading="lazy">
@@ -622,23 +303,7 @@
                             </div>
                         </div>
                     </div>
-                            <button class="recommendation-toggle" onclick="event.stopPropagation(); toggleRecommendation('recCard1')">
-                                <i class="fas fa-chevron-down"></i>
-                                <span>View Full Letter</span>
-                            </button>
-                            <div class="recommendation-source">
-                                <strong>Letter of Recommendation</strong>
-                                <span>Martin Hobers — Facilitator Cultural Orientation The Netherlands</span>
-                                <div class="source-badge">
-                                    <i class="fas fa-building"></i>
-                                    COA (Centraal Orgaan opvang asielzoekers) — Netherlands
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    
-                    <!-- CTA -->
                     <div class="about-cta">
                         <h4>Let's Work Together</h4>
                         <p>I'm ready to bring professional interpretation expertise to your next event.</p>
@@ -653,48 +318,36 @@
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========== VALUES SECTION ========== -->
     <section class="section values-section">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">My Values</span>
                 <h2 class="section-title">What Drives My Work</h2>
             </div>
-            
             <div class="values-grid">
                 <div class="value-card scroll-animate">
-                    <div class="value-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
+                    <div class="value-icon"><i class="fas fa-bullseye"></i></div>
                     <h3>Precision</h3>
                     <p>Every word matters. I ensure accurate transmission of information while maintaining the original message's intent and impact.</p>
                 </div>
-                
                 <div class="value-card scroll-animate">
-                    <div class="value-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
+                    <div class="value-icon"><i class="fas fa-clock"></i></div>
                     <h3>Punctuality</h3>
                     <p>Time is valuable. I arrive early, prepare thoroughly, and respect every minute of your event schedule.</p>
                 </div>
-                
                 <div class="value-card scroll-animate">
-                    <div class="value-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
+                    <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
                     <h3>Confidentiality</h3>
                     <p>Your discussions are safe with me. I adhere strictly to professional ethics regarding privacy and discretion.</p>
                 </div>
-                
                 <div class="value-card scroll-animate">
-                    <div class="value-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
+                    <div class="value-icon"><i class="fas fa-heart"></i></div>
                     <h3>Passion</h3>
                     <p>I love what I do. This passion drives me to deliver exceptional service and continuously improve my craft.</p>
                 </div>
@@ -702,7 +355,6 @@
         </div>
     </section>
 
-    <!-- ========== FOOTER ========== -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -712,11 +364,10 @@
                         <span>Dina Rashad</span>
                     </a>
                     <p class="footer-description">
-                        Professional freelance conference interpreter specializing in 
+                        Professional freelance conference interpreter specializing in
                         Arabic-English simultaneous interpretation.
                     </p>
                 </div>
-                
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
@@ -726,7 +377,6 @@
                         <li><a href="booking.html">Book Now</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-services">
                     <h4>Services</h4>
                     <ul>
@@ -736,9 +386,9 @@
                         <li><a href="booking.html">Media & Press</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-contact">
                     <h4>Contact</h4>
+                    <!-- FIX: was ++20 101 116 0627 -->
                     <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener">
                         <i class="fab fa-whatsapp"></i>
                         <span>+20 101 116 0627</span>
@@ -749,22 +399,18 @@
                     </p>
                 </div>
             </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2024 Dina Rashad. All rights reserved.</p>
+                <p>&copy; 2025 Dina Rashad. All rights reserved.</p>
                 <p class="footer-credit">Professional Conference Interpreter</p>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'd%20love%20to%20learn%20more%20about%20your%20services" 
-       class="whatsapp-float" 
-       target="_blank" 
-       rel="noopener"
-       aria-label="Contact on WhatsApp">
+    <a href="https://wa.me/201011160627?text=Hi%20Dina%2C%20I'd%20love%20to%20learn%20more%20about%20your%20services"
+       class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contact on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
+
     <script>
     function toggleRecommendation(id) {
         var card = document.getElementById(id);
@@ -775,7 +421,6 @@
     }
     </script>
 
-    <!-- Scripts -->
     <script src="Js/main.js"></script>
     <script src="Js/pwa.js"></script>
 </body>
