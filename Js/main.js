@@ -1,20 +1,18 @@
 /* ===================================
    DINA RASHAD - INTERPRETER PWA
-   Main JavaScript — Fixed v2.1
+   Main JavaScript v2.2
    =================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
-    initScrollEffects();
+    initScrollAnimations();  // replaces IntersectionObserver with reliable scroll
     initSmoothScroll();
-    initIntersectionObserver();
+    initCounters();
     console.log('🎤 Dina Rashad Interpreter PWA - Initialized');
 });
 
 /* ===================================
-   NAVIGATION — ROOT FIX
-   المشكلة كانت: click event بيبابل للـ document
-   وبيقفل الـ menu فوراً بعد ما يتفتح
+   NAVIGATION
    =================================== */
 function initNavigation() {
     const navToggle = document.getElementById('navToggle');
@@ -22,8 +20,6 @@ function initNavigation() {
     const navbar    = document.getElementById('navbar');
 
     if (navToggle && navMenu) {
-
-        // FIX: stopPropagation يمنع الـ event من الوصول للـ document listener
         navToggle.addEventListener('click', function(e) {
             e.stopPropagation();
             const isOpen = navMenu.classList.contains('active');
@@ -32,31 +28,23 @@ function initNavigation() {
             document.body.style.overflow = isOpen ? '' : 'hidden';
         });
 
-        // إغلاق عند الضغط على لينك
         navMenu.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => closeNav(navToggle, navMenu));
         });
 
-        // إغلاق عند الضغط خارج الـ nav
         document.addEventListener('click', function(e) {
-            if (
-                navMenu.classList.contains('active') &&
+            if (navMenu.classList.contains('active') &&
                 !navToggle.contains(e.target) &&
-                !navMenu.contains(e.target)
-            ) {
+                !navMenu.contains(e.target)) {
                 closeNav(navToggle, navMenu);
             }
         });
 
-        // إغلاق بـ Escape
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-                closeNav(navToggle, navMenu);
-            }
+            if (e.key === 'Escape') closeNav(navToggle, navMenu);
         });
     }
 
-    // Navbar scroll effect
     if (navbar) {
         window.addEventListener('scroll', function() {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
@@ -71,17 +59,75 @@ function closeNav(toggle, menu) {
 }
 
 /* ===================================
-   SCROLL EFFECTS
+   SCROLL ANIMATIONS
+   بدل IntersectionObserver — أكتر موثوقية على كل المتصفحات
    =================================== */
-function initScrollEffects() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+function initScrollAnimations() {
+    // اضف scroll-animate لـ service cards وغيرها
+    document.querySelectorAll('.service-card, .feature-item, .language-card').forEach((el, i) => {
+        el.classList.add('scroll-animate');
+        el.style.transitionDelay = `${i * 0.1}s`;
+    });
 
-    document.querySelectorAll('.scroll-animate, .stagger-children')
-        .forEach(el => observer.observe(el));
+    function checkVisibility() {
+        const windowH = window.innerHeight;
+        document.querySelectorAll('.scroll-animate:not(.visible), .stagger-children:not(.visible)').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            // عنصر يكون visible لو 10% منه ظاهر في الشاشة
+            if (rect.top < windowH * 0.92 && rect.bottom > 0) {
+                el.classList.add('visible');
+            }
+        });
+    }
+
+    // شغّل فوراً عند التحميل
+    checkVisibility();
+    // شغّل عند كل scroll
+    window.addEventListener('scroll', checkVisibility, { passive: true });
+    // شغّل بعد ثانية كـ fallback لو فيه حاجة اتأخرت
+    window.addEventListener('load', function() {
+        checkVisibility();
+        setTimeout(checkVisibility, 500);
+        setTimeout(checkVisibility, 1500);
+    });
+}
+
+/* ===================================
+   COUNTER ANIMATION
+   =================================== */
+function initCounters() {
+    function checkCounters() {
+        document.querySelectorAll('.stat-number[data-count]:not(.animated)').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+                el.classList.add('animated');
+                animateCounter(el, parseInt(el.dataset.count));
+            }
+        });
+    }
+
+    checkCounters();
+    window.addEventListener('scroll', checkCounters, { passive: true });
+    window.addEventListener('load', function() {
+        checkCounters();
+        setTimeout(checkCounters, 300);
+    });
+}
+
+function animateCounter(element, target, duration = 2000) {
+    let start = 0;
+    const increment = target / (duration / 16);
+
+    function update() {
+        start += increment;
+        if (start < target) {
+            element.textContent = Math.floor(start).toLocaleString();
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = target.toLocaleString() + '+';
+        }
+    }
+    requestAnimationFrame(update);
 }
 
 /* ===================================
@@ -90,35 +136,16 @@ function initScrollEffects() {
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
             const target = document.querySelector(targetId);
             if (target) {
+                e.preventDefault();
                 const offset = document.querySelector('.navbar')?.offsetHeight || 80;
                 window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
             }
         });
     });
-}
-
-/* ===================================
-   INTERSECTION OBSERVER
-   =================================== */
-function initIntersectionObserver() {
-    const sections = document.querySelectorAll('.service-card, .feature-item, .language-card');
-    sections.forEach((el, i) => {
-        el.classList.add('scroll-animate');
-        el.style.transitionDelay = `${i * 0.1}s`;
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-    sections.forEach(el => observer.observe(el));
 }
 
 /* ===================================
@@ -145,22 +172,7 @@ function throttle(func, limit = 100) {
 
 function isInViewport(element) {
     const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 && rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right  <= (window.innerWidth  || document.documentElement.clientWidth)
-    );
-}
-
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
-    function update() {
-        start += increment;
-        if (start < target) { element.textContent = Math.ceil(start); requestAnimationFrame(update); }
-        else { element.textContent = target; }
-    }
-    update();
+    return rect.top < window.innerHeight && rect.bottom > 0;
 }
 
 /* ===================================
@@ -187,7 +199,9 @@ function clearError(input) {
    DATE HELPERS
    =================================== */
 function formatDate(date) {
-    return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    return date.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
 }
 
 function getTimeSlots() {
@@ -208,16 +222,29 @@ function isPastDate(date) {
 function formatTime24To12(time) {
     if (!time) return '';
     const [h, m] = time.split(':').map(Number);
-    const period = h >= 12 ? 'PM' : 'AM';
-    const hour12 = h % 12 || 12;
-    return `${hour12}:${String(m).padStart(2,'0')} ${period}`;
+    return `${h % 12 || 12}:${String(m).padStart(2,'0')} ${h >= 12 ? 'PM' : 'AM'}`;
 }
 
 /* ===================================
    WHATSAPP
    =================================== */
 function generateWhatsAppMessage(data) {
-    return encodeURIComponent(`Hello Dina! 👋\n\nI'm interested in booking your interpretation services.\n\n*Details:*\n• Name: ${data.name}\n• Email: ${data.email || 'N/A'}\n• Phone: ${data.phone}\n• Date: ${formatDate(new Date(data.date))}\n• Time: ${data.time}\n• Event Type: ${data.eventType}\n• Duration: ${data.duration || 'To be discussed'}\n• Message: ${data.message || 'N/A'}\n\nLooking forward to hearing from you!`);
+    return encodeURIComponent(
+`Hello Dina! 👋
+
+I'm interested in booking your interpretation services.
+
+*Details:*
+• Name: ${data.name}
+• Email: ${data.email || 'N/A'}
+• Phone: ${data.phone}
+• Date: ${formatDate(new Date(data.date))}
+• Time: ${data.time}
+• Event Type: ${data.eventType}
+• Duration: ${data.duration || 'To be discussed'}
+• Message: ${data.message || 'N/A'}
+
+Looking forward to hearing from you!`);
 }
 
 function openWhatsApp(data) {
@@ -229,17 +256,17 @@ function openWhatsApp(data) {
    =================================== */
 function saveToStorage(key, data) {
     try { localStorage.setItem(key, JSON.stringify(data)); return true; }
-    catch(e) { console.error('Storage save error:', e); return false; }
+    catch(e) { return false; }
 }
 
 function getFromStorage(key) {
     try { const d = localStorage.getItem(key); return d ? JSON.parse(d) : null; }
-    catch(e) { console.error('Storage read error:', e); return null; }
+    catch(e) { return null; }
 }
 
 function removeFromStorage(key) {
     try { localStorage.removeItem(key); return true; }
-    catch(e) { console.error('Storage remove error:', e); return false; }
+    catch(e) { return false; }
 }
 
 /* ===================================
@@ -252,17 +279,16 @@ function showNotification(message, type = 'success', duration = 4000) {
         const s = document.createElement('style');
         s.id = 'notification-styles';
         s.textContent = `
-            .notification { position:fixed; top:100px; right:20px; padding:16px 20px; border-radius:12px; background:white; box-shadow:0 10px 40px rgba(0,0,0,0.15); display:flex; align-items:center; gap:12px; z-index:10000; max-width:400px; animation:slideInRight 0.3s ease; }
-            .notification-success { border-left:4px solid #10b981; }
-            .notification-error   { border-left:4px solid #ef4444; }
-            .notification-info    { border-left:4px solid #3b82f6; }
-            .notification-content { display:flex; align-items:center; gap:10px; flex:1; }
-            .notification-success .notification-content i { color:#10b981; }
-            .notification-error   .notification-content i { color:#ef4444; }
-            .notification-info    .notification-content i { color:#3b82f6; }
-            .notification-close   { background:none; border:none; color:#9ca3af; cursor:pointer; padding:4px; }
-            .notification-close:hover { color:#374151; }
-            @keyframes slideInRight { from { transform:translateX(100%); opacity:0; } to { transform:translateX(0); opacity:1; } }
+            .notification{position:fixed;top:100px;right:20px;padding:16px 20px;border-radius:12px;background:white;box-shadow:0 10px 40px rgba(0,0,0,.15);display:flex;align-items:center;gap:12px;z-index:10000;max-width:400px;animation:slideInRight .3s ease}
+            .notification-success{border-left:4px solid #10b981}
+            .notification-error{border-left:4px solid #ef4444}
+            .notification-info{border-left:4px solid #3b82f6}
+            .notification-content{display:flex;align-items:center;gap:10px;flex:1}
+            .notification-success .notification-content i{color:#10b981}
+            .notification-error .notification-content i{color:#ef4444}
+            .notification-info .notification-content i{color:#3b82f6}
+            .notification-close{background:none;border:none;color:#9ca3af;cursor:pointer;padding:4px}
+            @keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
         `;
         document.head.appendChild(s);
     }
@@ -281,7 +307,7 @@ function showNotification(message, type = 'success', duration = 4000) {
     `;
     document.body.appendChild(n);
     setTimeout(() => {
-        n.style.animation = 'slideInRight 0.3s ease reverse';
+        n.style.animation = 'slideInRight .3s ease reverse';
         setTimeout(() => n.remove(), 300);
     }, duration);
 }
@@ -295,5 +321,5 @@ window.DinaRashadApp = {
     isValidEmail, isValidPhone,
     formatDate, formatTime24To12, getTimeSlots
 };
-window.showNotification  = showNotification;
-window.formatTime24To12  = formatTime24To12;
+window.showNotification = showNotification;
+window.formatTime24To12 = formatTime24To12;
