@@ -1,19 +1,16 @@
 {
   "name": "Dina Rashad - Professional Interpreter",
-  "short_name": "Dina Interpreter",
-  "description": "Professional Freelance Conference Interpreter - 10+ Years Experience in Arabic-English Simultaneous Interpretation. Book your interpretation session now!",
+  "short_name": "Dina Interp.",
+  "description": "Professional Freelance Conference Interpreter - 10+ Years Experience in Arabic-English Simultaneous Interpretation.",
   "start_url": "/dina-rashad/index.html",
   "scope": "/dina-rashad/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#ffffff",
+  "background_color": "#1e40af",
   "theme_color": "#2563eb",
   "lang": "en",
   "dir": "ltr",
-  "categories": [
-    "business",
-    "professional"
-  ],
+  "categories": ["business", "professional"],
   "icons": [
     {
       "src": "/dina-rashad/images/icons/favicon.svg",
@@ -25,25 +22,25 @@
       "src": "/dina-rashad/images/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     },
     {
       "src": "/dina-rashad/images/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     },
     {
       "src": "/dina-rashad/images/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/dina-rashad/images/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
