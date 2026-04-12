@@ -414,12 +414,4 @@
             const step = target / 60;
             const timer = setInterval(() => {
                 current += step;
-                if (current >= target) { el.textContent = target.toLocaleString() + '+'; clearInterval(timer); }
-                else { el.textContent = Math.floor(current).toLocaleString(); }
-            }, 2000/60);
-        }
-        window.openLightbox = openLightbox;
-        window.closeLightbox = closeLightbox;
-    </script>
-</body>
-</html>
+                if (current >= target) { el.textContent =
