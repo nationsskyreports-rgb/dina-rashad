@@ -2,7 +2,7 @@
   "name": "Dina Rashad - Professional Interpreter",
   "short_name": "Dina Interp.",
   "description": "Professional Freelance Conference Interpreter - 10+ Years Experience in Arabic-English Simultaneous Interpretation.",
-  "start_url": "./index.html",
+  "start_url": "./splash.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -12,12 +12,6 @@
   "dir": "ltr",
   "categories": ["business", "professional"],
   "icons": [
-    {
-      "src": "./images/icons/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
     {
       "src": "./images/icons/icon-96x96.png",
       "sizes": "96x96",
