@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم | دينا رشاد</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -12,10 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="CSS/admin.css">
     <meta name="theme-color" content="#2563eb">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="manifest-admin.json">
-    <script src="/dina-rashad/Js/pwa.js" defer></script>
 </head>
 <body>
 
@@ -26,7 +21,6 @@
         <div class="login-logo"><i class="fas fa-microphone"></i></div>
         <h2 class="login-title">دينا رشاد</h2>
         <p class="login-subtitle">لوحة التحكم الإدارية</p>
-        
         <div class="login-field">
             <label>البريد الإلكتروني</label>
             <div class="login-input-wrap">
@@ -35,7 +29,6 @@
             </div>
             <div class="login-error" id="loginEmailError"><i class="fas fa-exclamation-circle"></i> <span></span></div>
         </div>
-        
         <div class="login-field">
             <label>كلمة المرور</label>
             <div class="login-input-wrap">
@@ -45,84 +38,42 @@
             </div>
             <div class="login-error" id="loginPassError"><i class="fas fa-exclamation-circle"></i> <span></span></div>
         </div>
-        
         <div class="login-remember">
             <input type="checkbox" id="rememberMe">
             <label for="rememberMe">تذكرني</label>
         </div>
-        
         <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
     </div>
 </div>
 
 <!-- ========== التطبيق الرئيسي ========== -->
 <div class="app" id="app">
-    
-    <!-- خلفية الشريط الجانبي (موبايل) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
-    <!-- الشريط الجانبي -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo"><i class="fas fa-microphone"></i></div>
-            <div class="sidebar-brand">
-                <h3>دينا رشاد</h3>
-                <span>لوحة التحكم</span>
-            </div>
+            <div class="sidebar-brand"><h3>دينا رشاد</h3><span>لوحة التحكم</span></div>
         </div>
-        
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">الرئيسية</div>
-                <div class="nav-item active" data-page="dashboard">
-                    <i class="fas fa-chart-pie"></i><span>لوحة التحكم</span>
-                </div>
-                <div class="nav-item" data-page="bookings">
-                    <i class="fas fa-calendar-alt"></i><span>الحجوزات</span>
-                    <span class="nav-badge" id="bookingsBadge">0</span>
-                </div>
-                <div class="nav-item" data-page="portfolio">
-                    <i class="fas fa-briefcase"></i><span>معرض الأعمال</span>
-                </div>
-                <div class="nav-item" data-page="messages">
-                    <i class="fas fa-envelope"></i><span>الرسائل</span>
-                    <span class="nav-badge" id="messagesBadge">0</span>
-                </div>
-                <div class="nav-item" data-page="clients">
-                    <i class="fas fa-users"></i><span>العملاء</span>
-                </div>
+                <div class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie"></i><span>لوحة التحكم</span></div>
+                <div class="nav-item" data-page="bookings"><i class="fas fa-calendar-alt"></i><span>الحجوزات</span><span class="nav-badge" id="bookingsBadge" style="display:none">0</span></div>
+                <div class="nav-item" data-page="portfolio"><i class="fas fa-briefcase"></i><span>معرض الأعمال</span></div>
+                <div class="nav-item" data-page="messages"><i class="fas fa-envelope"></i><span>الرسائل</span><span class="nav-badge" id="messagesBadge" style="display:none">0</span></div>
+                <div class="nav-item" data-page="clients"><i class="fas fa-users"></i><span>العملاء</span></div>
             </div>
-            
             <div class="nav-section">
                 <div class="nav-section-title">المحتوى</div>
-                <div class="nav-item" data-page="pages">
-                    <i class="fas fa-file-alt"></i><span>إدارة الصفحات</span>
-                </div>
-                <div class="nav-item" data-page="media">
-                    <i class="fas fa-images"></i><span>مكتبة الوسائط</span>
-                </div>
+                <div class="nav-item" data-page="media"><i class="fas fa-images"></i><span>مكتبة الوسائط</span></div>
+                <div class="nav-item" data-page="analytics"><i class="fas fa-chart-line"></i><span>الإحصائيات</span></div>
+                <div class="nav-item" data-page="settings"><i class="fas fa-cog"></i><span>الإعدادات</span></div>
             </div>
-            
             <div class="nav-section">
-                <div class="nav-section-title">النظام</div>
-                <div class="nav-item" data-page="settings">
-                    <i class="fas fa-cog"></i><span>الإعدادات</span>
-                </div>
-                <div class="nav-item" data-page="analytics">
-                    <i class="fas fa-chart-line"></i><span>الإحصائيات</span>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-item" id="visitSite">
-                    <i class="fas fa-external-link-alt"></i><span>زيارة الموقع</span>
-                </div>
-                <div class="nav-item" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span>
-                </div>
+                <div class="nav-item" id="visitSite"><i class="fas fa-external-link-alt"></i><span>زيارة الموقع</span></div>
+                <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></div>
             </div>
         </nav>
-        
         <div class="sidebar-footer">
             <div class="sidebar-stat-card">
                 <div class="num" id="sidebarBookingsCount">0</div>
@@ -130,28 +81,25 @@
             </div>
         </div>
     </aside>
-    
-    <!-- المنطقة الرئيسية -->
+
     <div class="main-area">
-        
-        <!-- الشريط العلوي -->
         <header class="header">
             <button class="hamburger" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
             <h1 class="header-title" id="headerTitle">لوحة التحكم</h1>
             <div class="header-search">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="بحث في كل شيء..." id="globalSearch">
+                <input type="text" placeholder="بحث..." id="globalSearch">
             </div>
             <div class="header-actions">
                 <div style="position:relative">
                     <button class="header-icon-btn" id="notifBtn">
                         <i class="fas fa-bell"></i>
-                        <span class="badge" id="notifBadge">0</span>
+                        <span class="badge" id="notifBadge" style="display:none">0</span>
                     </button>
                     <div class="notif-dropdown" id="notifDropdown">
                         <div class="notif-dropdown-header">
                             <h4>الإشعارات</h4>
-                            <a id="markAllRead">تحديد الكل كمقروء</a>
+                            <a id="markAllRead" style="cursor:pointer">تحديد الكل كمقروء</a>
                         </div>
                         <div class="notif-list" id="notifList"></div>
                     </div>
@@ -159,31 +107,25 @@
                 <div class="header-avatar">DR</div>
             </div>
         </header>
-        
-        <!-- منطقة المحتوى -->
+
         <div class="content" id="contentArea">
-            
+
             <!-- ===== لوحة التحكم ===== -->
             <div class="page-section active" id="page-dashboard">
                 <div class="stats-grid" id="statsGrid"></div>
                 <div class="grid-3">
                     <div class="card">
-                        <div class="card-header"><h3>الحجوزات الشهرية</h3>
-                            <div style="display:flex;gap:4px">
-                                <button class="btn btn-sm btn-secondary chart-period active" data-period="monthly">شهري</button>
-                                <button class="btn btn-sm btn-secondary chart-period" data-period="weekly">أسبوعي</button>
-                            </div>
-                        </div>
+                        <div class="card-header"><h3>الحجوزات الشهرية</h3></div>
                         <div class="card-body"><div class="chart-container"><canvas id="bookingsChart"></canvas></div></div>
                     </div>
                     <div class="card">
-                        <div class="card-header"><h3>الحجوزات القادمة</h3><a onclick="navigateTo('bookings')">عرض الكل</a></div>
+                        <div class="card-header"><h3>الحجوزات القادمة</h3><a style="cursor:pointer" onclick="navigateTo('bookings')">عرض الكل</a></div>
                         <div class="card-body" id="upcomingBookings"></div>
                     </div>
                 </div>
                 <div class="grid-2">
                     <div class="card">
-                        <div class="card-header"><h3>الرسائل الأخيرة</h3><a onclick="navigateTo('messages')">عرض الكل</a></div>
+                        <div class="card-header"><h3>الرسائل الأخيرة</h3><a style="cursor:pointer" onclick="navigateTo('messages')">عرض الكل</a></div>
                         <div class="card-body" id="recentMessages"></div>
                     </div>
                     <div class="card">
@@ -192,7 +134,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- ===== الحجوزات ===== -->
             <div class="page-section" id="page-bookings">
                 <div class="toolbar">
@@ -217,9 +159,7 @@
                     <div class="card-body" style="padding:0">
                         <div class="table-wrap">
                             <table class="table-mobile-cards" id="bookingsTable">
-                                <thead><tr>
-                                    <th>#</th><th>العميل</th><th>الفعالية</th><th>النوع</th><th>التاريخ</th><th>الحالة</th><th>الإجراءات</th>
-                                </tr></thead>
+                                <thead><tr><th>#</th><th>العميل</th><th>الفعالية</th><th>النوع</th><th>التاريخ</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
                                 <tbody id="bookingsBody"></tbody>
                             </table>
                         </div>
@@ -227,7 +167,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- ===== معرض الأعمال ===== -->
             <div class="page-section" id="page-portfolio">
                 <div class="toolbar">
@@ -245,7 +185,7 @@
                 </div>
                 <div class="portfolio-grid" id="portfolioGrid"></div>
             </div>
-            
+
             <!-- ===== الرسائل ===== -->
             <div class="page-section" id="page-messages">
                 <div class="toolbar" style="margin-bottom:0">
@@ -263,7 +203,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- ===== العملاء ===== -->
             <div class="page-section" id="page-clients">
                 <div class="toolbar">
@@ -273,10 +213,8 @@
                 <div class="card">
                     <div class="card-body" style="padding:0">
                         <div class="table-wrap">
-                            <table class="table-mobile-cards" id="clientsTable">
-                                <thead><tr>
-                                    <th>#</th><th>الاسم</th><th>البريد</th><th>المؤسسة</th><th>الفعاليات</th><th>إجمالي المدفوعات</th><th>الإجراءات</th>
-                                </tr></thead>
+                            <table class="table-mobile-cards">
+                                <thead><tr><th>#</th><th>الاسم</th><th>البريد</th><th>المؤسسة</th><th>الفعاليات</th><th>المدفوعات</th><th>الإجراءات</th></tr></thead>
                                 <tbody id="clientsBody"></tbody>
                             </table>
                         </div>
@@ -284,22 +222,13 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- ===== إدارة الصفحات ===== -->
-            <div class="page-section" id="page-pages">
-                <div id="pagesList"></div>
-            </div>
-            
+
             <!-- ===== مكتبة الوسائط ===== -->
             <div class="page-section" id="page-media">
                 <div class="toolbar">
                     <button class="btn btn-primary" onclick="document.getElementById('mediaUpload').click()"><i class="fas fa-upload"></i> رفع ملفات</button>
                     <input type="file" id="mediaUpload" multiple accept="image/*" style="display:none" onchange="handleMediaUpload(event)">
-                    <div class="toolbar-search"><i class="fas fa-search"></i><input type="text" placeholder="بحث..." id="mediaSearch" oninput="filterMedia()"></div>
-                    <select id="mediaTypeFilter" onchange="filterMedia()">
-                        <option value="">الكل</option>
-                        <option value="image">صور</option>
-                    </select>
+                    <div class="toolbar-search"><i class="fas fa-search"></i><input type="text" placeholder="بحث..." id="mediaSearch" oninput="renderMedia()"></div>
                 </div>
                 <div class="upload-area" id="uploadArea">
                     <i class="fas fa-cloud-upload-alt"></i>
@@ -308,38 +237,22 @@
                 </div>
                 <div class="media-grid" id="mediaGrid"></div>
             </div>
-            
+
             <!-- ===== الإعدادات ===== -->
             <div class="page-section" id="page-settings">
                 <div class="settings-section">
                     <h3>المعلومات الشخصية</h3>
-                    <p>البيانات الأساسية المعروضة في الموقع</p>
                     <div class="form-row">
                         <div class="form-group"><label>الاسم الكامل</label><input class="form-input" value="دينا رشاد"></div>
                         <div class="form-group"><label>اللقب المهني</label><input class="form-input" value="مترجمة فورية محترفة"></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group"><label>البريد الإلكتروني</label><input class="form-input" value="dina@dinrashad.com"></div>
-                        <div class="form-group"><label>رقم الواتساب</label><input class="form-input" value="+20 106 116 0627"></div>
+                        <div class="form-group"><label>البريد الإلكتروني</label><input class="form-input" value="dinarashad9@gmail.com"></div>
+                        <div class="form-group"><label>رقم الواتساب</label><input class="form-input" value="+20 101 116 0627"></div>
                     </div>
-                    <div class="form-group"><label>نبذة مختصرة</label><textarea class="form-input">مترجمة فورية محترفة متخصصة في الترجمة الفورية بين العربية والإنجليزية في المؤتمرات والفعاليات الدولية. خبرة تزيد عن 10 سنوات في مجال الترجمة المؤتمراتية.</textarea></div>
                 </div>
-                
-                <div class="settings-section">
-                    <h3>معلومات الأعمال</h3>
-                    <div class="form-row">
-                        <div class="form-group"><label>سنوات الخبرة</label><input class="form-input" type="number" value="10"></div>
-                        <div class="form-group"><label>عدد الفعاليات</label><input class="form-input" type="number" value="500"></div>
-                    </div>
-                    <div class="form-group"><label>نسبة رضا العملاء</label><input class="form-input" value="100%"></div>
-                </div>
-                
                 <div class="settings-section">
                     <h3>إعدادات الحجز</h3>
-                    <div class="settings-row">
-                        <div class="settings-row-info"><h4>الحد الأدنى للإشعار</h4><p>أقل فترة قبل الحجز بالساعات</p></div>
-                        <input class="form-input" type="number" value="48" style="width:100px">
-                    </div>
                     <div class="settings-row">
                         <div class="settings-row-info"><h4>قبول الحجوزات تلقائياً</h4><p>بدون مراجعة يدوية</p></div>
                         <div class="toggle" onclick="this.classList.toggle('active')"></div>
@@ -348,50 +261,12 @@
                         <div class="settings-row-info"><h4>إشعارات البريد الجديدة</h4><p>إرسال بريد عند حجز جديد</p></div>
                         <div class="toggle active" onclick="this.classList.toggle('active')"></div>
                     </div>
-                    <div class="settings-row">
-                        <div class="settings-row-info"><h4>إشعارات الواتساب</h4><p>إرسال إشعار واتساب عند حجز جديد</p></div>
-                        <div class="toggle active" onclick="this.classList.toggle('active')"></div>
-                    </div>
                 </div>
-                
-                <div class="settings-section">
-                    <h3>إعدادات المظهر</h3>
-                    <div class="settings-row">
-                        <div class="settings-row-info"><h4>اللون الرئيسي</h4><p>اختر لون العلامة التجارية</p></div>
-                        <div class="color-options">
-                            <div class="color-opt active" style="background:#2563eb" data-hue="blue" onclick="selectAccent(this)"></div>
-                            <div class="color-opt" style="background:#7c3aed" data-hue="purple" onclick="selectAccent(this)"></div>
-                            <div class="color-opt" style="background:#059669" data-hue="green" onclick="selectAccent(this)"></div>
-                            <div class="color-opt" style="background:#d97706" data-hue="amber" onclick="selectAccent(this)"></div>
-                            <div class="color-opt" style="background:#dc2626" data-hue="red" onclick="selectAccent(this)"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="settings-section">
-                    <h3>الأمان</h3>
-                    <div class="form-row">
-                        <div class="form-group"><label>كلمة المرور الحالية</label><input class="form-input" type="password" placeholder="ادخل كلمة المرور الحالية"></div>
-                        <div class="form-group"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>كلمة المرور الجديدة</label><input class="form-input" type="password" placeholder="8 أحرف على الأقل"></div>
-                        <div class="form-group"><label>تأكيد كلمة المرور</label><input class="form-input" type="password" placeholder="أعد كتابة كلمة المرور"></div>
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" onclick="showToast('تم حفظ الإعدادات بنجاح','success')" style="margin-top:8px"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+                <button class="btn btn-primary" onclick="showToast('تم حفظ الإعدادات بنجاح','success')"><i class="fas fa-save"></i> حفظ الإعدادات</button>
             </div>
-            
+
             <!-- ===== الإحصائيات ===== -->
             <div class="page-section" id="page-analytics">
-                <div class="toolbar">
-                    <div style="display:flex;gap:4px">
-                        <button class="btn btn-sm btn-secondary analytic-period active" data-period="month">هذا الشهر</button>
-                        <button class="btn btn-sm btn-secondary analytic-period" data-period="week">هذا الأسبوع</button>
-                        <button class="btn btn-sm btn-secondary analytic-period" data-period="year">هذا العام</button>
-                    </div>
-                </div>
                 <div class="stats-grid" id="analyticsStats"></div>
                 <div class="grid-2">
                     <div class="card">
@@ -408,10 +283,10 @@
                     <div class="card-body"><div class="chart-container" style="height:250px"><canvas id="analyticsDoughnut"></canvas></div></div>
                 </div>
             </div>
-            
-        </div><!-- /content -->
-    </div><!-- /main-area -->
-</div><!-- /app -->
+
+        </div>
+    </div>
+</div>
 
 <!-- ========== مودال الحجز ========== -->
 <div class="modal-overlay" id="bookingModal">
@@ -441,11 +316,11 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>اتجاه الترجمة <span class="required">*</span></label>
+                <div class="form-group"><label>اتجاه الترجمة</label>
                     <select class="form-input" id="bLangDir">
                         <option value="">اختر الاتجاه</option>
-                        <option value="Arabic → English">عربي ← إنجليزي</option>
-                        <option value="English → Arabic">إنجليزي ← عربي</option>
+                        <option value="Arabic → English">عربي → إنجليزي</option>
+                        <option value="English → Arabic">إنجليزي → عربي</option>
                     </select>
                 </div>
                 <div class="form-group"><label>الحالة</label>
@@ -459,13 +334,13 @@
             </div>
             <div class="form-row">
                 <div class="form-group"><label>التاريخ <span class="required">*</span></label><input class="form-input" id="bDate" type="date"><div class="form-error" id="bDateErr">اختر التاريخ</div></div>
-                <div class="form-group"><label>وقت البداية <span class="required">*</span></label><input class="form-input" id="bStartTime" type="time"><div class="form-error" id="bStartTimeErr">اختر الوقت</div></div>
+                <div class="form-group"><label>وقت البداية</label><input class="form-input" id="bStartTime" type="time"></div>
             </div>
             <div class="form-row">
                 <div class="form-group"><label>وقت النهاية</label><input class="form-input" id="bEndTime" type="time"></div>
                 <div class="form-group"><label>الرسوم (دولار)</label><input class="form-input" id="bFee" type="number"></div>
             </div>
-            <div class="form-group"><label>ملاحظات</label><textarea class="form-input" id="bNotes"></textarea></div>
+            <div class="form-group"><label>ملاحظات</label><textarea class="form-input" id="bNotes" rows="3"></textarea></div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" onclick="saveBooking()"><i class="fas fa-save"></i> حفظ الحجز</button>
@@ -494,7 +369,7 @@
             <div class="confirm-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
             <div class="confirm-text">
                 <h3 id="confirmTitle">تأكيد الحذف</h3>
-                <p id="confirmMsg">هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.</p>
+                <p id="confirmMsg">هل أنت متأكد؟</p>
             </div>
             <div class="confirm-actions">
                 <button class="btn btn-danger" id="confirmYes"><i class="fas fa-trash"></i> حذف</button>
@@ -512,7 +387,7 @@
             <input type="hidden" id="portfolioEditId">
             <div class="form-row">
                 <div class="form-group"><label>اسم الفعالية <span class="required">*</span></label><input class="form-input" id="pEventName"><div class="form-error" id="pEventNameErr">هذا الحقل مطلوب</div></div>
-                <div class="form-group"><label>السنة <span class="required">*</span></label><input class="form-input" id="pYear" type="number"><div class="form-error" id="pYearErr">هذا الحقل مطلوب</div></div>
+                <div class="form-group"><label>السنة <span class="required">*</span></label><input class="form-input" id="pYear" type="number" placeholder="2025"><div class="form-error" id="pYearErr">هذا الحقل مطلوب</div></div>
             </div>
             <div class="form-row">
                 <div class="form-group"><label>التصنيف <span class="required">*</span></label>
@@ -540,7 +415,8 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group"><label>الوصف</label><textarea class="form-input" id="pDescription"></textarea></div>
+            <div class="form-group"><label>رابط الصورة</label><input class="form-input" id="pImage" placeholder="https://..."></div>
+            <div class="form-group"><label>الوصف</label><textarea class="form-input" id="pDescription" rows="3"></textarea></div>
             <div class="settings-row" style="border:none;padding-top:0">
                 <div class="settings-row-info"><h4>عرض في الصفحة الرئيسية</h4><p>يظهر كعنصر مميز</p></div>
                 <div class="toggle" id="pFeatured" onclick="this.classList.toggle('active')"></div>
@@ -563,7 +439,7 @@
             <div class="form-group"><label>البريد الإلكتروني <span class="required">*</span></label><input class="form-input" id="cEmail" type="email"><div class="form-error" id="cEmailErr">بريد إلكتروني غير صالح</div></div>
             <div class="form-group"><label>رقم الهاتف</label><input class="form-input" id="cPhone"></div>
             <div class="form-group"><label>المؤسسة</label><input class="form-input" id="cOrg"></div>
-            <div class="form-group"><label>ملاحظات</label><textarea class="form-input" id="cNotes"></textarea></div>
+            <div class="form-group"><label>ملاحظات</label><textarea class="form-input" id="cNotes" rows="3"></textarea></div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" onclick="saveClient()"><i class="fas fa-save"></i> حفظ</button>
@@ -572,260 +448,252 @@
     </div>
 </div>
 
-<!-- ========== حاوية الإشعارات ========== -->
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-// ===== إعدادات Supabase =====
-const SUPABASE_URL = 'https://zzzkdtgpeutlmsehdvsz.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6emtkdGdwZXV0bG1zZWhkdnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NzkwNjQsImV4cCI6MjA5MTA1NTA2NH0.TrsWqAWSjUR_nmF1fiLh0DCuxqp-K6VHBAbFY2h1duI';
-const SHEADERS = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' };
+// ============================================================
+//  SUPABASE CONFIG — New Project
+// ============================================================
+var SUPABASE_URL = 'https://joeicvqpiarcttchqbts.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvZWljdnFwaWFyY3R0Y2hxYnRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMjkyMjQsImV4cCI6MjA5MTYwNTIyNH0.j5nIDMCgNzql8JxL15kmf2ZVY6gOenLDZX5lrbEluII';
+var SH = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
 
-async function supaGet(table) {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?order=id.desc', { headers: SHEADERS });
-    return await res.json();
+// ── Supabase helpers ─────────────────────────────────────────
+async function sbGet(table) {
+    try {
+        var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?order=id.desc', { headers: SH });
+        var data = await res.json();
+        return Array.isArray(data) ? data : [];
+    } catch(e) { console.error('sbGet error:', e); return []; }
 }
-async function supaInsert(table, data) {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table, { method: 'POST', headers: Object.assign({}, SHEADERS, { 'Prefer': 'return=representation' }), body: JSON.stringify(data) });
-    return await res.json();
+async function sbInsert(table, data) {
+    try {
+        var res = await fetch(SUPABASE_URL + '/rest/v1/' + table, { method: 'POST', headers: SH, body: JSON.stringify(data) });
+        return await res.json();
+    } catch(e) { console.error('sbInsert error:', e); return null; }
 }
-async function supaUpdate(table, id, data) {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, { method: 'PATCH', headers: Object.assign({}, SHEADERS, { 'Prefer': 'return=representation' }), body: JSON.stringify(data) });
-    return await res.json();
+async function sbUpdate(table, id, data) {
+    try {
+        var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, { method: 'PATCH', headers: SH, body: JSON.stringify(data) });
+        return await res.json();
+    } catch(e) { console.error('sbUpdate error:', e); return null; }
 }
-async function supaDelete(table, id) {
-    await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, { method: 'DELETE', headers: SHEADERS });
+async function sbDelete(table, id) {
+    try {
+        await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, { method: 'DELETE', headers: SH });
+        return true;
+    } catch(e) { console.error('sbDelete error:', e); return false; }
 }
 
+// ============================================================
+//  CONSTANTS
+// ============================================================
+var SERVICE_LABELS = { Simultaneous: 'فورية', Consecutive: 'متتابعة', Remote: 'عن بُعد', Media: 'إعلامية' };
+var SERVICE_ICONS  = { Simultaneous: 'fa-headphones', Consecutive: 'fa-comments', Remote: 'fa-laptop', Media: 'fa-tv' };
+var STATUS_LABELS  = { Confirmed: 'مؤكد', Pending: 'قيد المراجعة', Cancelled: 'ملغي', Completed: 'مكتمل' };
+var STATUS_CLASS   = { Confirmed: 'status-confirmed', Pending: 'status-pending', Cancelled: 'status-cancelled', Completed: 'status-completed' };
+var CATEGORY_LABELS = { Conference: 'مؤتمرات', Summit: 'قمم', Medical: 'طبي', Business: 'أعمال', Media: 'إعلام', Government: 'حكومي' };
 
-// ===== تحميل البيانات من Supabase =====
+// ============================================================
+//  STATE
+// ============================================================
+var bookings = [], clients = [], messages = [], portfolioItems = [], mediaItems = [], notifications = [];
+
+// ============================================================
+//  LOAD DATA
+// ============================================================
 async function loadBookings() {
-    var data = await supaGet('bookings');
-    if (Array.isArray(data)) {
-        bookings = data.map(function(b) {
-            return {
-                id: b.id, clientName: b.client_name, clientEmail: b.client_email,
-                clientPhone: b.client_phone, eventName: b.event_name, location: b.location,
-                serviceType: b.service_type, languageDirection: b.language_direction,
-                date: b.date, startTime: b.start_time, endTime: b.end_time,
-                status: b.status, fee: b.fee, notes: b.notes
-            };
-        });
-        nextId.booking = bookings.length > 0 ? Math.max.apply(null, bookings.map(function(b){return b.id;})) + 1 : 1;
-    }
-    var pendingCount = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Pending'; }).length;
-    var bBadge = document.getElementById('bookingsBadge');
-    var sCount = document.getElementById('sidebarBookingsCount');
-    if(bBadge) bBadge.textContent = pendingCount;
-    if(sCount) sCount.textContent = pendingCount;
-    if(pendingCount === 0){
-        if(bBadge) bBadge.style.display = 'none';
-        if(sCount) sCount.parentElement.style.display = 'none';
-    }
+    var data = await sbGet('bookings');
+    bookings = data.map(function(b) {
+        return { id: b.id, clientName: b.client_name, clientEmail: b.client_email, clientPhone: b.client_phone,
+            eventName: b.event_name, location: b.location, serviceType: b.service_type,
+            languageDirection: b.language_direction, date: b.date, startTime: b.start_time,
+            endTime: b.end_time, status: b.status, fee: b.fee || 0, notes: b.notes };
+    });
+    var active = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Pending'; }).length;
+    var badge = document.getElementById('bookingsBadge');
+    var count = document.getElementById('sidebarBookingsCount');
+    if (badge) { badge.textContent = active; badge.style.display = active ? 'inline-flex' : 'none'; }
+    if (count) count.textContent = active;
 }
 
 async function loadClients() {
-    const { data, error } = await supaGet('clients');
-    if (!error && data) {
-        clients = data.map(function(c) {
-            return {
-                id: c.id, name: c.name, email: c.email, phone: c.phone,
-                org: c.org, totalEvents: c.total_events, totalSpent: c.total_spent, notes: c.notes
-            };
-        });
-        nextId.client = clients.length > 0 ? Math.max(...clients.map(function(c){return c.id;})) + 1 : 1;
-    }
+    var data = await sbGet('clients');
+    clients = data.map(function(c) {
+        return { id: c.id, name: c.name, email: c.email, phone: c.phone,
+            org: c.org, totalEvents: c.total_events || 0, totalSpent: c.total_spent || 0, notes: c.notes };
+    });
 }
 
 async function loadMessages() {
-    var data = await supaGet('messages');
-    if (Array.isArray(data)) {
-        messages = data.map(function(m) {
-            return {
-                id: m.id, senderName: m.sender_name, senderEmail: m.sender_email,
-                phone: m.phone, subject: m.subject, message: m.message_body,
-                date: m.date, read: m.is_read, starred: m.is_starred, archived: m.is_archived
-            };
-        });
-    }
-    var unreadCount = messages.filter(function(m){ return !m.read; }).length;
-    var mBadge = document.getElementById('messagesBadge');
-    if(mBadge) mBadge.textContent = unreadCount;
-    if(unreadCount === 0 && mBadge) mBadge.style.display = 'none';
+    var data = await sbGet('messages');
+    messages = data.map(function(m) {
+        return { id: m.id, senderName: m.sender_name, senderEmail: m.sender_email,
+            phone: m.phone, subject: m.subject, message: m.message_body,
+            date: m.date, read: m.is_read, starred: m.is_starred, archived: m.is_archived };
+    });
+    var unread = messages.filter(function(m){ return !m.read && !m.archived; }).length;
+    var badge = document.getElementById('messagesBadge');
+    if (badge) { badge.textContent = unread; badge.style.display = unread ? 'inline-flex' : 'none'; }
 
     notifications = messages.filter(function(m){ return !m.read; }).slice(0, 5).map(function(m) {
-        return { id: m.id, text: 'رسالة جديدة من ' + m.senderName + ' - ' + m.subject, time: getRelativeTime(m.date), read: false, type: 'info' };
+        return { id: m.id, text: 'رسالة من ' + m.senderName + ': ' + m.subject, time: getRelativeTime(m.date), read: false };
     });
     renderNotifications();
 }
 
 async function loadPortfolio() {
-    var data = await supaGet('portfolio');
-    if (Array.isArray(data)) {
-        portfolioItems = data.map(function(p) {
-            return {
-                id: p.id, eventName: p.event_name, image: p.image, year: p.year,
-                category: p.category, client: p.client, location: p.location,
-                interpretationType: p.interpretation_type, description: p.description, featured: p.is_featured
-            };
-        });
-        nextId.portfolio = portfolioItems.length > 0 ? Math.max.apply(null, portfolioItems.map(function(p){return p.id;})) + 1 : 1;
-    }
+    var data = await sbGet('portfolio');
+    portfolioItems = data.map(function(p) {
+        return { id: p.id, eventName: p.event_name, image: p.image, year: p.year,
+            category: p.category, client: p.client, location: p.location,
+            interpretationType: p.interpretation_type, description: p.description, featured: p.is_featured };
+    });
 }
 
 async function loadMedia() {
-    var data = await supaGet('media');
-    if (Array.isArray(data)) {
-        mediaItems = data.map(function(m) {
-            return { id: m.id, name: m.name, type: m.type, size: m.size, url: m.url };
-        });
-        nextId.media = mediaItems.length > 0 ? Math.max.apply(null, mediaItems.map(function(m){return m.id;})) + 1 : 1;
-    }
+    var data = await sbGet('media');
+    mediaItems = data.map(function(m) {
+        return { id: m.id, name: m.name, type: m.type, size: m.size, url: m.url };
+    });
 }
 
 async function loadAllData() {
+    showToast('جاري تحميل البيانات...', 'info');
     await Promise.all([loadBookings(), loadClients(), loadMessages(), loadPortfolio(), loadMedia()]);
 }
 
-// ===== تسجيل الدخول =====
-const loginScreen = document.getElementById('loginScreen');
-const app = document.getElementById('app');
+// ============================================================
+//  LOGIN
+// ============================================================
 document.getElementById('loginBtn').addEventListener('click', handleLogin);
-document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
+document.getElementById('loginPassword').addEventListener('keydown', function(e){ if(e.key==='Enter') handleLogin(); });
 document.getElementById('togglePass').addEventListener('click', function(){
-    const inp = document.getElementById('loginPassword');
-    const isPass = inp.type === 'password';
+    var inp = document.getElementById('loginPassword');
+    var isPass = inp.type === 'password';
     inp.type = isPass ? 'text' : 'password';
     this.querySelector('i').className = isPass ? 'fas fa-eye-slash' : 'fas fa-eye';
 });
 
-function handleLogin(){
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass = document.getElementById('loginPassword').value;
-    const emailErr = document.getElementById('loginEmailError');
-    const passErr = document.getElementById('loginPassError');
-    let valid = true;
-    
-    emailErr.classList.remove('show');
-    passErr.classList.remove('show');
+function handleLogin() {
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass  = document.getElementById('loginPassword').value;
+    var emailErr = document.getElementById('loginEmailError');
+    var passErr  = document.getElementById('loginPassError');
+    var valid = true;
+
+    emailErr.classList.remove('show'); passErr.classList.remove('show');
     document.getElementById('loginEmail').classList.remove('error');
     document.getElementById('loginPassword').classList.remove('error');
-    
-    if(!email){ emailErr.querySelector('span').textContent='أدخل البريد الإلكتروني'; emailErr.classList.add('show'); document.getElementById('loginEmail').classList.add('error'); valid=false; }
-    else if(email!=='admin@dinrashad.com'){ emailErr.querySelector('span').textContent='بريد إلكتروني غير صحيح'; emailErr.classList.add('show'); document.getElementById('loginEmail').classList.add('error'); valid=false; }
-    if(!pass){ passErr.querySelector('span').textContent='أدخل كلمة المرور'; passErr.classList.add('show'); document.getElementById('loginPassword').classList.add('error'); valid=false; }
-    else if(pass!=='Dina@Admin2025!x'){ passErr.querySelector('span').textContent='كلمة مرور خاطئة'; passErr.classList.add('show'); document.getElementById('loginPassword').classList.add('error'); valid=false; }
-    
-    if(!valid){
+
+    if (!email) { emailErr.querySelector('span').textContent='أدخل البريد الإلكتروني'; emailErr.classList.add('show'); document.getElementById('loginEmail').classList.add('error'); valid=false; }
+    else if (email !== 'admin@dinrashad.com') { emailErr.querySelector('span').textContent='بريد إلكتروني غير صحيح'; emailErr.classList.add('show'); document.getElementById('loginEmail').classList.add('error'); valid=false; }
+    if (!pass) { passErr.querySelector('span').textContent='أدخل كلمة المرور'; passErr.classList.add('show'); document.getElementById('loginPassword').classList.add('error'); valid=false; }
+    else if (pass !== 'Dina@Admin2025!x') { passErr.querySelector('span').textContent='كلمة مرور خاطئة'; passErr.classList.add('show'); document.getElementById('loginPassword').classList.add('error'); valid=false; }
+
+    if (!valid) {
         document.querySelector('.login-card').classList.add('shake');
-        setTimeout(()=>document.querySelector('.login-card').classList.remove('shake'),400);
+        setTimeout(function(){ document.querySelector('.login-card').classList.remove('shake'); }, 400);
         return;
     }
-    
-    loginScreen.classList.add('hidden');
-    setTimeout(()=>{ app.classList.add('visible'); initDashboard(); },500);
+
+    document.getElementById('loginScreen').classList.add('hidden');
+    setTimeout(function(){ document.getElementById('app').classList.add('visible'); initDashboard(); }, 500);
 }
 
-// ===== التنقل =====
-const pageTitles = { dashboard:'لوحة التحكم', bookings:'إدارة الحجوزات', portfolio:'معرض الأعمال', messages:'الرسائل', clients:'العملاء', pages:'إدارة الصفحات', media:'مكتبة الوسائط', settings:'الإعدادات', analytics:'الإحصائيات' };
-let currentPage = 'dashboard';
+// ============================================================
+//  NAVIGATION
+// ============================================================
+var pageTitles = { dashboard:'لوحة التحكم', bookings:'إدارة الحجوزات', portfolio:'معرض الأعمال', messages:'الرسائل', clients:'العملاء', media:'مكتبة الوسائط', settings:'الإعدادات', analytics:'الإحصائيات' };
 
-function navigateTo(page){
-    currentPage = page;
-    document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
-    document.getElementById('page-'+page).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    const navItem = document.querySelector(`.nav-item[data-page="${page}"]`);
-    if(navItem) navItem.classList.add('active');
+function navigateTo(page) {
+    document.querySelectorAll('.page-section').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    var navItem = document.querySelector('.nav-item[data-page="' + page + '"]');
+    if (navItem) navItem.classList.add('active');
     document.getElementById('headerTitle').textContent = pageTitles[page] || '';
     closeSidebar();
-    
-    if(page==='bookings') renderBookings();
-    if(page==='portfolio') renderPortfolio();
-    if(page==='messages') renderMessages();
-    if(page==='clients') renderClients();
-    if(page==='pages') renderPages();
-    if(page==='media') renderMedia();
-    if(page==='analytics') renderAnalytics();
+    if (page==='bookings')  renderBookings();
+    if (page==='portfolio') renderPortfolio();
+    if (page==='messages')  renderMessages();
+    if (page==='clients')   renderClients();
+    if (page==='media')     renderMedia();
+    if (page==='analytics') renderAnalytics();
 }
 
-document.querySelectorAll('.nav-item[data-page]').forEach(item=>{
-    item.addEventListener('click', ()=> navigateTo(item.dataset.page));
+document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
+    item.addEventListener('click', function(){ navigateTo(item.dataset.page); });
 });
 
-// ===== الشريط الجانبي (موبايل) =====
-const sidebar = document.getElementById('sidebar');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-document.getElementById('hamburgerBtn').addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebarOverlay.classList.add('show'); });
-function closeSidebar(){ sidebar.classList.remove('open'); sidebarOverlay.classList.remove('show'); }
-sidebarOverlay.addEventListener('click', closeSidebar);
-
-// ===== الإشعارات =====
-document.getElementById('notifBtn').addEventListener('click', e=>{
-    e.stopPropagation();
-    document.getElementById('notifDropdown').classList.toggle('show');
-});
-document.addEventListener('click', ()=> document.getElementById('notifDropdown').classList.remove('show'));
-document.getElementById('markAllRead').addEventListener('click', ()=>{
-    notifications.forEach(n=>n.read=true);
-    renderNotifications();
-    showToast('تم تحديد كل الإشعارات كمقروءة','success');
+// ============================================================
+//  SIDEBAR
+// ============================================================
+document.getElementById('hamburgerBtn').addEventListener('click', function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('show'); });
+function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); }
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+document.getElementById('visitSite').addEventListener('click', function(){ window.open('index.html', '_blank'); });
+document.getElementById('logoutBtn').addEventListener('click', function(){
+    showConfirm('تسجيل الخروج', 'هل أنت متأكد من تسجيل الخروج؟', function(){
+        document.getElementById('app').classList.remove('visible');
+        setTimeout(function(){ document.getElementById('loginScreen').classList.remove('hidden'); document.getElementById('loginEmail').value=''; document.getElementById('loginPassword').value=''; }, 500);
+    });
 });
 
-function renderNotifications(){
-    const list = document.getElementById('notifList');
-    list.innerHTML = notifications.map(n=>`
-        <div class="notif-item ${n.read?'':'unread'}">
-            <div class="notif-dot"></div>
-            <div><div class="notif-text">${n.text}</div><div class="notif-time">${n.time}</div></div>
-        </div>
-    `).join('');
-    const unread = notifications.filter(n=>!n.read).length;
-    const badge = document.getElementById('notifBadge');
-    badge.textContent = unread;
-    badge.style.display = unread ? 'flex' : 'none';
+// ============================================================
+//  NOTIFICATIONS
+// ============================================================
+document.getElementById('notifBtn').addEventListener('click', function(e){ e.stopPropagation(); document.getElementById('notifDropdown').classList.toggle('show'); });
+document.addEventListener('click', function(){ document.getElementById('notifDropdown').classList.remove('show'); });
+document.getElementById('markAllRead').addEventListener('click', function(){ notifications.forEach(function(n){ n.read=true; }); renderNotifications(); showToast('تم تحديد كل الإشعارات كمقروءة','success'); });
+
+function renderNotifications() {
+    var list = document.getElementById('notifList');
+    if (!notifications.length) { list.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8">لا توجد إشعارات</div>'; }
+    else { list.innerHTML = notifications.map(function(n){ return '<div class="notif-item '+(n.read?'':'unread')+'"><div class="notif-dot"></div><div><div class="notif-text">'+n.text+'</div><div class="notif-time">'+n.time+'</div></div></div>'; }).join(''); }
+    var unread = notifications.filter(function(n){ return !n.read; }).length;
+    var badge = document.getElementById('notifBadge');
+    badge.textContent = unread; badge.style.display = unread ? 'flex' : 'none';
 }
 
-// ===== الإشعارات (Toast) =====
-function showToast(msg, type='info'){
-    const icons = { success:'fa-check-circle', error:'fa-times-circle', warning:'fa-exclamation-circle', info:'fa-info-circle' };
-    const container = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span class="toast-msg">${msg}</span><button class="toast-close" onclick="removeToast(this.parentElement)"><i class="fas fa-times"></i></button>`;
+// ============================================================
+//  TOAST
+// ============================================================
+function showToast(msg, type) {
+    type = type || 'info';
+    var icons = { success:'fa-check-circle', error:'fa-times-circle', warning:'fa-exclamation-circle', info:'fa-info-circle' };
+    var container = document.getElementById('toastContainer');
+    var toast = document.createElement('div');
+    toast.className = 'toast ' + type;
+    toast.innerHTML = '<i class="fas '+icons[type]+' toast-icon"></i><span class="toast-msg">'+msg+'</span><button class="toast-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
     container.appendChild(toast);
-    setTimeout(()=>removeToast(toast), 4000);
+    setTimeout(function(){ if(toast.parentElement) { toast.style.opacity='0'; setTimeout(function(){ toast.remove(); },300); } }, 4000);
 }
-function removeToast(el){ if(!el||!el.parentElement) return; el.classList.add('removing'); setTimeout(()=>el.remove(),300); }
 
-// ===== المودالات =====
+// ============================================================
+//  MODALS
+// ============================================================
 function openModal(id){ document.getElementById(id).classList.add('show'); }
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
-document.querySelectorAll('.modal-overlay').forEach(overlay=>{
-    overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.classList.remove('show'); });
-});
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show')); });
+document.querySelectorAll('.modal-overlay').forEach(function(o){ o.addEventListener('click', function(e){ if(e.target===o) o.classList.remove('show'); }); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show').forEach(function(m){ m.classList.remove('show'); }); });
 
-// ===== تأكيد الحذف =====
-let confirmCallback = null;
-function showConfirm(title, msg, cb){
+var confirmCallback = null;
+function showConfirm(title, msg, cb) {
     document.getElementById('confirmTitle').textContent = title;
     document.getElementById('confirmMsg').textContent = msg;
     confirmCallback = cb;
     openModal('confirmModal');
 }
-document.getElementById('confirmYes').addEventListener('click', ()=>{
-    if(confirmCallback) confirmCallback();
-    closeModal('confirmModal');
-});
+document.getElementById('confirmYes').addEventListener('click', function(){ if(confirmCallback) confirmCallback(); closeModal('confirmModal'); });
 
-// ===== لوحة التحكم =====
-let bookingsChartInstance = null;
-let servicesChartInstance = null;
+// ============================================================
+//  DASHBOARD
+// ============================================================
+var bookingsChartInst = null, servicesChartInst = null;
 
-async function initDashboard(){
+async function initDashboard() {
     await loadAllData();
-    renderNotifications();
     renderStats();
     renderUpcomingBookings();
     renderRecentMessages();
@@ -834,284 +702,198 @@ async function initDashboard(){
 }
 
 function renderStats() {
-    var total = bookings.length;
-    var confirmed = bookings.filter(function(b){ return b.status==='Confirmed'; }).length;
-    var pending = bookings.filter(function(b){ return b.status==='Pending'; }).length;
-    var completed = bookings.filter(function(b){ return b.status==='Completed'; }).length;
-    var revenue = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Completed'; }).reduce(function(s,b){ return s+(b.fee||0); }, 0);
-    var unreadMsgs = messages.filter(function(m){ return !m.read; }).length;
+    var total    = bookings.length;
+    var pending  = bookings.filter(function(b){ return b.status==='Pending'; }).length;
+    var revenue  = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Completed'; }).reduce(function(s,b){ return s+(b.fee||0); }, 0);
+    var unread   = messages.filter(function(m){ return !m.read; }).length;
     document.getElementById('statsGrid').innerHTML =
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue"><i class="fas fa-calendar-alt"></i></div><div class="stat-change up"><i class="fas fa-arrow-up"></i> 15%</div></div><div class="stat-value">' + total + '</div><div class="stat-label">إجمالي الحجوزات</div></div>' +
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon cyan"><i class="fas fa-envelope"></i></div></div><div class="stat-value">' + unreadMsgs + '</div><div class="stat-label">رسائل جديدة</div></div>' +
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon green"><i class="fas fa-dollar-sign"></i></div><div class="stat-change up"><i class="fas fa-arrow-up"></i> 22%</div></div><div class="stat-value">$' + revenue.toLocaleString() + '</div><div class="stat-label">الإيرادات (مؤكد)</div></div>' +
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon yellow"><i class="fas fa-clock"></i></div></div><div class="stat-value">' + pending + '</div><div class="stat-label">بانتظار المراجعة</div></div>';
+        statCard('blue','fa-calendar-alt', total, 'إجمالي الحجوزات') +
+        statCard('cyan','fa-envelope', unread, 'رسائل جديدة') +
+        statCard('green','fa-dollar-sign', '$'+revenue.toLocaleString(), 'الإيرادات المؤكدة') +
+        statCard('yellow','fa-clock', pending, 'بانتظار المراجعة');
+}
+function statCard(color, icon, val, label) {
+    return '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon '+color+'"><i class="fas '+icon+'"></i></div></div><div class="stat-value">'+val+'</div><div class="stat-label">'+label+'</div></div>';
 }
 
-function renderUpcomingBookings(){
-    const upcoming = bookings.filter(b=>b.status==='Confirmed'||b.status==='Pending').sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,4);
-    document.getElementById('upcomingBookings').innerHTML = upcoming.map(b=>`
-        <div class="booking-item" onclick="viewBooking(${b.id})">
-            <div class="booking-icon" style="background:${b.serviceType==='Simultaneous'?'var(--accent-glow)':b.serviceType==='Media'?'var(--warning-glow)':'var(--success-glow)'}; color:${b.serviceType==='Simultaneous'?'var(--accent)':b.serviceType==='Media'?'var(--warning)':'var(--success)'}">
-                <i class="fas ${SERVICE_ICONS[b.serviceType]||'fa-calendar'}"></i>
-            </div>
-            <div class="booking-info">
-                <h4>${b.eventName}</h4>
-                <p>${SERVICE_LABELS[b.serviceType]} | ${b.languageDirection}</p>
-            </div>
-            <div class="booking-meta">
-                <div class="date">${b.date}</div>
-                <div class="time">${b.startTime}</div>
-                <span class="status-badge ${STATUS_CLASS[b.status]}">${STATUS_LABELS[b.status]}</span>
-            </div>
-        </div>
-    `).join('') || '<p style="text-align:center;color:var(--text-muted);padding:20px">لا توجد حجوزات قادمة</p>';
+function renderUpcomingBookings() {
+    var upcoming = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Pending'; }).sort(function(a,b){ return new Date(a.date)-new Date(b.date); }).slice(0,4);
+    document.getElementById('upcomingBookings').innerHTML = upcoming.length ? upcoming.map(function(b){
+        return '<div class="booking-item" onclick="viewBooking('+b.id+')"><div class="booking-icon"><i class="fas '+(SERVICE_ICONS[b.serviceType]||'fa-calendar')+'"></i></div><div class="booking-info"><h4>'+b.eventName+'</h4><p>'+(SERVICE_LABELS[b.serviceType]||'')+'</p></div><div class="booking-meta"><div class="date">'+b.date+'</div><span class="status-badge '+STATUS_CLASS[b.status]+'">'+STATUS_LABELS[b.status]+'</span></div></div>';
+    }).join('') : '<p style="text-align:center;color:#94a3b8;padding:20px">لا توجد حجوزات قادمة</p>';
 }
 
-function renderRecentMessages(){
-    document.getElementById('recentMessages').innerHTML = messages.slice(0,5).map(m=>`
-        <div class="msg-item" onclick="navigateTo('messages');setTimeout(()=>openMessage(${m.id}),100)">
-            <div class="msg-dot ${m.read?'read':'unread'}"></div>
-            <div class="msg-info"><h4>${m.senderName}</h4><p>${m.subject}</p></div>
-            <div class="msg-time">${getRelativeTime(m.date)}</div>
-        </div>
-    `).join('');
+function renderRecentMessages() {
+    document.getElementById('recentMessages').innerHTML = messages.slice(0,5).map(function(m){
+        return '<div class="msg-item" onclick="navigateTo(\'messages\');setTimeout(function(){openMessage('+m.id+');},200)"><div class="msg-dot '+(m.read?'read':'unread')+'"></div><div class="msg-info"><h4>'+m.senderName+'</h4><p>'+m.subject+'</p></div><div class="msg-time">'+getRelativeTime(m.date)+'</div></div>';
+    }).join('');
 }
 
-function initBookingsChart(){
-    const ctx = document.getElementById('bookingsChart').getContext('2d');
-    const gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,'rgba(37,99,235,0.3)');
-    gradient.addColorStop(1,'rgba(37,99,235,0)');
-    if(bookingsChartInstance) bookingsChartInstance.destroy();
-    bookingsChartInstance = new Chart(ctx,{
-        type:'line',
-        data:{ labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'], datasets:[{ label:'الحجوزات', data:[4,6,5,7,3,8,6,5,9,7,4,6], borderColor:'#2563eb', backgroundColor:gradient, fill:true, tension:0.4, pointBackgroundColor:'#2563eb', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:4 }] },
-        options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ x:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#64748b',font:{size:11}} }, y:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#64748b',font:{size:11}} } } }
-    });
+function initBookingsChart() {
+    var ctx = document.getElementById('bookingsChart').getContext('2d');
+    var g = ctx.createLinearGradient(0,0,0,300);
+    g.addColorStop(0,'rgba(37,99,235,0.3)'); g.addColorStop(1,'rgba(37,99,235,0)');
+    if(bookingsChartInst) bookingsChartInst.destroy();
+    bookingsChartInst = new Chart(ctx,{ type:'line', data:{ labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'], datasets:[{ label:'الحجوزات', data:[4,6,5,7,3,8,6,5,9,7,4,6], borderColor:'#2563eb', backgroundColor:g, fill:true, tension:0.4, pointBackgroundColor:'#2563eb', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:4 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}}, y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}} } } });
 }
 
-function initServicesChart(){
-    const ctx = document.getElementById('servicesChart').getContext('2d');
-    const counts = {};
-    bookings.forEach(b=>{ counts[b.serviceType]=(counts[b.serviceType]||0)+1; });
-    if(servicesChartInstance) servicesChartInstance.destroy();
-    servicesChartInstance = new Chart(ctx,{
-        type:'doughnut',
-        data:{ labels:Object.keys(counts).map(k=>SERVICE_LABELS[k]), datasets:[{ data:Object.values(counts), backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b'], borderWidth:0, hoverOffset:6 }] },
-        options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{color:'#94a3b8',font:{size:12},padding:16,usePointStyle:true,pointStyleWidth:8} } }, cutout:'65%' }
-    });
+function initServicesChart() {
+    var ctx = document.getElementById('servicesChart').getContext('2d');
+    var counts = {};
+    bookings.forEach(function(b){ counts[b.serviceType]=(counts[b.serviceType]||0)+1; });
+    var labels = Object.keys(counts).map(function(k){ return SERVICE_LABELS[k]||k; });
+    var vals = Object.values(counts);
+    if(servicesChartInst) servicesChartInst.destroy();
+    if (!labels.length) return;
+    servicesChartInst = new Chart(ctx,{ type:'doughnut', data:{ labels:labels, datasets:[{ data:vals, backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b'], borderWidth:0, hoverOffset:6 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{color:'#94a3b8',font:{size:12},padding:16,usePointStyle:true} } }, cutout:'65%' } });
 }
 
-// ===== الحجوزات CRUD =====
-let bookingPage = 1;
-const bookingPerPage = 8;
+// ============================================================
+//  BOOKINGS CRUD
+// ============================================================
+var bookingPage = 1, bookingPerPage = 8;
 
-function getFilteredBookings(){
-    let data = [...bookings];
-    const search = document.getElementById('bookingSearch')?.value.toLowerCase()||'';
-    const statusF = document.getElementById('bookingStatusFilter')?.value||'';
-    const typeF = document.getElementById('bookingTypeFilter')?.value||'';
-    if(search) data = data.filter(b=> b.clientName.toLowerCase().includes(search)||b.eventName.toLowerCase().includes(search)||b.location.toLowerCase().includes(search));
-    if(statusF) data = data.filter(b=>b.status===statusF);
-    if(typeF) data = data.filter(b=>b.serviceType===typeF);
+function getFilteredBookings() {
+    var data = bookings.slice();
+    var search = (document.getElementById('bookingSearch')||{}).value||'';
+    var statusF = (document.getElementById('bookingStatusFilter')||{}).value||'';
+    var typeF   = (document.getElementById('bookingTypeFilter')||{}).value||'';
+    search = search.toLowerCase();
+    if(search) data = data.filter(function(b){ return (b.clientName||'').toLowerCase().includes(search)||(b.eventName||'').toLowerCase().includes(search); });
+    if(statusF) data = data.filter(function(b){ return b.status===statusF; });
+    if(typeF)   data = data.filter(function(b){ return b.serviceType===typeF; });
     return data;
 }
 
-function renderBookings(){
-    const data = getFilteredBookings();
-    const total = Math.max(1,Math.ceil(data.length/bookingPerPage));
-    if(bookingPage>total) bookingPage=total;
-    const start = (bookingPage-1)*bookingPerPage;
-    const pageData = data.slice(start, start+bookingPerPage);
-    
-    document.getElementById('bookingsBody').innerHTML = pageData.map((b,i)=>`
-        <tr>
-            <td data-label="#">${start+i+1}</td>
-            <td data-label="العميل"><strong style="color:var(--text-primary)">${b.clientName}</strong><br><span style="font-size:11px">${b.clientEmail}</span></td>
-            <td data-label="الفعالية">${b.eventName}</td>
-            <td data-label="النوع"><span class="portfolio-tag">${SERVICE_LABELS[b.serviceType]}</span></td>
-            <td data-label="التاريخ">${b.date}<br><span style="font-size:11px;color:var(--text-muted)">${b.startTime} - ${b.endTime||'--'}</span></td>
-            <td data-label="الحالة"><span class="status-badge ${STATUS_CLASS[b.status]}">${STATUS_LABELS[b.status]}</span></td>
-            <td data-label="الإجراءات"><div class="actions-cell">
-                <button class="btn-icon" title="عرض" onclick="viewBooking(${b.id})"><i class="fas fa-eye"></i></button>
-                <button class="btn-icon" title="تعديل" onclick="editBooking(${b.id})"><i class="fas fa-edit"></i></button>
-                <button class="btn-icon" title="حذف" onclick="deleteBooking(${b.id})" style="color:var(--danger)"><i class="fas fa-trash"></i></button>
-            </div></td>
-        </tr>
-    `).join('');
-    
-    document.getElementById('bookingsPagination').innerHTML = `
-        <span>عرض ${start+1}-${Math.min(start+bookingPerPage,data.length)} من ${data.length}</span>
-        <div class="pagination-btns">
-            <button class="page-btn" onclick="bookingPage--;renderBookings()" ${bookingPage<=1?'disabled':''}><i class="fas fa-chevron-right"></i></button>
-            ${Array.from({length:total},(_,i)=>`<button class="page-btn ${i+1===bookingPage?'active':''}" onclick="bookingPage=${i+1};renderBookings()">${i+1}</button>`).join('')}
-            <button class="page-btn" onclick="bookingPage++;renderBookings()" ${bookingPage>=total?'disabled':''}><i class="fas fa-chevron-left"></i></button>
-        </div>
-    `;
+function renderBookings() {
+    var data  = getFilteredBookings();
+    var total = Math.max(1, Math.ceil(data.length / bookingPerPage));
+    if(bookingPage > total) bookingPage = total;
+    var start    = (bookingPage-1)*bookingPerPage;
+    var pageData = data.slice(start, start+bookingPerPage);
+
+    document.getElementById('bookingsBody').innerHTML = pageData.map(function(b,i){
+        return '<tr><td data-label="#">'+(start+i+1)+'</td><td data-label="العميل"><strong>'+b.clientName+'</strong><br><span style="font-size:11px;color:#94a3b8">'+b.clientEmail+'</span></td><td data-label="الفعالية">'+b.eventName+'</td><td data-label="النوع"><span class="portfolio-tag">'+(SERVICE_LABELS[b.serviceType]||b.serviceType||'—')+'</span></td><td data-label="التاريخ">'+b.date+'<br><span style="font-size:11px;color:#94a3b8">'+(b.startTime||'')+'</span></td><td data-label="الحالة"><span class="status-badge '+STATUS_CLASS[b.status]+'">'+STATUS_LABELS[b.status]+'</span></td><td data-label="الإجراءات"><div class="actions-cell"><button class="btn-icon" onclick="viewBooking('+b.id+')"><i class="fas fa-eye"></i></button><button class="btn-icon" onclick="editBooking('+b.id+')"><i class="fas fa-edit"></i></button><button class="btn-icon" style="color:#ef4444" onclick="deleteBooking('+b.id+')"><i class="fas fa-trash"></i></button></div></td></tr>';
+    }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">لا توجد حجوزات</td></tr>';
+
+    var pages = '';
+    for(var i=1; i<=total; i++) pages += '<button class="page-btn '+(i===bookingPage?'active':'')+'" onclick="bookingPage='+i+';renderBookings()">'+i+'</button>';
+    document.getElementById('bookingsPagination').innerHTML = '<span>عرض '+(start+1)+'-'+Math.min(start+bookingPerPage,data.length)+' من '+data.length+'</span><div class="pagination-btns"><button class="page-btn" onclick="bookingPage--;renderBookings()" '+(bookingPage<=1?'disabled':'')+'><i class="fas fa-chevron-right"></i></button>'+pages+'<button class="page-btn" onclick="bookingPage++;renderBookings()" '+(bookingPage>=total?'disabled':'')+'><i class="fas fa-chevron-left"></i></button></div>';
 }
 function filterBookings(){ bookingPage=1; renderBookings(); }
 
-function openBookingModal(id){
+function openBookingModal(id) {
     document.getElementById('bookingEditId').value = '';
     document.getElementById('bookingModalTitle').textContent = 'حجز جديد';
-    ['bClientName','bClientEmail','bClientPhone','bEventName','bLocation','bStartTime','bEndTime','bFee','bNotes'].forEach(f=>document.getElementById(f).value='');
-    document.getElementById('bServiceType').value='';
-    document.getElementById('bLangDir').value='';
-    document.getElementById('bStatus').value='Pending';
-    document.getElementById('bDate').value='';
-    document.querySelectorAll('#bookingModal .form-error').forEach(e=>e.classList.remove('show'));
-    document.querySelectorAll('#bookingModal .form-input').forEach(e=>e.classList.remove('error'));
-    if(id){
-        const b = bookings.find(x=>x.id===id);
+    ['bClientName','bClientEmail','bClientPhone','bEventName','bLocation','bStartTime','bEndTime','bFee','bNotes'].forEach(function(f){ document.getElementById(f).value=''; });
+    document.getElementById('bServiceType').value=''; document.getElementById('bLangDir').value=''; document.getElementById('bStatus').value='Pending'; document.getElementById('bDate').value='';
+    document.querySelectorAll('#bookingModal .form-error').forEach(function(e){ e.classList.remove('show'); });
+    if(id) {
+        var b = bookings.find(function(x){ return x.id===id; });
         if(!b) return;
-        document.getElementById('bookingEditId').value = id;
-        document.getElementById('bookingModalTitle').textContent = 'تعديل الحجز';
-        document.getElementById('bClientName').value=b.clientName;
-        document.getElementById('bClientEmail').value=b.clientEmail;
+        document.getElementById('bookingEditId').value=id;
+        document.getElementById('bookingModalTitle').textContent='تعديل الحجز';
+        document.getElementById('bClientName').value=b.clientName||'';
+        document.getElementById('bClientEmail').value=b.clientEmail||'';
         document.getElementById('bClientPhone').value=b.clientPhone||'';
-        document.getElementById('bEventName').value=b.eventName;
+        document.getElementById('bEventName').value=b.eventName||'';
         document.getElementById('bLocation').value=b.location||'';
-        document.getElementById('bServiceType').value=b.serviceType;
-        document.getElementById('bLangDir').value=b.languageDirection;
-        document.getElementById('bDate').value=b.date;
-        document.getElementById('bStartTime').value=b.startTime;
+        document.getElementById('bServiceType').value=b.serviceType||'';
+        document.getElementById('bLangDir').value=b.languageDirection||'';
+        document.getElementById('bDate').value=b.date||'';
+        document.getElementById('bStartTime').value=b.startTime||'';
         document.getElementById('bEndTime').value=b.endTime||'';
-        document.getElementById('bStatus').value=b.status;
+        document.getElementById('bStatus').value=b.status||'Pending';
         document.getElementById('bFee').value=b.fee||'';
         document.getElementById('bNotes').value=b.notes||'';
     }
     openModal('bookingModal');
 }
 
-async function saveBooking(){
-    let valid = true;
-    var fields = [['bClientName','bClientNameErr'],['bClientEmail','bClientEmailErr'],['bEventName','bEventNameErr'],['bServiceType','bServiceTypeErr'],['bDate','bDateErr'],['bStartTime','bStartTimeErr']];
-    fields.forEach(function(f){
-        var el = document.getElementById(f[0]);
-        var err = document.getElementById(f[1]);
+async function saveBooking() {
+    var valid = true;
+    [['bClientName','bClientNameErr'],['bClientEmail','bClientEmailErr'],['bEventName','bEventNameErr'],['bServiceType','bServiceTypeErr'],['bDate','bDateErr']].forEach(function(f){
+        var el=document.getElementById(f[0]); var err=document.getElementById(f[1]);
         if(!el.value.trim()){ el.classList.add('error'); err.classList.add('show'); valid=false; }
-        else { el.classList.remove('error'); err.classList.remove('show'); }
+        else{ el.classList.remove('error'); err.classList.remove('show'); }
     });
-    var emailEl = document.getElementById('bClientEmail');
-    if(emailEl.value && !/\S+@\S+\.\S+/.test(emailEl.value)){ emailEl.classList.add('error'); document.getElementById('bClientEmailErr').classList.add('show'); valid=false; }
     if(!valid) return;
-    
+
     var editId = document.getElementById('bookingEditId').value;
-    var rowData = {
-        client_name: document.getElementById('bClientName').value.trim(),
-        client_email: document.getElementById('bClientEmail').value.trim(),
-        client_phone: document.getElementById('bClientPhone').value.trim(),
-        event_name: document.getElementById('bEventName').value.trim(),
-        location: document.getElementById('bLocation').value.trim(),
-        service_type: document.getElementById('bServiceType').value,
-        language_direction: document.getElementById('bLangDir').value,
-        date: document.getElementById('bDate').value,
-        start_time: document.getElementById('bStartTime').value,
-        end_time: document.getElementById('bEndTime').value,
-        status: document.getElementById('bStatus').value,
-        fee: parseFloat(document.getElementById('bFee').value) || 0,
-        notes: document.getElementById('bNotes').value.trim(),
-    };
-    
-    if(editId){
-        var { error } = await supaUpdate('bookings', parseInt(editId), rowData);
-        if(error){ showToast('حدث خطأ أثناء التعديل', 'error'); return; }
-        showToast('تم تعديل الحجز بنجاح', 'success');
-    } else {
-        var { error } = await supaInsert('bookings', rowData);
-        if(error){ showToast('حدث خطأ أثناء الإضافة', 'error'); return; }
-        showToast('تم إضافة الحجز بنجاح', 'success');
-    }
+    var row = { client_name:document.getElementById('bClientName').value.trim(), client_email:document.getElementById('bClientEmail').value.trim(), client_phone:document.getElementById('bClientPhone').value.trim(), event_name:document.getElementById('bEventName').value.trim(), location:document.getElementById('bLocation').value.trim(), service_type:document.getElementById('bServiceType').value, language_direction:document.getElementById('bLangDir').value, date:document.getElementById('bDate').value, start_time:document.getElementById('bStartTime').value||null, end_time:document.getElementById('bEndTime').value||null, status:document.getElementById('bStatus').value, fee:parseFloat(document.getElementById('bFee').value)||0, notes:document.getElementById('bNotes').value.trim() };
+
+    if(editId) { await sbUpdate('bookings', parseInt(editId), row); showToast('تم تعديل الحجز بنجاح','success'); }
+    else       { await sbInsert('bookings', row); showToast('تم إضافة الحجز بنجاح','success'); }
+
     closeModal('bookingModal');
-    await loadBookings();
-    renderBookings();
-    renderStats();
-    renderUpcomingBookings();
+    await loadBookings(); renderBookings(); renderStats(); renderUpcomingBookings();
 }
 
 function editBooking(id){ openBookingModal(id); }
 
-function viewBooking(id){
-    const b = bookings.find(x=>x.id===id);
+function viewBooking(id) {
+    var b = bookings.find(function(x){ return x.id===id; });
     if(!b) return;
-    document.getElementById('viewBookingBody').innerHTML = `
-        <div class="form-row"><div class="form-group"><label>العميل</label><div style="font-size:14px;color:var(--text-primary)">${b.clientName}</div></div><div class="form-group"><label>البريد</label><div style="font-size:14px;color:var(--text-secondary)">${b.clientEmail}</div></div></div>
-        <div class="form-row"><div class="form-group"><label>الهاتف</label><div style="font-size:14px;color:var(--text-secondary)">${b.clientPhone||'--'}</div></div><div class="form-group"><label>الحالة</label><span class="status-badge ${STATUS_CLASS[b.status]}">${STATUS_LABELS[b.status]}</span></div></div>
-        <div class="form-group"><label>الفعالية</label><div style="font-size:14px;color:var(--text-primary)">${b.eventName}</div></div>
-        <div class="form-row"><div class="form-group"><label>المكان</label><div style="font-size:14px;color:var(--text-secondary)">${b.location||'--'}</div></div><div class="form-group"><label>النوع</label><div><span class="portfolio-tag">${SERVICE_LABELS[b.serviceType]}</span> <span style="font-size:12px;color:var(--text-muted);margin-right:8px">${b.languageDirection}</span></div></div></div>
-        <div class="form-row"><div class="form-group"><label>التاريخ</label><div style="font-size:14px;color:var(--text-secondary)">${b.date}</div></div><div class="form-group"><label>الوقت</label><div style="font-size:14px;color:var(--text-secondary)">${b.startTime} - ${b.endTime||'--'}</div></div></div>
-        <div class="form-row"><div class="form-group"><label>الرسوم</label><div style="font-size:14px;color:var(--success);font-weight:600">$${(b.fee||0).toLocaleString()}</div></div><div class="form-group"></div></div>
-        ${b.notes?`<div class="form-group"><label>ملاحظات</label><div style="font-size:14px;color:var(--text-secondary)">${b.notes}</div></div>`:''}
-    `;
-    document.getElementById('editFromView').onclick = ()=>{ closeModal('viewBookingModal'); setTimeout(()=>editBooking(id),200); };
-    document.getElementById('deleteFromView').onclick = ()=>{ closeModal('viewBookingModal'); deleteBooking(id); };
+    document.getElementById('viewBookingBody').innerHTML =
+        '<div class="form-row"><div class="form-group"><label>العميل</label><div style="font-size:14px">'+b.clientName+'</div></div><div class="form-group"><label>البريد</label><div style="font-size:14px;color:#94a3b8">'+b.clientEmail+'</div></div></div>' +
+        '<div class="form-row"><div class="form-group"><label>الهاتف</label><div style="font-size:14px;color:#94a3b8">'+(b.clientPhone||'—')+'</div></div><div class="form-group"><label>الحالة</label><span class="status-badge '+STATUS_CLASS[b.status]+'">'+STATUS_LABELS[b.status]+'</span></div></div>' +
+        '<div class="form-group"><label>الفعالية</label><div style="font-size:14px">'+b.eventName+'</div></div>' +
+        '<div class="form-row"><div class="form-group"><label>المكان</label><div style="font-size:14px;color:#94a3b8">'+(b.location||'—')+'</div></div><div class="form-group"><label>النوع</label><span class="portfolio-tag">'+(SERVICE_LABELS[b.serviceType]||'—')+'</span></div></div>' +
+        '<div class="form-row"><div class="form-group"><label>التاريخ</label><div style="font-size:14px;color:#94a3b8">'+b.date+'</div></div><div class="form-group"><label>الوقت</label><div style="font-size:14px;color:#94a3b8">'+(b.startTime||'—')+' - '+(b.endTime||'—')+'</div></div></div>' +
+        '<div class="form-group"><label>الرسوم</label><div style="font-size:18px;font-weight:700;color:#22c55e">$'+(b.fee||0).toLocaleString()+'</div></div>' +
+        (b.notes?'<div class="form-group"><label>ملاحظات</label><div style="font-size:14px;color:#94a3b8">'+b.notes+'</div></div>':'');
+    document.getElementById('editFromView').onclick = function(){ closeModal('viewBookingModal'); setTimeout(function(){ editBooking(id); },200); };
+    document.getElementById('deleteFromView').onclick = function(){ closeModal('viewBookingModal'); deleteBooking(id); };
     openModal('viewBookingModal');
 }
 
-function deleteBooking(id){
-    showConfirm('حذف الحجز', 'هل أنت متأكد من حذف هذا الحجز؟', async function(){
-        var { error } = await supaDelete('bookings', id);
-        if(error){ showToast('حدث خطأ أثناء الحذف', 'error'); return; }
-        await loadBookings();
-        renderBookings();
-        renderStats();
-        renderUpcomingBookings();
-        showToast('تم حذف الحجز', 'success');
+function deleteBooking(id) {
+    showConfirm('حذف الحجز','هل أنت متأكد من حذف هذا الحجز؟', async function(){
+        await sbDelete('bookings', id);
+        await loadBookings(); renderBookings(); renderStats(); renderUpcomingBookings();
+        showToast('تم حذف الحجز','success');
     });
 }
 
-// ===== معرض الأعمال CRUD =====
-function getFilteredPortfolio(){
-    let data = [...portfolioItems];
-    const search = document.getElementById('portfolioSearch')?.value.toLowerCase()||'';
-    const catF = document.getElementById('portfolioCatFilter')?.value||'';
-    if(search) data = data.filter(p=>p.eventName.toLowerCase().includes(search)||(p.client||'').toLowerCase().includes(search));
-    if(catF) data = data.filter(p=>p.category===catF);
+// ============================================================
+//  PORTFOLIO CRUD
+// ============================================================
+function getFilteredPortfolio() {
+    var data = portfolioItems.slice();
+    var search = ((document.getElementById('portfolioSearch')||{}).value||'').toLowerCase();
+    var catF   = (document.getElementById('portfolioCatFilter')||{}).value||'';
+    if(search) data = data.filter(function(p){ return (p.eventName||'').toLowerCase().includes(search)||(p.client||'').toLowerCase().includes(search); });
+    if(catF)   data = data.filter(function(p){ return p.category===catF; });
     return data;
 }
 
-function renderPortfolio(){
-    const data = getFilteredPortfolio();
-    document.getElementById('portfolioGrid').innerHTML = data.map(p=>`
-        <div class="portfolio-card">
-            <img src="${p.image}" alt="${p.eventName}" loading="lazy">
-            <div class="portfolio-card-body">
-                <h4>${p.eventName}</h4>
-                <div class="portfolio-card-meta">
-                    <span>${p.year}</span>
-                    <span>${p.location||''}</span>
-                    ${p.featured?'<span style="color:var(--warning)"><i class="fas fa-star"></i> مميز</span>':''}
-                </div>
-                <span class="portfolio-tag">${CATEGORY_LABELS[p.category]||p.category}</span>
-                <div class="portfolio-actions">
-                    <button class="btn-icon" title="تعديل" onclick="editPortfolio(${p.id})"><i class="fas fa-edit"></i></button>
-                    <button class="btn-icon" title="حذف" onclick="deletePortfolio(${p.id})" style="color:var(--danger)"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-        </div>
-    `).join('') || '<p style="text-align:center;color:var(--text-muted);grid-column:1/-1;padding:40px">لا توجد عناصر</p>';
+function renderPortfolio() {
+    var data = getFilteredPortfolio();
+    document.getElementById('portfolioGrid').innerHTML = data.length ? data.map(function(p){
+        return '<div class="portfolio-card"><img src="'+(p.image||'https://picsum.photos/seed/'+p.id+'/600/400')+'" alt="'+p.eventName+'" loading="lazy"><div class="portfolio-card-body"><h4>'+p.eventName+'</h4><div class="portfolio-card-meta"><span>'+p.year+'</span><span>'+(p.location||'')+'</span>'+(p.featured?'<span style="color:#f59e0b"><i class="fas fa-star"></i> مميز</span>':'')+'</div><span class="portfolio-tag">'+(CATEGORY_LABELS[p.category]||p.category)+'</span><div class="portfolio-actions"><button class="btn-icon" onclick="editPortfolio('+p.id+')"><i class="fas fa-edit"></i></button><button class="btn-icon" style="color:#ef4444" onclick="deletePortfolio('+p.id+')"><i class="fas fa-trash"></i></button></div></div></div>';
+    }).join('') : '<p style="text-align:center;color:#94a3b8;grid-column:1/-1;padding:40px">لا توجد عناصر</p>';
 }
 function filterPortfolio(){ renderPortfolio(); }
 
-function openPortfolioModal(id){
+function openPortfolioModal(id) {
     document.getElementById('portfolioEditId').value='';
     document.getElementById('portfolioModalTitle').textContent='إضافة عنصر';
-    ['pEventName','pYear','pClient','pLocation','pDescription'].forEach(f=>document.getElementById(f).value='');
-    document.getElementById('pCategory').value='';
-    document.getElementById('pInterpType').value='Simultaneous';
+    ['pEventName','pYear','pClient','pLocation','pDescription','pImage'].forEach(function(f){ document.getElementById(f).value=''; });
+    document.getElementById('pCategory').value=''; document.getElementById('pInterpType').value='Simultaneous';
     document.getElementById('pFeatured').classList.remove('active');
-    document.querySelectorAll('#portfolioModal .form-error').forEach(e=>e.classList.remove('show'));
-    if(id){
-        const p = portfolioItems.find(x=>x.id===id);
+    document.querySelectorAll('#portfolioModal .form-error').forEach(function(e){ e.classList.remove('show'); });
+    if(id) {
+        var p = portfolioItems.find(function(x){ return x.id===id; });
         if(!p) return;
         document.getElementById('portfolioEditId').value=id;
         document.getElementById('portfolioModalTitle').textContent='تعديل العنصر';
-        document.getElementById('pEventName').value=p.eventName;
-        document.getElementById('pYear').value=p.year;
-        document.getElementById('pCategory').value=p.category;
+        document.getElementById('pEventName').value=p.eventName||'';
+        document.getElementById('pYear').value=p.year||'';
+        document.getElementById('pCategory').value=p.category||'';
         document.getElementById('pClient').value=p.client||'';
         document.getElementById('pLocation').value=p.location||'';
         document.getElementById('pInterpType').value=p.interpretationType||'Simultaneous';
+        document.getElementById('pImage').value=p.image||'';
         document.getElementById('pDescription').value=p.description||'';
         if(p.featured) document.getElementById('pFeatured').classList.add('active');
     }
@@ -1121,463 +903,188 @@ function openPortfolioModal(id){
 async function savePortfolio() {
     var valid = true;
     [['pEventName','pEventNameErr'],['pYear','pYearErr'],['pCategory','pCategoryErr']].forEach(function(f){
-        var el = document.getElementById(f[0]); var err = document.getElementById(f[1]);
-        if (!el.value.trim()) { el.classList.add('error'); err.classList.add('show'); valid = false; }
-        else { el.classList.remove('error'); err.classList.remove('show'); }
+        var el=document.getElementById(f[0]); var err=document.getElementById(f[1]);
+        if(!el.value.trim()){ el.classList.add('error'); err.classList.add('show'); valid=false; }
+        else{ el.classList.remove('error'); err.classList.remove('show'); }
     });
-    if (!valid) return;
-
+    if(!valid) return;
     var editId = document.getElementById('portfolioEditId').value;
-    var rowData = {
-        event_name: document.getElementById('pEventName').value.trim(),
-        year: parseInt(document.getElementById('pYear').value),
-        category: document.getElementById('pCategory').value,
-        client: document.getElementById('pClient').value.trim(),
-        location: document.getElementById('pLocation').value.trim(),
-        interpretation_type: document.getElementById('pInterpType').value,
-        description: document.getElementById('pDescription').value.trim(),
-        is_featured: document.getElementById('pFeatured').classList.contains('active')
-    };
-
-    if (editId) {
-        await supaUpdate('portfolio', parseInt(editId), rowData);
-        showToast('تم تعديل العنصر بنجاح', 'success');
-    } else {
-        rowData.image = 'https://picsum.photos/seed/new-' + Date.now() + '/600/400.jpg';
-        await supaInsert('portfolio', rowData);
-        showToast('تم إضافة العنصر بنجاح', 'success');
-    }
-    closeModal('portfolioModal');
-    await loadPortfolio();
-    renderPortfolio();
+    var row = { event_name:document.getElementById('pEventName').value.trim(), year:parseInt(document.getElementById('pYear').value), category:document.getElementById('pCategory').value, client:document.getElementById('pClient').value.trim(), location:document.getElementById('pLocation').value.trim(), interpretation_type:document.getElementById('pInterpType').value, image:document.getElementById('pImage').value.trim()||'https://picsum.photos/seed/'+Date.now()+'/600/400', description:document.getElementById('pDescription').value.trim(), is_featured:document.getElementById('pFeatured').classList.contains('active') };
+    if(editId){ await sbUpdate('portfolio',parseInt(editId),row); showToast('تم تعديل العنصر بنجاح','success'); }
+    else      { await sbInsert('portfolio',row); showToast('تم إضافة العنصر بنجاح','success'); }
+    closeModal('portfolioModal'); await loadPortfolio(); renderPortfolio();
 }
-
 function editPortfolio(id){ openPortfolioModal(id); }
+function deletePortfolio(id){ showConfirm('حذف العنصر','هل أنت متأكد؟', async function(){ await sbDelete('portfolio',id); await loadPortfolio(); renderPortfolio(); showToast('تم حذف العنصر','success'); }); }
 
-function deletePortfolio(id) {
-    showConfirm('حذف العنصر', 'هل أنت متأكد من حذف هذا العنصر من معرض الأعمال؟', async function() {
-        await supaDelete('portfolio', id);
-        await loadPortfolio();
-        renderPortfolio();
-        showToast('تم حذف العنصر', 'success');
-    });
-}
-
-// ===== الرسائل =====
-function getFilteredMessages(){
-    let data = messages.filter(m=>!m.archived);
-    const search = document.getElementById('msgSearch')?.value.toLowerCase()||'';
-    const filter = document.getElementById('msgFilter')?.value||'';
-    if(search) data = data.filter(m=>m.senderName.toLowerCase().includes(search)||m.subject.toLowerCase().includes(search)||m.message.toLowerCase().includes(search));
-    if(filter==='unread') data = data.filter(m=>!m.read);
-    if(filter==='starred') data = data.filter(m=>m.starred);
+// ============================================================
+//  MESSAGES
+// ============================================================
+function getFilteredMessages() {
+    var data = messages.filter(function(m){ return !m.archived; });
+    var search = ((document.getElementById('msgSearch')||{}).value||'').toLowerCase();
+    var filter = (document.getElementById('msgFilter')||{}).value||'';
+    if(search) data = data.filter(function(m){ return (m.senderName||'').toLowerCase().includes(search)||(m.subject||'').toLowerCase().includes(search); });
+    if(filter==='unread')  data = data.filter(function(m){ return !m.read; });
+    if(filter==='starred') data = data.filter(function(m){ return m.starred; });
     return data;
 }
 
-function renderMessages(){
-    const data = getFilteredMessages();
-    document.getElementById('msgListPanel').innerHTML = data.map(m=>`
-        <div class="msg-item ${m.read?'':'unread'}" onclick="openMessage(${m.id})">
-            <div class="msg-dot ${m.read?'read':'unread'}"></div>
-            <div class="msg-info">
-                <h4>${m.senderName} ${m.starred?'<i class="fas fa-star" style="color:var(--warning);font-size:10px"></i>':''}</h4>
-                <p>${m.subject}</p>
-            </div>
-            <div class="msg-time">${getRelativeTime(m.date)}</div>
-        </div>
-    `).join('') || '<div class="msg-empty"><i class="fas fa-inbox"></i><p>لا توجد رسائل</p></div>';
-    
-    if(window.innerWidth <= 768){
-        document.getElementById('msgDetailPanel').classList.remove('mobile-show');
-    }
+function renderMessages() {
+    var data = getFilteredMessages();
+    document.getElementById('msgListPanel').innerHTML = data.length ? data.map(function(m){
+        return '<div class="msg-item '+(m.read?'':'unread')+'" onclick="openMessage('+m.id+')"><div class="msg-dot '+(m.read?'read':'unread')+'"></div><div class="msg-info"><h4>'+m.senderName+(m.starred?' <i class="fas fa-star" style="color:#f59e0b;font-size:10px"></i>':'')+'</h4><p>'+m.subject+'</p></div><div class="msg-time">'+getRelativeTime(m.date)+'</div></div>';
+    }).join('') : '<div class="msg-empty"><i class="fas fa-inbox"></i><p>لا توجد رسائل</p></div>';
 }
 function filterMessages(){ renderMessages(); }
 
-function openMessage(id){
-    const m = messages.find(x=>x.id===id);
+function openMessage(id) {
+    var m = messages.find(function(x){ return x.id===id; });
     if(!m) return;
-    m.read = true;
-    renderMessages();
-    
-    const panel = document.getElementById('msgDetailPanel');
-    if(window.innerWidth <= 768) panel.classList.add('mobile-show');
-    
-    panel.innerHTML = `
-        <button class="btn btn-secondary btn-sm" style="margin-bottom:16px;display:none" id="msgBackBtn" onclick="document.getElementById('msgDetailPanel').classList.remove('mobile-show')"><i class="fas fa-arrow-right"></i> رجوع</button>
-        <div class="msg-detail-header">
-            <h3>${m.subject}</h3>
-            <div class="msg-detail-meta">
-                <span><i class="fas fa-user"></i> ${m.senderName}</span>
-                <span><i class="fas fa-envelope"></i> ${m.senderEmail}</span>
-                <span><i class="fas fa-phone"></i> ${m.phone||'--'}</span>
-                <span><i class="fas fa-calendar"></i> ${m.date}</span>
-            </div>
-        </div>
-        <div class="msg-detail-body">${m.message}</div>
-        <div class="msg-reply-area">
-            <textarea placeholder="اكتب ردك هنا..."></textarea>
-            <div class="msg-detail-actions">
-                <button class="btn btn-primary btn-sm" onclick="showToast('تم إرسال الرد','success')"><i class="fas fa-paper-plane"></i> إرسال الرد</button>
-                <button class="btn btn-sm btn-secondary" style="background:var(--whatsapp);color:#fff;border:none" onclick="showToast('تم فتح واتساب','info')"><i class="fab fa-whatsapp"></i> رد عبر واتساب</button>
-                <button class="btn btn-sm btn-secondary" onclick="toggleStar(${m.id})"><i class="fas fa-star"></i> ${m.starred?'إلغاء التمييز':'تمييز'}</button>
-                <button class="btn btn-sm btn-secondary" onclick="archiveMessage(${m.id})"><i class="fas fa-archive"></i> أرشفة</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteMessage(${m.id})"><i class="fas fa-trash"></i> حذف</button>
-            </div>
-        </div>
-    `;
-    
-    const backBtn = document.getElementById('msgBackBtn');
-    if(backBtn) backBtn.style.display = window.innerWidth <= 768 ? 'inline-flex' : 'none';
+    if(!m.read){ m.read=true; sbUpdate('messages',id,{is_read:true}); renderMessages(); updateBadges(); }
+    var panel = document.getElementById('msgDetailPanel');
+    panel.innerHTML =
+        '<div class="msg-detail-header"><h3>'+m.subject+'</h3><div class="msg-detail-meta"><span><i class="fas fa-user"></i> '+m.senderName+'</span><span><i class="fas fa-envelope"></i> '+m.senderEmail+'</span><span><i class="fas fa-phone"></i> '+(m.phone||'—')+'</span><span><i class="fas fa-calendar"></i> '+getRelativeTime(m.date)+'</span></div></div>' +
+        '<div class="msg-detail-body">'+(m.message||'')+'</div>' +
+        '<div class="msg-reply-area"><textarea placeholder="اكتب ردك هنا..."></textarea><div class="msg-detail-actions"><button class="btn btn-primary btn-sm" onclick="showToast(\'تم إرسال الرد\',\'success\')"><i class="fas fa-paper-plane"></i> إرسال الرد</button><button class="btn btn-sm btn-secondary" onclick="toggleStar('+id+')" style="background:#f59e0b;color:#fff;border:none"><i class="fas fa-star"></i> '+(m.starred?'إلغاء التمييز':'تمييز')+'</button><button class="btn btn-sm btn-secondary" onclick="archiveMessage('+id+')"><i class="fas fa-archive"></i> أرشفة</button><button class="btn btn-sm btn-danger" onclick="deleteMessage('+id+')"><i class="fas fa-trash"></i> حذف</button></div></div>';
 }
 
-async function toggleStar(id) {
-    var m = messages.find(function(x){ return x.id === id; });
-    if (!m) return;
-    m.starred = !m.starred;
-    await supaUpdate('messages', id, { is_starred: m.starred });
-    openMessage(id);
-    showToast(m.starred ? 'تم تمييز الرسالة' : 'تم إلغاء التمييز', 'info');
-}
-async function archiveMessage(id) {
-    await supaUpdate('messages', id, { is_archived: true });
-    messages = messages.filter(function(m){ return m.id !== id; });
-    renderMessages();
-    document.getElementById('msgDetailPanel').innerHTML = '<div class="msg-empty"><i class="fas fa-archive"></i><p>تمت أرشفة الرسالة</p></div>';
-    showToast('تمت أرشفة الرسالة', 'success');
-}
-function deleteMessage(id) {
-    showConfirm('حذف الرسالة', 'هل أنت متأكد من حذف هذه الرسالة؟', async function() {
-        await supaDelete('messages', id);
-        messages = messages.filter(function(m){ return m.id !== id; });
-        renderMessages();
-        document.getElementById('msgDetailPanel').innerHTML = '<div class="msg-empty"><i class="fas fa-inbox"></i><p>لا توجد رسائل</p></div>';
-        showToast('تم حذف الرسالة', 'success');
-    });
-}
+async function toggleStar(id) { var m=messages.find(function(x){return x.id===id;}); if(!m)return; m.starred=!m.starred; await sbUpdate('messages',id,{is_starred:m.starred}); openMessage(id); renderMessages(); showToast(m.starred?'تم تمييز الرسالة':'تم إلغاء التمييز','info'); }
+async function archiveMessage(id) { await sbUpdate('messages',id,{is_archived:true}); messages=messages.filter(function(m){return m.id!==id;}); renderMessages(); document.getElementById('msgDetailPanel').innerHTML='<div class="msg-empty"><i class="fas fa-archive"></i><p>تمت أرشفة الرسالة</p></div>'; showToast('تمت أرشفة الرسالة','success'); }
+function deleteMessage(id) { showConfirm('حذف الرسالة','هل أنت متأكد؟', async function(){ await sbDelete('messages',id); messages=messages.filter(function(m){return m.id!==id;}); renderMessages(); document.getElementById('msgDetailPanel').innerHTML='<div class="msg-empty"><i class="fas fa-inbox"></i><p>لا توجد رسائل</p></div>'; showToast('تم حذف الرسالة','success'); }); }
 
-// ===== العملاء CRUD =====
-let clientPage = 1;
-const clientPerPage = 8;
-
-function getFilteredClients(){
-    let data = [...clients];
-    const search = document.getElementById('clientSearch')?.value.toLowerCase()||'';
-    if(search) data = data.filter(c=>c.name.toLowerCase().includes(search)||(c.org||'').toLowerCase().includes(search)||c.email.toLowerCase().includes(search));
+// ============================================================
+//  CLIENTS CRUD
+// ============================================================
+var clientPage=1, clientPerPage=8;
+function getFilteredClients() {
+    var data=clients.slice();
+    var search=((document.getElementById('clientSearch')||{}).value||'').toLowerCase();
+    if(search) data=data.filter(function(c){ return (c.name||'').toLowerCase().includes(search)||(c.org||'').toLowerCase().includes(search); });
     return data;
 }
-
-function renderClients(){
-    const data = getFilteredClients();
-    const total = Math.max(1,Math.ceil(data.length/clientPerPage));
+function renderClients() {
+    var data=getFilteredClients();
+    var total=Math.max(1,Math.ceil(data.length/clientPerPage));
     if(clientPage>total) clientPage=total;
-    const start = (clientPage-1)*clientPerPage;
-    const pageData = data.slice(start,start+clientPerPage);
-    
-    document.getElementById('clientsBody').innerHTML = pageData.map((c,i)=>`
-        <tr>
-            <td data-label="#">${start+i+1}</td>
-            <td data-label="الاسم"><strong style="color:var(--text-primary)">${c.name}</strong></td>
-            <td data-label="البريد">${c.email}</td>
-            <td data-label="المؤسسة">${c.org||'--'}</td>
-            <td data-label="الفعاليات">${c.totalEvents}</td>
-            <td data-label="المدفوعات"><span style="color:var(--success);font-weight:600">$${c.totalSpent.toLocaleString()}</span></td>
-            <td data-label="الإجراءات"><div class="actions-cell">
-                <button class="btn-icon" title="تعديل" onclick="editClient(${c.id})"><i class="fas fa-edit"></i></button>
-                <button class="btn-icon" title="حذف" onclick="deleteClient(${c.id})" style="color:var(--danger)"><i class="fas fa-trash"></i></button>
-            </div></td>
-        </tr>
-    `).join('');
-    
-    document.getElementById('clientsPagination').innerHTML = `
-        <span>عرض ${start+1}-${Math.min(start+clientPerPage,data.length)} من ${data.length}</span>
-        <div class="pagination-btns">
-            <button class="page-btn" onclick="clientPage--;renderClients()" ${clientPage<=1?'disabled':''}><i class="fas fa-chevron-right"></i></button>
-            ${Array.from({length:total},(_,i)=>`<button class="page-btn ${i+1===clientPage?'active':''}" onclick="clientPage=${i+1};renderClients()">${i+1}</button>`).join('')}
-            <button class="page-btn" onclick="clientPage++;renderClients()" ${clientPage>=total?'disabled':''}><i class="fas fa-chevron-left"></i></button>
-        </div>
-    `;
+    var start=(clientPage-1)*clientPerPage;
+    var pageData=data.slice(start,start+clientPerPage);
+    document.getElementById('clientsBody').innerHTML=pageData.map(function(c,i){
+        return '<tr><td data-label="#">'+(start+i+1)+'</td><td data-label="الاسم"><strong>'+c.name+'</strong></td><td data-label="البريد">'+c.email+'</td><td data-label="المؤسسة">'+(c.org||'—')+'</td><td data-label="الفعاليات">'+c.totalEvents+'</td><td data-label="المدفوعات"><span style="color:#22c55e;font-weight:700">$'+c.totalSpent.toLocaleString()+'</span></td><td data-label="الإجراءات"><div class="actions-cell"><button class="btn-icon" onclick="editClient('+c.id+')"><i class="fas fa-edit"></i></button><button class="btn-icon" style="color:#ef4444" onclick="deleteClient('+c.id+')"><i class="fas fa-trash"></i></button></div></td></tr>';
+    }).join('')||'<tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">لا يوجد عملاء</td></tr>';
+    var pages='';
+    for(var i=1;i<=total;i++) pages+='<button class="page-btn '+(i===clientPage?'active':'')+'" onclick="clientPage='+i+';renderClients()">'+i+'</button>';
+    document.getElementById('clientsPagination').innerHTML='<span>عرض '+(start+1)+'-'+Math.min(start+clientPerPage,data.length)+' من '+data.length+'</span><div class="pagination-btns"><button class="page-btn" onclick="clientPage--;renderClients()" '+(clientPage<=1?'disabled':'')+'><i class="fas fa-chevron-right"></i></button>'+pages+'<button class="page-btn" onclick="clientPage++;renderClients()" '+(clientPage>=total?'disabled':'')+'><i class="fas fa-chevron-left"></i></button></div>';
 }
 function filterClients(){ clientPage=1; renderClients(); }
 
-function openClientModal(id){
-    document.getElementById('clientEditId').value='';
-    document.getElementById('clientModalTitle').textContent='عميل جديد';
-    ['cName','cEmail','cPhone','cOrg','cNotes'].forEach(f=>document.getElementById(f).value='');
-    document.querySelectorAll('#clientModal .form-error').forEach(e=>e.classList.remove('show'));
-    if(id){
-        const c=clients.find(x=>x.id===id);
-        if(!c)return;
-        document.getElementById('clientEditId').value=id;
-        document.getElementById('clientModalTitle').textContent='تعديل العميل';
-        document.getElementById('cName').value=c.name;
-        document.getElementById('cEmail').value=c.email;
-        document.getElementById('cPhone').value=c.phone||'';
-        document.getElementById('cOrg').value=c.org||'';
-        document.getElementById('cNotes').value=c.notes||'';
-    }
+function openClientModal(id) {
+    document.getElementById('clientEditId').value=''; document.getElementById('clientModalTitle').textContent='عميل جديد';
+    ['cName','cEmail','cPhone','cOrg','cNotes'].forEach(function(f){ document.getElementById(f).value=''; });
+    document.querySelectorAll('#clientModal .form-error').forEach(function(e){ e.classList.remove('show'); });
+    if(id){ var c=clients.find(function(x){return x.id===id;}); if(!c)return; document.getElementById('clientEditId').value=id; document.getElementById('clientModalTitle').textContent='تعديل العميل'; document.getElementById('cName').value=c.name||''; document.getElementById('cEmail').value=c.email||''; document.getElementById('cPhone').value=c.phone||''; document.getElementById('cOrg').value=c.org||''; document.getElementById('cNotes').value=c.notes||''; }
     openModal('clientModal');
 }
 
-async function saveClient(){
-    let valid = true;
-    [['cName','cNameErr'],['cEmail','cEmailErr']].forEach(function(f){
-        var el = document.getElementById(f[0]); var err = document.getElementById(f[1]);
-        if(!el.value.trim()){el.classList.add('error');err.classList.add('show');valid=false;}
-        else{el.classList.remove('error');err.classList.remove('show');}
-    });
-    var emailEl = document.getElementById('cEmail');
-    if(emailEl.value && !/\S+@\S+\.\S+/.test(emailEl.value)){emailEl.classList.add('error');document.getElementById('cEmailErr').classList.add('show');valid=false;}
+async function saveClient() {
+    var valid=true;
+    [['cName','cNameErr'],['cEmail','cEmailErr']].forEach(function(f){ var el=document.getElementById(f[0]); var err=document.getElementById(f[1]); if(!el.value.trim()){el.classList.add('error');err.classList.add('show');valid=false;}else{el.classList.remove('error');err.classList.remove('show');} });
     if(!valid) return;
-    
-    var editId = document.getElementById('clientEditId').value;
-    var rowData = {
-        name: document.getElementById('cName').value.trim(),
-        email: document.getElementById('cEmail').value.trim(),
-        phone: document.getElementById('cPhone').value.trim(),
-        org: document.getElementById('cOrg').value.trim(),
-        notes: document.getElementById('cNotes').value.trim(),
-    };
-    
-    if(editId){
-        var { error } = await supaUpdate('clients', parseInt(editId), rowData);
-        if(error){ showToast('حدث خطأ', 'error'); return; }
-        showToast('تم تعديل بيانات العميل', 'success');
-    } else {
-        rowData.total_events = 0;
-        rowData.total_spent = 0;
-        var { error } = await supaInsert('clients', rowData);
-        if(error){ showToast('حدث خطأ', 'error'); return; }
-        showToast('تم إضافة العميل بنجاح', 'success');
-    }
-    closeModal('clientModal');
-    await loadClients();
-    renderClients();
+    var editId=document.getElementById('clientEditId').value;
+    var row={name:document.getElementById('cName').value.trim(),email:document.getElementById('cEmail').value.trim(),phone:document.getElementById('cPhone').value.trim(),org:document.getElementById('cOrg').value.trim(),notes:document.getElementById('cNotes').value.trim()};
+    if(editId){ await sbUpdate('clients',parseInt(editId),row); showToast('تم تعديل بيانات العميل','success'); }
+    else{ row.total_events=0; row.total_spent=0; await sbInsert('clients',row); showToast('تم إضافة العميل بنجاح','success'); }
+    closeModal('clientModal'); await loadClients(); renderClients();
 }
-
 function editClient(id){ openClientModal(id); }
+function deleteClient(id){ showConfirm('حذف العميل','هل أنت متأكد؟', async function(){ await sbDelete('clients',id); await loadClients(); renderClients(); showToast('تم حذف العميل','success'); }); }
 
-function deleteClient(id){
-    showConfirm('حذف العميل', 'هل أنت متأكد؟', async function(){
-        var { error } = await supaDelete('clients', id);
-        if(error){ showToast('حدث خطأ', 'error'); return; }
-        await loadClients();
-        renderClients();
-        showToast('تم حذف العميل', 'success');
-    });
+// ============================================================
+//  MEDIA
+// ============================================================
+function renderMedia() {
+    var search=((document.getElementById('mediaSearch')||{}).value||'').toLowerCase();
+    var data=mediaItems.filter(function(m){ return !search||(m.name||'').toLowerCase().includes(search); });
+    document.getElementById('mediaGrid').innerHTML=data.length?data.map(function(m){ return '<div class="media-card"><img src="'+m.url+'" alt="'+m.name+'" loading="lazy"><div class="media-card-actions"><button title="نسخ الرابط" onclick="navigator.clipboard.writeText(\''+m.url+'\');showToast(\'تم نسخ الرابط\',\'success\')"><i class="fas fa-link"></i></button><button title="حذف" style="color:#ef4444" onclick="deleteMedia('+m.id+')"><i class="fas fa-trash"></i></button></div><div class="media-card-info"><p>'+m.name+'</p><span>'+(m.size||'')+'</span></div></div>'; }).join(''):'<p style="text-align:center;color:#94a3b8;grid-column:1/-1;padding:40px">لا توجد ملفات</p>';
 }
-
-const pagesData = [
-    { id:'home', name:'الصفحة الرئيسية', icon:'fa-home', lastEdited:'منذ ساعتين' },
-    { id:'about', name:'صفحة "عن دينا"', icon:'fa-user', lastEdited:'منذ 3 أيام' },
-    { id:'portfolio', name:'صفحة معرض الأعمال', icon:'fa-briefcase', lastEdited:'منذ أسبوع' },
-    { id:'booking', name:'صفحة الحجز', icon:'fa-calendar-check', lastEdited:'منذ 5 أيام' },
-    { id:'contact', name:'صفحة التواصل', icon:'fa-envelope', lastEdited:'منذ أسبوع' },
-];
-
-function renderPages(){
-    document.getElementById('pagesList').innerHTML = pagesData.map(function(p){
-        return '<div class="card" style="margin-bottom:12px;cursor:pointer" onclick="showToast(\'محرر ' + p.name + ' - قريباً\',\'info\')"><div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px"><div style="display:flex;align-items:center;gap:14px"><div style="width:42px;height:42px;border-radius:10px;background:var(--accent-glow);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas ' + p.icon + '"></i></div><div><h4 style="font-size:14px;font-weight:600">' + p.name + '</h4><p style="font-size:12px;color:var(--text-muted)">آخر تعديل: ' + p.lastEdited + '</p></div></div><button class="btn-icon"><i class="fas fa-edit"></i></button></div></div>';
-    }).join('');
-}
-
-function getFilteredMedia(){
-    var data = mediaItems.slice();
-    var search = (document.getElementById('mediaSearch') || {}).value || '';
-    search = search.toLowerCase();
-    var typeF = (document.getElementById('mediaTypeFilter') || {}).value || '';
-    if(search) data = data.filter(function(m){ return m.name.toLowerCase().indexOf(search) > -1; });
-    if(typeF) data = data.filter(function(m){ return m.type === typeF; });
-    return data;
-}
-
-function renderMedia(){
-    var data = getFilteredMedia();
-    var html = '';
-    for(var i = 0; i < data.length; i++){
-        var m = data[i];
-        html += '<div class="media-card"><img src="' + m.url + '" alt="' + m.name + '" loading="lazy"><div class="media-card-actions"><button title="نسخ الرابط" onclick="navigator.clipboard.writeText(\'' + m.url + '\');showToast(\'تم نسخ الرابط\',\'success\')"><i class="fas fa-link"></i></button><button title="حذف" onclick="deleteMedia(' + m.id + ')" style="color:var(--danger)"><i class="fas fa-trash"></i></button></div><div class="media-card-info"><p>' + m.name + '</p><span>' + m.size + '</span></div></div>';
-    }
-    if(!html) html = '<p style="text-align:center;color:var(--text-muted);grid-column:1/-1;padding:40px">لا توجد ملفات</p>';
-    document.getElementById('mediaGrid').innerHTML = html;
-}
-
-function filterMedia(){ renderMedia(); }
 
 async function handleMediaUpload(e) {
-    var files = e.target.files;
-    if (!files || !files.length) return;
-    for (var i = 0; i < files.length; i++) {
-        var f = files[i];
-        var url = URL.createObjectURL(f);
-        var rowData = {
-            name: f.name,
-            type: 'image',
-            size: (f.size / 1024).toFixed(0) + ' KB',
-            url: url
-        };
-        await supaInsert('media', rowData);
-        mediaItems.unshift({ id: nextId.media++, name: f.name, type: 'image', size: (f.size / 1024).toFixed(0) + ' KB', url: url });
+    var files=e.target.files; if(!files||!files.length) return;
+    for(var i=0;i<files.length;i++){
+        var f=files[i]; var url=URL.createObjectURL(f);
+        var row={name:f.name,type:'image',size:(f.size/1024).toFixed(0)+' KB',url:url};
+        await sbInsert('media',row);
+        mediaItems.unshift({id:Date.now()+i,name:f.name,type:'image',size:(f.size/1024).toFixed(0)+' KB',url:url});
     }
-    renderMedia();
-    showToast('تم رفع ' + files.length + ' ملف بنجاح', 'success');
-    e.target.value = '';
+    renderMedia(); showToast('تم رفع '+files.length+' ملف بنجاح','success'); e.target.value='';
 }
 
-function deleteMedia(id) {
-    showConfirm('حذف الملف', 'هل أنت متأكد من حذف هذا الملف؟', async function() {
-        await supaDelete('media', id);
-        await loadMedia();
-        renderMedia();
-        showToast('تم حذف الملف', 'success');
-    });
-}
+function deleteMedia(id){ showConfirm('حذف الملف','هل أنت متأكد؟', async function(){ await sbDelete('media',id); await loadMedia(); renderMedia(); showToast('تم حذف الملف','success'); }); }
 
-var analyticsLineChart = null, topClientsChart = null, analyticsDoughnut = null;
-
-function renderAnalytics(){
-    var revenue = bookings.filter(function(b){ return b.status==='Confirmed'||b.status==='Completed'; }).reduce(function(s,b){ return s+(b.fee||0); }, 0);
-    document.getElementById('analyticsStats').innerHTML =
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue"><i class="fas fa-calendar-alt"></i></div></div><div class="stat-value">' + bookings.length + '</div><div class="stat-label">إجمالي الحجوزات</div></div>' +
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div></div><div class="stat-value">' + bookings.filter(function(b){ return b.status==='Completed'; }).length + '</div><div class="stat-label">حجوزات مكتملة</div></div>' +
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon cyan"><i class="fas fa-users"></i></div></div><div class="stat-value">' + clients.length + '</div><div class="stat-label">إجمالي العملاء</div></div>' +
-        '<div class="stat-card"><div class="stat-card-top"><div class="stat-icon yellow"><i class="fas fa-dollar-sign"></i></div></div><div class="stat-value">$' + revenue.toLocaleString() + '</div><div class="stat-label">إجمالي الإيرادات</div></div>';
-    initAnalyticsLineChart();
-    initTopClientsChart();
-    initAnalyticsDoughnut();
-}
-
-function initAnalyticsLineChart(){
-    var ctx = document.getElementById('analyticsLineChart').getContext('2d');
-    var g = ctx.createLinearGradient(0,0,0,300);
-    g.addColorStop(0,'rgba(37,99,235,0.3)');
-    g.addColorStop(1,'rgba(37,99,235,0)');
-    if(analyticsLineChart) analyticsLineChart.destroy();
-    analyticsLineChart = new Chart(ctx,{type:'line',data:{labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],datasets:[{label:'الحجوزات',data:[4,6,5,7,3,8,6,5,9,7,4,6],borderColor:'#2563eb',backgroundColor:g,fill:true,tension:0.4,pointBackgroundColor:'#2563eb',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}}}}});
-}
-
-function initTopClientsChart(){
-    var ctx = document.getElementById('topClientsChart').getContext('2d');
-    if(topClientsChart) topClientsChart.destroy();
-    var sorted = clients.slice().sort(function(a,b){ return b.totalEvents - a.totalEvents; });
-    var top = sorted.slice(0,5);
-    topClientsChart = new Chart(ctx,{type:'bar',data:{labels:top.map(function(c){return c.name;}),datasets:[{label:'الفعاليات',data:top.map(function(c){return c.totalEvents;}),backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b','#7c3aed'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b'}},y:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:12}}}}}});
-}
-
-function initAnalyticsDoughnut(){
-    var ctx = document.getElementById('analyticsDoughnut').getContext('2d');
-    var counts = {};
-    bookings.forEach(function(b){ counts[b.serviceType] = (counts[b.serviceType]||0) + 1; });
-    if(analyticsDoughnut) analyticsDoughnut.destroy();
-    analyticsDoughnut = new Chart(ctx,{type:'doughnut',data:{labels:Object.keys(counts).map(function(k){return SERVICE_LABELS[k];}),datasets:[{data:Object.values(counts),backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:12},padding:16,usePointStyle:true,pointStyleWidth:8}}},cutout:'65%'}});
-}
-
-function getRelativeTime(dateStr){
-    var now = new Date();
-    var d = new Date(dateStr);
-    var diff = Math.floor((now - d) / 1000);
-    if(diff < 60) return 'الآن';
-    if(diff < 3600) return 'منذ ' + Math.floor(diff/60) + ' دقيقة';
-    if(diff < 86400) return 'منذ ' + Math.floor(diff/3600) + ' ساعة';
-    if(diff < 604800) return 'منذ ' + Math.floor(diff/86400) + ' يوم';
-    return dateStr.split(' ')[0];
-}
-
-function selectAccent(el){
-    document.querySelectorAll('.color-opt').forEach(function(c){ c.classList.remove('active'); });
-    el.classList.add('active');
-    showToast('تم تغيير اللون الرئيسي', 'success');
-}
-
-document.getElementById('visitSite').addEventListener('click', function(){ window.open('index.html', '_blank'); });
-document.getElementById('logoutBtn').addEventListener('click', function(){
-    showConfirm('تسجيل الخروج', 'هل أنت متأكد من تسجيل الخروج؟', function(){
-        app.classList.remove('visible');
-        setTimeout(function(){
-            loginScreen.classList.remove('hidden');
-            document.getElementById('loginEmail').value = '';
-            document.getElementById('loginPassword').value = '';
-        }, 500);
-    });
-});
-
-var uploadArea = document.getElementById('uploadArea');
+var uploadArea=document.getElementById('uploadArea');
 if(uploadArea){
-    ['dragenter','dragover'].forEach(function(e){ uploadArea.addEventListener(e, function(ev){ ev.preventDefault(); uploadArea.classList.add('dragover'); }); });
-    ['dragleave','drop'].forEach(function(e){ uploadArea.addEventListener(e, function(ev){ ev.preventDefault(); uploadArea.classList.remove('dragover'); }); });
-uploadArea.addEventListener('drop', async function(e){
-    e.preventDefault();
-    uploadArea.classList.remove('dragover');
-    var files = e.dataTransfer.files;
-    if(files && files.length){
-        for(var i = 0; i < files.length; i++){
-            var f = files[i];
-            var url = URL.createObjectURL(f);
-            await supaInsert('media', { name: f.name, type: 'image', size: (f.size/1024).toFixed(0) + ' KB', url: url });
-            mediaItems.unshift({id: nextId.media++, name: f.name, type: 'image', size: (f.size/1024).toFixed(0) + ' KB', url: url});
-        }
-        renderMedia();
-        showToast('تم رفع ' + files.length + ' ملف', 'success');
-    }
-});
-
-    uploadArea.addEventListener('click', function(){ document.getElementById('mediaUpload').click(); });
+    uploadArea.addEventListener('click',function(){ document.getElementById('mediaUpload').click(); });
+    ['dragenter','dragover'].forEach(function(ev){ uploadArea.addEventListener(ev,function(e){ e.preventDefault(); uploadArea.classList.add('dragover'); }); });
+    ['dragleave','drop'].forEach(function(ev){ uploadArea.addEventListener(ev,function(e){ e.preventDefault(); uploadArea.classList.remove('dragover'); if(ev==='drop'&&e.dataTransfer.files.length){ handleMediaUpload({target:{files:e.dataTransfer.files}}); } }); });
 }
 
-document.querySelectorAll('.chart-period').forEach(function(btn){
-    btn.addEventListener('click', function(){
-        document.querySelectorAll('.chart-period').forEach(function(b){ b.classList.remove('active'); });
-        this.classList.add('active');
-    });
-});
-document.querySelectorAll('.analytic-period').forEach(function(btn){
-    btn.addEventListener('click', function(){
-        document.querySelectorAll('.analytic-period').forEach(function(b){ b.classList.remove('active'); });
-        this.classList.add('active');
-        renderAnalytics();
-    });
-});
+// ============================================================
+//  ANALYTICS
+// ============================================================
+var aLine=null,aTop=null,aDough=null;
+function renderAnalytics() {
+    var revenue=bookings.filter(function(b){return b.status==='Confirmed'||b.status==='Completed';}).reduce(function(s,b){return s+(b.fee||0);},0);
+    document.getElementById('analyticsStats').innerHTML=
+        statCard('blue','fa-calendar-alt',bookings.length,'إجمالي الحجوزات')+
+        statCard('green','fa-check-circle',bookings.filter(function(b){return b.status==='Completed';}).length,'حجوزات مكتملة')+
+        statCard('cyan','fa-users',clients.length,'إجمالي العملاء')+
+        statCard('yellow','fa-dollar-sign','$'+revenue.toLocaleString(),'إجمالي الإيرادات');
 
-var globalSearchEl = document.getElementById('globalSearch');
-if(globalSearchEl){
-    globalSearchEl.addEventListener('input', function(){
-        var q = this.value.toLowerCase();
-        if(!q) return;
-        var found = false;
-        for(var i = 0; i < bookings.length; i++){
-            if(bookings[i].clientName.toLowerCase().indexOf(q) > -1 || bookings[i].eventName.toLowerCase().indexOf(q) > -1){
-                navigateTo('bookings');
-                document.getElementById('bookingSearch').value = q;
-                filterBookings();
-                found = true;
-                break;
-            }
-        }
-        if(!found){
-            for(var j = 0; j < messages.length; j++){
-                if(messages[j].senderName.toLowerCase().indexOf(q) > -1 || messages[j].subject.toLowerCase().indexOf(q) > -1){
-                    navigateTo('messages');
-                    document.getElementById('msgSearch').value = q;
-                    filterMessages();
-                    found = true;
-                    break;
-                }
-            }
-        }
-        if(!found){
-            for(var k = 0; k < clients.length; k++){
-                if(clients[k].name.toLowerCase().indexOf(q) > -1){
-                    navigateTo('clients');
-                    document.getElementById('clientSearch').value = q;
-                    filterClients();
-                    break;
-                }
-            }
-        }
-    });
+    // Line Chart
+    var ctx1=document.getElementById('analyticsLineChart').getContext('2d');
+    var g=ctx1.createLinearGradient(0,0,0,300); g.addColorStop(0,'rgba(37,99,235,0.3)'); g.addColorStop(1,'rgba(37,99,235,0)');
+    if(aLine) aLine.destroy();
+    aLine=new Chart(ctx1,{type:'line',data:{labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],datasets:[{label:'الحجوزات',data:[4,6,5,7,3,8,6,5,9,7,4,6],borderColor:'#2563eb',backgroundColor:g,fill:true,tension:0.4,pointBackgroundColor:'#2563eb',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b',font:{size:11}}}}}});
+
+    // Top Clients
+    var ctx2=document.getElementById('topClientsChart').getContext('2d');
+    if(aTop) aTop.destroy();
+    var top=clients.slice().sort(function(a,b){return b.totalEvents-a.totalEvents;}).slice(0,5);
+    aTop=new Chart(ctx2,{type:'bar',data:{labels:top.map(function(c){return c.name;}),datasets:[{label:'الفعاليات',data:top.map(function(c){return c.totalEvents;}),backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b','#7c3aed'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#64748b'}},y:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:12}}}}}});
+
+    // Doughnut
+    var ctx3=document.getElementById('analyticsDoughnut').getContext('2d');
+    if(aDough) aDough.destroy();
+    var counts={};
+    bookings.forEach(function(b){ counts[b.serviceType]=(counts[b.serviceType]||0)+1; });
+    if(Object.keys(counts).length) aDough=new Chart(ctx3,{type:'doughnut',data:{labels:Object.keys(counts).map(function(k){return SERVICE_LABELS[k]||k;}),datasets:[{data:Object.values(counts),backgroundColor:['#2563eb','#06b6d4','#22c55e','#f59e0b'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:12},padding:16,usePointStyle:true}}},cutout:'65%'}});
 }
 
-document.addEventListener('click', function(){
-    document.getElementById('notifDropdown').classList.remove('show');
+// ============================================================
+//  HELPERS
+// ============================================================
+function getRelativeTime(dateStr) {
+    if(!dateStr) return '—';
+    var now=new Date(), d=new Date(dateStr), diff=Math.floor((now-d)/1000);
+    if(diff<60) return 'الآن';
+    if(diff<3600) return 'منذ '+Math.floor(diff/60)+' دقيقة';
+    if(diff<86400) return 'منذ '+Math.floor(diff/3600)+' ساعة';
+    if(diff<604800) return 'منذ '+Math.floor(diff/86400)+' يوم';
+    return dateStr.split('T')[0];
+}
+
+function updateBadges() {
+    var unread=messages.filter(function(m){return !m.read&&!m.archived;}).length;
+    var badge=document.getElementById('messagesBadge');
+    if(badge){ badge.textContent=unread; badge.style.display=unread?'inline-flex':'none'; }
+}
+
+// Global search
+document.getElementById('globalSearch').addEventListener('input', function(){
+    var q=this.value.toLowerCase(); if(!q) return;
+    for(var i=0;i<bookings.length;i++){ if((bookings[i].clientName||'').toLowerCase().includes(q)||(bookings[i].eventName||'').toLowerCase().includes(q)){ navigateTo('bookings'); document.getElementById('bookingSearch').value=q; filterBookings(); return; } }
+    for(var j=0;j<messages.length;j++){ if((messages[j].senderName||'').toLowerCase().includes(q)||(messages[j].subject||'').toLowerCase().includes(q)){ navigateTo('messages'); document.getElementById('msgSearch').value=q; filterMessages(); return; } }
+    for(var k=0;k<clients.length;k++){ if((clients[k].name||'').toLowerCase().includes(q)){ navigateTo('clients'); document.getElementById('clientSearch').value=q; filterClients(); return; } }
 });
 </script>
 </body>
