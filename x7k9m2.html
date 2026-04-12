@@ -762,7 +762,7 @@ function renderStats() {
     document.getElementById('statsGrid').innerHTML =
         statCard('blue','fa-calendar-alt',bookings.length,'إجمالي الحجوزات')+
         statCard('cyan','fa-envelope',unread,'رسائل جديدة')+
-        statCard('green','fa-dollar-sign','$'+revenue.toLocaleString(),'الإيرادات المؤكدة')+
+        statCard('green','fa-dollar-sign',revenue.toLocaleString()+' ج.م','الإيرادات المؤكدة')+
         statCard('yellow','fa-clock',pending,'بانتظار المراجعة');
 }
 
@@ -875,7 +875,7 @@ function viewBooking(id) {
         '<div class="form-group"><label>الفعالية</label><div style="font-size:14px">'+b.eventName+'</div></div>'+
         '<div class="form-row"><div class="form-group"><label>المكان</label><div style="font-size:14px;color:#94a3b8">'+(b.location||'—')+'</div></div><div class="form-group"><label>النوع</label><span class="portfolio-tag">'+(SERVICE_LABELS[b.serviceType]||'—')+'</span></div></div>'+
         '<div class="form-row"><div class="form-group"><label>التاريخ</label><div style="font-size:14px;color:#94a3b8">'+b.date+'</div></div><div class="form-group"><label>الوقت</label><div style="font-size:14px;color:#94a3b8">'+(b.startTime||'—')+' - '+(b.endTime||'—')+'</div></div></div>'+
-        '<div class="form-group"><label>الرسوم</label><div style="font-size:20px;font-weight:800;color:#10b981">$'+(b.fee||0).toLocaleString()+'</div></div>'+
+        '<div class="form-group"><label>الرسوم</label><div style="font-size:20px;font-weight:800;color:#10b981">(b.fee||0).toLocaleString()+' ج.م'+'</div></div>'+
         (b.notes?'<div class="form-group"><label>ملاحظات</label><div style="font-size:14px;color:#94a3b8">'+b.notes+'</div></div>':'');
     document.getElementById('editFromView').onclick=function(){ closeModal('viewBookingModal'); setTimeout(function(){ editBooking(id); },200); };
     document.getElementById('deleteFromView').onclick=function(){ closeModal('viewBookingModal'); deleteBooking(id); };
@@ -998,7 +998,7 @@ function renderClients() {
     var start=(clientPage-1)*clientPerPage;
     var pd=data.slice(start,start+clientPerPage);
     document.getElementById('clientsBody').innerHTML=pd.map(function(c,i){
-        return '<tr><td data-label="#">'+(start+i+1)+'</td><td data-label="الاسم"><strong>'+c.name+'</strong></td><td data-label="البريد">'+c.email+'</td><td data-label="المؤسسة">'+(c.org||'—')+'</td><td data-label="الفعاليات">'+c.totalEvents+'</td><td data-label="المدفوعات"><span style="color:#10b981;font-weight:700">$'+c.totalSpent.toLocaleString()+'</span></td><td data-label="الإجراءات"><div class="actions-cell"><button class="btn-icon" onclick="editClient('+c.id+')"><i class="fas fa-edit"></i></button><button class="btn-icon" style="color:#f43f5e" onclick="deleteClient('+c.id+')"><i class="fas fa-trash"></i></button></div></td></tr>';
+        return '<tr><td data-label="#">'+(start+i+1)+'</td><td data-label="الاسم"><strong>'+c.name+'</strong></td><td data-label="البريد">'+c.email+'</td><td data-label="المؤسسة">'+(c.org||'—')+'</td><td data-label="الفعاليات">'+c.totalEvents+'</td><td data-label="المدفوعات"><span style="color:#10b981;font-weight:700">c.totalSpent.toLocaleString()+' ج.م'+'</span></td><td data-label="الإجراءات"><div class="actions-cell"><button class="btn-icon" onclick="editClient('+c.id+')"><i class="fas fa-edit"></i></button><button class="btn-icon" style="color:#f43f5e" onclick="deleteClient('+c.id+')"><i class="fas fa-trash"></i></button></div></td></tr>';
     }).join('')||'<tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">لا يوجد عملاء</td></tr>';
     var pages=''; for(var i=1;i<=total;i++) pages+='<button class="page-btn '+(i===clientPage?'active':'')+'" onclick="clientPage='+i+';renderClients()">'+i+'</button>';
     document.getElementById('clientsPagination').innerHTML='<span>'+(start+1)+'-'+Math.min(start+clientPerPage,data.length)+' من '+data.length+'</span><div class="pagination-btns"><button class="page-btn" onclick="clientPage--;renderClients()" '+(clientPage<=1?'disabled':'')+'>›</button>'+pages+'<button class="page-btn" onclick="clientPage++;renderClients()" '+(clientPage>=total?'disabled':'')+'>‹</button></div>';
@@ -1056,7 +1056,7 @@ if(ua){
 var aLine=null,aTop=null,aDough=null;
 function renderAnalytics(){
     var revenue=bookings.filter(function(b){return b.status==='Confirmed'||b.status==='Completed';}).reduce(function(s,b){return s+(b.fee||0);},0);
-    document.getElementById('analyticsStats').innerHTML=statCard('blue','fa-calendar-alt',bookings.length,'إجمالي الحجوزات')+statCard('green','fa-check-circle',bookings.filter(function(b){return b.status==='Completed';}).length,'حجوزات مكتملة')+statCard('cyan','fa-users',clients.length,'إجمالي العملاء')+statCard('yellow','fa-dollar-sign','$'+revenue.toLocaleString(),'إجمالي الإيرادات');
+    document.getElementById('analyticsStats').innerHTML=statCard('blue','fa-calendar-alt',bookings.length,'إجمالي الحجوزات')+statCard('green','fa-check-circle',bookings.filter(function(b){return b.status==='Completed';}).length,'حجوزات مكتملة')+statCard('cyan','fa-users',clients.length,'إجمالي العملاء')+statCard('yellow','fa-dollar-sign',revenue.toLocaleString()+' ج.م','إجمالي الإيرادات');
     var ctx1=document.getElementById('analyticsLineChart').getContext('2d');
     var g=ctx1.createLinearGradient(0,0,0,300); g.addColorStop(0,'rgba(59,130,246,0.3)'); g.addColorStop(1,'rgba(59,130,246,0)');
     if(aLine) aLine.destroy();
