@@ -14,9 +14,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="CSS/style.css?v=2.1">
-    <link rel="stylesheet" href="CSS/responsive.css?v=2.1">
-    <link rel="stylesheet" href="CSS/animations.css?v=2.1">
+    <link rel="stylesheet" href="CSS/style.css?v=2.0">
+    <link rel="stylesheet" href="CSS/responsive.css?v=2.0">
+    <link rel="stylesheet" href="CSS/animations.css?v=2.0">
 
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -223,6 +223,7 @@
                                 </div>
                                 <div class="cf-group">
                                     <label for="cf_email">Email Address <span class="req">*</span></label>
+                                    <input type="hidden" id="cf_name_hidden" name="name">
                                     <input type="email" id="cf_email" name="reply_to" placeholder="your@email.com" required>
                                 </div>
                             </div>
@@ -406,8 +407,8 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="Js/main.js?v=2.1"></script>
-    <script src="Js/pwa.js?v=2.1"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="Js/main.js?v=2.0"></script>
+    <script src="Js/pwa.js?v=2.0"></script>
 
     <script>
         /* ===== FAQ Toggle ===== */
@@ -466,6 +467,11 @@
                     btn.disabled = false;
                     btn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send Message</span>';
                 });
+        });
+
+        // Sync name field for EmailJS template
+        document.getElementById("cf_name").addEventListener("input", function() {
+            document.getElementById("cf_name_hidden").value = this.value;
         });
 
         function showStatus(type, message) {
