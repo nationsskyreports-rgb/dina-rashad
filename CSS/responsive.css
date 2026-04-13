@@ -353,6 +353,73 @@
     }
 }
 
+/* ---------- Booking & Calendar Mobile ---------- */
+@media screen and (max-width: 768px) {
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-form-container {
+        padding: var(--spacing-lg);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-buttons {
+        flex-direction: column-reverse;
+    }
+
+    .calendar-grid {
+        gap: 2px;
+    }
+
+    .calendar-day {
+        aspect-ratio: unset;
+        height: 36px;
+        font-size: var(--font-size-xs);
+    }
+
+    .calendar-day-header {
+        font-size: 10px;
+        padding: 4px 2px;
+    }
+
+    .time-slots {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+
+    .time-slot-btn {
+        padding: 8px 4px;
+        font-size: var(--font-size-xs);
+    }
+
+    .booking-steps {
+        gap: var(--spacing-xs);
+    }
+
+    .step-label {
+        font-size: 10px;
+    }
+
+    .step-line {
+        width: 30px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .calendar-day {
+        height: 32px;
+        font-size: 11px;
+    }
+
+    .time-slots {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    }
+}
+
+
 /* ---------- Print Styles ---------- */
 @media print {
     .navbar,
