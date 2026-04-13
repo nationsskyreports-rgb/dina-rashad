@@ -530,6 +530,15 @@ window.formatTime24To12 = formatTime24To12;
             || a.target === '_blank') return;
         e.preventDefault();
         el.classList.remove('gone', 'fade-out');
-        setTimeout(function () { window.location.href = href; }, DURATION);
+        // لو نفس الصفحة — replace بدل push عشان ميتراكمش في الـ history
+        var isSamePage = window.location.pathname.endsWith(href) ||
+                         window.location.href.endsWith(href);
+        setTimeout(function () {
+            if (isSamePage) {
+                window.location.replace(href);
+            } else {
+                window.location.href = href;
+            }
+        }, DURATION);
     });
 }());
