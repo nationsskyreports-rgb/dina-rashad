@@ -1181,3 +1181,38 @@ button {
 #pwa-install-btn i {
     margin-right: 8px; 
 }
+.time-slots-container { margin-top: 1.5rem; }
+
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.time-slot-btn {
+    padding: 10px 8px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+}
+
+.time-slot-btn:hover {
+    border-color: var(--primary-400);
+    background: var(--primary-50);
+    color: var(--primary-700);
+}
+
+.time-slot-btn.selected {
+    border-color: var(--primary-600);
+    background: var(--primary-600);
+    color: var(--white);
+    font-weight: 700;
+}
