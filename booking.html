@@ -416,7 +416,7 @@
         .calendar-nav { width: 36px; height: 36px; border: none; background: var(--white); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-700); transition: all var(--transition-fast); }
         .calendar-nav:hover { background: var(--primary-100); color: var(--primary-600); }
         .calendar-month { font-weight: 700; color: var(--gray-800); }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; max-width: 100%; overflow: hidden; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
         .calendar-day-header { text-align: center; font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-500); padding: var(--spacing-sm); }
         .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-size: var(--font-size-sm); cursor: pointer; transition: all var(--transition-fast); background: var(--white); color: var(--gray-700); }
         .calendar-day:not(.empty):not(.past):hover { background: var(--primary-100); color: var(--primary-700); }
@@ -464,8 +464,6 @@
         .whatsapp-social { background: #25D366; } .whatsapp-social:hover { background: #128C7E; transform: translateY(-2px); }
         .youtube-social { background: #FF0000; } .youtube-social:hover { background: #cc0000; transform: translateY(-2px); }
         .email-social { background: var(--primary-600); } .email-social:hover { background: var(--primary-700); transform: translateY(-2px); }
-        #step2 { overflow: hidden; max-width: 100%; }
-        .booking-form { overflow: hidden; }
         @media (max-width: 1024px) { .booking-layout { grid-template-columns: 1fr; } .booking-sidebar { order: -1; } }
         @media (max-width: 768px) { .booking-form-container { padding: var(--spacing-lg); } .form-row { grid-template-columns: 1fr; } .form-buttons { flex-direction: column-reverse; } }
     </style>
