@@ -5,7 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
-    initScrollAnimations();
+    initScrollAnimations();  // replaces IntersectionObserver with reliable scroll
     initSmoothScroll();
     initCounters();
     console.log('🎤 Dina Rashad Interpreter PWA - Initialized');
@@ -60,8 +60,10 @@ function closeNav(toggle, menu) {
 
 /* ===================================
    SCROLL ANIMATIONS
+   بدل IntersectionObserver — أكتر موثوقية على كل المتصفحات
    =================================== */
 function initScrollAnimations() {
+    // اضف scroll-animate لـ service cards وغيرها
     document.querySelectorAll('.service-card, .feature-item, .language-card').forEach((el, i) => {
         el.classList.add('scroll-animate');
         el.style.transitionDelay = `${i * 0.1}s`;
@@ -71,14 +73,18 @@ function initScrollAnimations() {
         const windowH = window.innerHeight;
         document.querySelectorAll('.scroll-animate:not(.visible), .stagger-children:not(.visible)').forEach(el => {
             const rect = el.getBoundingClientRect();
+            // عنصر يكون visible لو 10% منه ظاهر في الشاشة
             if (rect.top < windowH * 0.92 && rect.bottom > 0) {
                 el.classList.add('visible');
             }
         });
     }
 
+    // شغّل فوراً عند التحميل
     checkVisibility();
+    // شغّل عند كل scroll
     window.addEventListener('scroll', checkVisibility, { passive: true });
+    // شغّل بعد ثانية كـ fallback لو فيه حاجة اتأخرت
     window.addEventListener('load', function() {
         checkVisibility();
         setTimeout(checkVisibility, 500);
@@ -317,27 +323,3 @@ window.DinaRashadApp = {
 };
 window.showNotification = showNotification;
 window.formatTime24To12 = formatTime24To12;
-
-/* ===================================
-   PAGE TRANSITION — history replace fix
-   =================================== */
-(function () {
-    var DURATION = 350;
-    document.addEventListener('click', function (e) {
-        var a = e.target.closest('a[href]');
-        if (!a) return;
-        var href = a.getAttribute('href');
-        if (!href || href.charAt(0) === '#'
-            || href.indexOf('http') === 0
-            || href.indexOf('mailto') === 0
-            || href.indexOf('tel') === 0
-            || a.target === '_blank') return;
-        e.preventDefault();
-        var isSamePage = window.location.pathname.endsWith(href) ||
-                         window.location.href.endsWith(href);
-        setTimeout(function () {
-            if (isSamePage) { window.location.replace(href); }
-            else { window.location.href = href; }
-        }, DURATION);
-    });
-}());
