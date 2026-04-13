@@ -244,7 +244,7 @@
                     <div class="footer-social">
                         <a href="https://wa.me/201011160627" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-icon whatsapp-social"><i class="fab fa-whatsapp"></i></a>
                         <a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon youtube-social"><i class="fab fa-youtube"></i></a>
-                        <a href="mailto:dinarashad9@gmail.com" aria-label="Email" class="social-icon email-social"><i class="fas fa-envelope"></i></a>
+                        <a href="/cdn-cgi/l/email-protection#1d7974737c6f7c6e757c79245d7a707c7471337e7270" aria-label="Email" class="social-icon email-social"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
@@ -268,7 +268,7 @@
                 <div class="footer-contact">
                     <h4>Contact</h4>
                     <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i><span>+20 101 116 0627</span></a>
-                    <a href="mailto:dinarashad9@gmail.com" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span>dinarashad9@gmail.com</span></a>
+                    <a href="/cdn-cgi/l/email-protection#ed8984838c9f8c9e858c89d4ad8a808c8481c38e8280" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span><span class="__cf_email__" data-cfemail="cbafa2a5aab9aab8a3aaaff28baca6aaa2a7e5a8a4a6">[email&#160;protected]</span></span></a>
                     <p class="availability" style="margin-top:8px;"><i class="fas fa-clock"></i> Available 7 days a week</p>
                 </div>
             </div>
@@ -284,6 +284,7 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="Js/main.js?v=2.1"></script>
     <script src="Js/booking.js?v=2.1"></script>
     <script src="Js/pwa.js?v=2.1"></script>
@@ -308,9 +309,20 @@
         }
 
         function validateCurrentStep(step) {
-            const requiredFields = step.querySelectorAll('[required]');
-            let isValid = true;
-            requiredFields.forEach(field => {
+            var requiredFields = step.querySelectorAll('[required]');
+            var isValid = true;
+            var missingDate = false;
+            var missingTime = false;
+
+            requiredFields.forEach(function(field) {
+                if (field.type === 'hidden') {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        if (field.id === 'bookingDate') missingDate = true;
+                        if (field.id === 'bookingTime') missingTime = true;
+                    }
+                    return;
+                }
                 if (!field.value.trim()) {
                     isValid = false;
                     field.classList.add('error');
@@ -320,7 +332,14 @@
                     clearFieldError(field);
                 }
             });
-            if (!isValid) showNotification('Please fill in all required fields.', 'error');
+
+            if (missingDate) {
+                alert('Please select a date from the calendar.');
+            } else if (missingTime) {
+                alert('Please select a time slot.');
+            } else if (!isValid) {
+                alert('Please fill in all required fields.');
+            }
             return isValid;
         }
 
@@ -378,7 +397,7 @@
         .page-header .section-tag { background: rgba(255,255,255,0.2); color: white; }
         .breadcrumb { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-xl); font-size: var(--font-size-sm); opacity: 0.8; }
         .breadcrumb a { color: white; }
-        .booking-layout { display: grid; grid-template-columns: 1fr 380px; gap: var(--spacing-2xl); align-items: start; }
+        .booking-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: var(--spacing-2xl); align-items: start; }
         .booking-form-container { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); padding: var(--spacing-2xl); }
         .booking-steps { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-2xl); padding-bottom: var(--spacing-xl); border-bottom: 1px solid var(--gray-200); }
         .step { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xs); }
@@ -401,7 +420,7 @@
         .form-group input.error, .form-group select.error { border-color: var(--error); }
         .input-icon { position: absolute; right: 15px; top: 42px; color: var(--gray-400); }
         .field-error { display: block; color: var(--error); font-size: var(--font-size-xs); margin-top: var(--spacing-xs); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); }
+        .form-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--spacing-md); }
         .form-buttons { display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl); padding-top: var(--spacing-xl); border-top: 1px solid var(--gray-200); }
         .btn-block { width: 100%; }
         .btn-success { background: linear-gradient(135deg, #25D366, #128C7E); color: var(--white); }
@@ -464,8 +483,4 @@
         .whatsapp-social { background: #25D366; } .whatsapp-social:hover { background: #128C7E; transform: translateY(-2px); }
         .youtube-social { background: #FF0000; } .youtube-social:hover { background: #cc0000; transform: translateY(-2px); }
         .email-social { background: var(--primary-600); } .email-social:hover { background: var(--primary-700); transform: translateY(-2px); }
-        @media (max-width: 1024px) { .booking-layout { grid-template-columns: 1fr; } .booking-sidebar { order: -1; } }
-        @media (max-width: 768px) { .booking-form-container { padding: var(--spacing-lg); } .form-row { grid-template-columns: 1fr; } .form-buttons { flex-direction: column-reverse; } }
-    </style>
-</body>
-</html>
+        @media (max-width: 1024px) { .booki
