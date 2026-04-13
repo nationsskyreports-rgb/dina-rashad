@@ -133,19 +133,19 @@
                                 <div class="calendar-container">
                                     <div class="calendar-header">
                                         <button type="button" id="prevMonth" class="calendar-nav"><i class="fas fa-chevron-left"></i></button>
-                                        <span id="currentMonth" class="calendar-month">January 2025</span>
+                                        <span id="currentMonth" class="calendar-month"></span>
                                         <button type="button" id="nextMonth" class="calendar-nav"><i class="fas fa-chevron-right"></i></button>
                                     </div>
                                     <div id="calendarGrid" class="calendar-grid"></div>
-                                    <input type="hidden" id="bookingDate" name="date" required>
+                                    <input type="hidden" id="bookingDate" name="date">
                                     <div id="selectedDateDisplay" class="selected-date-display"></div>
                                 </div>
                             </div>
 
-                            <div class="time-slots-container" style="display:none;">
+                            <div class="time-slots-container" id="timeSlotsContainer" style="display:none;">
                                 <label class="form-label"><i class="fas fa-clock"></i> Select Time Slot <span class="required">*</span></label>
                                 <div id="timeSlots" class="time-slots"></div>
-                                <input type="hidden" id="bookingTime" name="time" required>
+                                <input type="hidden" id="bookingTime" name="time">
                             </div>
 
                             <div class="form-buttons">
@@ -164,11 +164,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="bookingMessage">Additional Details / Special Requirements</label>
-                                <!-- FIX: was missing opening < tag -->
-                                <textarea id="bookingMessage"
-                                          name="message"
-                                          rows="4"
-                                          placeholder="Tell me more about your event, specific topics, technical terms, or any special requirements..."></textarea>
+                                <textarea id="bookingMessage" name="message" rows="4"
+                                    placeholder="Tell me more about your event, specific topics, technical terms, or any special requirements..."></textarea>
                             </div>
 
                             <div class="booking-summary">
@@ -241,10 +238,10 @@
                 <div class="footer-brand">
                     <a href="index.html" class="footer-logo"><i class="fas fa-language"></i><span>Dina Rashad</span></a>
                     <p class="footer-description">Professional freelance conference interpreter specializing in Arabic-English simultaneous interpretation.</p>
-                    <div class="footer-social">
-                        <a href="https://wa.me/201011160627" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-icon whatsapp-social"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon youtube-social"><i class="fab fa-youtube"></i></a>
-                        <a href="/cdn-cgi/l/email-protection#1d7974737c6f7c6e757c79245d7a707c7471337e7270" aria-label="Email" class="social-icon email-social"><i class="fas fa-envelope"></i></a>
+                    <div style="display:flex;gap:8px;margin-top:12px;">
+                        <a href="https://wa.me/201011160627" target="_blank" rel="noopener" style="width:38px;height:38px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://youtube.com/@dinarashadthelinguist421" target="_blank" rel="noopener" style="width:38px;height:38px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;"><i class="fab fa-youtube"></i></a>
+                        <a href="mailto:dinarashad9@gmail.com" style="width:38px;height:38px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
@@ -268,7 +265,7 @@
                 <div class="footer-contact">
                     <h4>Contact</h4>
                     <a href="https://wa.me/201011160627" class="footer-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i><span>+20 101 116 0627</span></a>
-                    <a href="/cdn-cgi/l/email-protection#ed8984838c9f8c9e858c89d4ad8a808c8481c38e8280" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span><span class="__cf_email__" data-cfemail="cbafa2a5aab9aab8a3aaaff28baca6aaa2a7e5a8a4a6">[email&#160;protected]</span></span></a>
+                    <a href="mailto:dinarashad9@gmail.com" style="display:flex;align-items:center;gap:8px;margin-top:8px;color:inherit;font-size:var(--font-size-sm);"><i class="fas fa-envelope"></i><span>dinarashad9@gmail.com</span></a>
                     <p class="availability" style="margin-top:8px;"><i class="fas fa-clock"></i> Available 7 days a week</p>
                 </div>
             </div>
@@ -284,109 +281,189 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="Js/main.js?v=2.1"></script>
-    <script src="Js/booking.js?v=2.1"></script>
     <script src="Js/pwa.js?v=2.1"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() { initBookingSteps(); });
+    /* ===== Multi-step form ===== */
+    document.addEventListener('DOMContentLoaded', function() {
 
-        function initBookingSteps() {
-            document.querySelectorAll('.next-step').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const currentStep = this.closest('.form-step');
-                    const nextStepNum = this.dataset.next;
-                    if (validateCurrentStep(currentStep)) {
-                        goToStep(nextStepNum);
-                        if (nextStepNum === '3') updateBookingSummary();
-                    }
-                });
-            });
-            document.querySelectorAll('.prev-step').forEach(btn => {
-                btn.addEventListener('click', function() { goToStep(this.dataset.prev); });
-            });
-        }
-
-        function validateCurrentStep(step) {
-            var requiredFields = step.querySelectorAll('[required]');
-            var isValid = true;
-            var missingDate = false;
-            var missingTime = false;
-
-            requiredFields.forEach(function(field) {
-                if (field.type === 'hidden') {
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        if (field.id === 'bookingDate') missingDate = true;
-                        if (field.id === 'bookingTime') missingTime = true;
-                    }
-                    return;
-                }
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.classList.add('error');
-                    showFieldError(field, 'This field is required');
-                } else {
-                    field.classList.remove('error');
-                    clearFieldError(field);
+        // Next buttons
+        document.querySelectorAll('.next-step').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var currentStep = this.closest('.form-step');
+                var nextNum = this.dataset.next;
+                if (validateStep(currentStep, nextNum)) {
+                    goToStep(nextNum);
+                    if (nextNum === '3') buildSummary();
                 }
             });
+        });
 
-            if (missingDate) {
-                alert('Please select a date from the calendar.');
-            } else if (missingTime) {
-                alert('Please select a time slot.');
-            } else if (!isValid) {
-                alert('Please fill in all required fields.');
+        // Prev buttons
+        document.querySelectorAll('.prev-step').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                goToStep(this.dataset.prev);
+            });
+        });
+
+        // Form submit
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var name     = document.getElementById('bookingName').value;
+            var phone    = document.getElementById('bookingPhone').value;
+            var email    = document.getElementById('bookingEmail').value;
+            var type     = document.getElementById('eventType').options[document.getElementById('eventType').selectedIndex].text;
+            var duration = document.getElementById('duration').value;
+            var date     = document.getElementById('bookingDate').value;
+            var time     = document.getElementById('bookingTime').value;
+            var location = document.getElementById('eventLocation').value;
+            var message  = document.getElementById('bookingMessage').value;
+
+            var text = 'Hello Dina! 👋\n\nI\'d like to book your interpretation services.\n\n'
+                + '*Name:* ' + name + '\n'
+                + '*Phone:* ' + phone + '\n'
+                + (email ? '*Email:* ' + email + '\n' : '')
+                + '*Event Type:* ' + type + '\n'
+                + (duration ? '*Duration:* ' + duration + '\n' : '')
+                + (date ? '*Date:* ' + date + '\n' : '')
+                + (time ? '*Time:* ' + time + '\n' : '')
+                + (location ? '*Location:* ' + location + '\n' : '')
+                + (message ? '\n*Notes:* ' + message : '');
+
+            window.open('https://wa.me/201011160627?text=' + encodeURIComponent(text), '_blank');
+        });
+    });
+
+    function validateStep(step, nextNum) {
+        var valid = true;
+        // Validate visible required fields only
+        step.querySelectorAll('input[required]:not([type=hidden]), select[required]').forEach(function(f) {
+            if (!f.value.trim()) {
+                valid = false;
+                f.style.borderColor = 'var(--error)';
+            } else {
+                f.style.borderColor = '';
             }
-            return isValid;
+        });
+        if (!valid) {
+            alert('Please fill in all required fields.');
+            return false;
+        }
+        // Step 2 extra validation
+        if (nextNum === '3') {
+            if (!document.getElementById('bookingDate').value) {
+                alert('Please select a date from the calendar.');
+                return false;
+            }
+            if (!document.getElementById('bookingTime').value) {
+                alert('Please select a time slot.');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function goToStep(num) {
+        document.querySelectorAll('.form-step').forEach(function(s) { s.classList.remove('active'); });
+        document.getElementById('step' + num).classList.add('active');
+        document.querySelectorAll('.booking-steps .step').forEach(function(s) {
+            s.classList.remove('active','completed');
+            var n = parseInt(s.dataset.step);
+            if (n === parseInt(num)) s.classList.add('active');
+            else if (n < parseInt(num)) s.classList.add('completed');
+        });
+        document.querySelector('.booking-form').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    function buildSummary() {
+        var date = document.getElementById('bookingDate').value;
+        var dateStr = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '-';
+        var time = document.getElementById('bookingTime').value;
+        var typeEl = document.getElementById('eventType');
+        document.getElementById('summaryContent').innerHTML =
+            row('fas fa-user','Name', document.getElementById('bookingName').value) +
+            row('fas fa-phone','Phone', document.getElementById('bookingPhone').value) +
+            row('fas fa-envelope','Email', document.getElementById('bookingEmail').value || '-') +
+            '<div style="border-top:1px dashed var(--gray-300);margin:8px 0;"></div>' +
+            row('fas fa-microphone','Event', typeEl.options[typeEl.selectedIndex].text) +
+            row('fas fa-calendar','Date', dateStr) +
+            row('fas fa-clock','Time', time || '-') +
+            (document.getElementById('eventLocation').value ? row('fas fa-map-marker-alt','Location', document.getElementById('eventLocation').value) : '');
+    }
+
+    function row(icon, label, val) {
+        return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--gray-200);font-size:14px;">'
+            + '<span style="color:var(--gray-600);"><i class="fas ' + icon + '" style="color:var(--primary-500);width:16px;margin-right:6px;"></i>' + label + ':</span>'
+            + '<span style="font-weight:600;color:var(--gray-900);">' + val + '</span></div>';
+    }
+
+    /* ===== Calendar ===== */
+    (function() {
+        var now = new Date();
+        var yr = now.getFullYear();
+        var mo = now.getMonth();
+        var months = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+
+        function draw(y, m) {
+            var grid = document.getElementById('calendarGrid');
+            var lbl  = document.getElementById('currentMonth');
+            if (!grid) return;
+            lbl.textContent = months[m] + ' ' + y;
+            var days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+            var html = days.map(function(d){ return '<div class="calendar-day-header">' + d + '</div>'; }).join('');
+            var first = new Date(y, m, 1).getDay();
+            var total = new Date(y, m+1, 0).getDate();
+            var today = new Date(); today.setHours(0,0,0,0);
+            for (var i=0;i<first;i++) html += '<div class="calendar-day empty"></div>';
+            for (var d=1;d<=total;d++) {
+                var dt = new Date(y, m, d);
+                var past = dt < today;
+                var cls  = 'calendar-day' + (past?' past':'') + (dt.getTime()===today.getTime()?' today':'');
+                var ds   = y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+                html += past
+                    ? '<div class="'+cls+'">'+d+'</div>'
+                    : '<div class="'+cls+'" onclick="pickDate(this,\''+ds+'\')">'+d+'</div>';
+            }
+            grid.innerHTML = html;
         }
 
-        function goToStep(stepNum) {
-            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step' + stepNum).classList.add('active');
-            document.querySelectorAll('.booking-steps .step').forEach(ind => {
-                ind.classList.remove('active', 'completed');
-                if (parseInt(ind.dataset.step) === parseInt(stepNum)) ind.classList.add('active');
-                else if (parseInt(ind.dataset.step) < parseInt(stepNum)) ind.classList.add('completed');
-            });
-            document.querySelector('.booking-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.pickDate = function(el, ds) {
+            document.querySelectorAll('.calendar-day.selected').forEach(function(x){ x.classList.remove('selected'); });
+            el.classList.add('selected');
+            document.getElementById('bookingDate').value = ds;
+            var d = document.getElementById('selectedDateDisplay');
+            if (d) d.textContent = 'Selected: ' + new Date(ds+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+            var c = document.getElementById('timeSlotsContainer');
+            if (c) { c.style.display='block'; drawSlots(); }
+        };
+
+        function drawSlots() {
+            var box = document.getElementById('timeSlots');
+            if (!box) return;
+            var times = ['8:00','8:30','9:00','9:30','10:00','10:30','11:00','11:30',
+                         '12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30',
+                         '16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00'];
+            box.innerHTML = times.map(function(t) {
+                var p=t.split(':'); var h=parseInt(p[0]); var m=p[1];
+                var label=(h%12||12)+':'+m+(h>=12?' PM':' AM');
+                return '<button type="button" class="time-slot-btn" onclick="pickTime(this,\''+t+'\')">'+label+'</button>';
+            }).join('');
         }
 
-        function updateBookingSummary() {
-            const summary = document.getElementById('summaryContent');
-            const data = {
-                name: document.getElementById('bookingName')?.value,
-                phone: document.getElementById('bookingPhone')?.value,
-                email: document.getElementById('bookingEmail')?.value,
-                eventType: document.getElementById('eventType')?.options[document.getElementById('eventType')?.selectedIndex]?.text,
-                duration: document.getElementById('duration')?.value,
-                date: document.getElementById('bookingDate')?.value,
-                time: document.getElementById('bookingTime')?.value,
-                location: document.getElementById('eventLocation')?.value
-            };
-            summary.innerHTML = `
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-user"></i> Name:</span><span class="summary-value">${data.name||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-phone"></i> Phone:</span><span class="summary-value">${data.phone||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-envelope"></i> Email:</span><span class="summary-value">${data.email||'-'}</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-microphone"></i> Event Type:</span><span class="summary-value">${data.eventType||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-clock"></i> Duration:</span><span class="summary-value">${data.duration||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-calendar"></i> Date:</span><span class="summary-value">${data.date ? new Date(data.date).toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '-'}</span></div>
-                ${data.location ? `<div class="summary-row"><span class="summary-label"><i class="fas fa-map-marker-alt"></i> Location:</span><span class="summary-value">${data.location}</span></div>` : ''}
-            `;
-        }
+        window.pickTime = function(el, t) {
+            document.querySelectorAll('.time-slot-btn.selected').forEach(function(b){ b.classList.remove('selected'); });
+            el.classList.add('selected');
+            document.getElementById('bookingTime').value = t;
+        };
 
-        function showFieldError(input, message) {
-            let el = input.parentElement.querySelector('.field-error');
-            if (!el) { el = document.createElement('span'); el.className = 'field-error'; input.parentElement.appendChild(el); }
-            el.textContent = message;
-        }
-        function clearFieldError(input) {
-            const el = input.parentElement.querySelector('.field-error');
-            if (el) el.remove();
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            draw(yr, mo);
+            document.getElementById('prevMonth').addEventListener('click', function(){ mo--; if(mo<0){mo=11;yr--;} draw(yr,mo); });
+            document.getElementById('nextMonth').addEventListener('click', function(){ mo++; if(mo>11){mo=0;yr++;} draw(yr,mo); });
+        });
+    })();
     </script>
 
     <style>
@@ -397,8 +474,10 @@
         .page-header .section-tag { background: rgba(255,255,255,0.2); color: white; }
         .breadcrumb { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-xl); font-size: var(--font-size-sm); opacity: 0.8; }
         .breadcrumb a { color: white; }
-        .booking-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: var(--spacing-2xl); align-items: start; }
+
+        .booking-layout { display: grid; grid-template-columns: 1fr 380px; gap: var(--spacing-2xl); align-items: start; }
         .booking-form-container { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); padding: var(--spacing-2xl); }
+
         .booking-steps { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-2xl); padding-bottom: var(--spacing-xl); border-bottom: 1px solid var(--gray-200); }
         .step { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xs); }
         .step-number { width: 40px; height: 40px; border-radius: 50%; background: var(--gray-200); color: var(--gray-500); display: flex; align-items: center; justify-content: center; font-weight: 700; transition: all var(--transition-base); }
@@ -406,54 +485,60 @@
         .step-label { font-size: var(--font-size-xs); color: var(--gray-500); font-weight: 500; }
         .step.active .step-label { color: var(--primary-600); font-weight: 600; }
         .step-line { width: 60px; height: 2px; background: var(--gray-200); margin-bottom: 20px; }
+
         .form-step { display: none; }
-        .form-step.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .form-step.active { display: block; animation: fadeInStep .3s ease; }
+        @keyframes fadeInStep { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
         .step-title { font-size: var(--font-size-xl); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-xl); display: flex; align-items: center; gap: var(--spacing-sm); }
         .step-title i { color: var(--primary-600); }
+
         .form-group { position: relative; margin-bottom: var(--spacing-lg); }
         .form-group label { display: block; font-weight: 600; color: var(--gray-700); margin-bottom: var(--spacing-sm); font-size: var(--font-size-sm); }
         .required { color: var(--error); }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: var(--spacing-md) var(--spacing-lg); padding-right: 45px; border: 2px solid var(--gray-200); border-radius: var(--radius-lg); font-size: var(--font-size-base); font-family: inherit; transition: all var(--transition-base); background: var(--white); }
         .form-group textarea { padding-right: var(--spacing-lg); resize: vertical; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
-        .form-group input.error, .form-group select.error { border-color: var(--error); }
-        .input-icon { position: absolute; right: 15px; top: 42px; color: var(--gray-400); }
-        .field-error { display: block; color: var(--error); font-size: var(--font-size-xs); margin-top: var(--spacing-xs); }
-        .form-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--spacing-md); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+        .input-icon { position: absolute; right: 15px; top: 42px; color: var(--gray-400); pointer-events: none; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); }
         .form-buttons { display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl); padding-top: var(--spacing-xl); border-top: 1px solid var(--gray-200); }
         .btn-block { width: 100%; }
-        .btn-success { background: linear-gradient(135deg, #25D366, #128C7E); color: var(--white); }
+        .btn-success { background: linear-gradient(135deg, #25D366, #128C7E); color: var(--white); border: none; }
         .btn-success:hover { background: linear-gradient(135deg, #128C7E, #075E54); }
-        .btn-whatsapp { background: #25D366; color: var(--white); }
+        .btn-whatsapp { background: #25D366; color: var(--white); border: none; }
         .btn-whatsapp:hover { background: #128C7E; }
-        .calendar-picker { margin-top: var(--spacing-lg); }
+
         .form-label { display: block; font-weight: 600; color: var(--gray-700); margin-bottom: var(--spacing-md); font-size: var(--font-size-sm); }
-        .form-label i { color: var(--primary-600); margin-right: var(--spacing-xs); }
+        .form-label i { color: var(--primary-600); margin-right: 4px; }
+
         .calendar-container { background: var(--gray-50); border-radius: var(--radius-lg); padding: var(--spacing-lg); }
         .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-md); }
         .calendar-nav { width: 36px; height: 36px; border: none; background: var(--white); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-700); transition: all var(--transition-fast); }
         .calendar-nav:hover { background: var(--primary-100); color: var(--primary-600); }
         .calendar-month { font-weight: 700; color: var(--gray-800); }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .calendar-day-header { text-align: center; font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-500); padding: var(--spacing-sm); }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+        .calendar-day-header { text-align: center; font-size: 11px; font-weight: 600; color: var(--gray-500); padding: 6px 2px; }
         .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-size: var(--font-size-sm); cursor: pointer; transition: all var(--transition-fast); background: var(--white); color: var(--gray-700); }
+        .calendar-day.empty { background: transparent; cursor: default; }
+        .calendar-day.past { color: var(--gray-300); cursor: not-allowed; background: transparent; }
         .calendar-day:not(.empty):not(.past):hover { background: var(--primary-100); color: var(--primary-700); }
-        .calendar-day.past { color: var(--gray-300); cursor: not-allowed; }
-        .calendar-day.today { border: 2px solid var(--primary-400); }
-        .calendar-day.selected { background: var(--primary-600); color: var(--white); }
+        .calendar-day.today { border: 2px solid var(--primary-400); font-weight: 700; }
+        .calendar-day.selected { background: var(--primary-600); color: var(--white); font-weight: 700; }
         .selected-date-display { margin-top: var(--spacing-md); padding: var(--spacing-md); background: var(--primary-50); border-radius: var(--radius-md); text-align: center; font-weight: 600; color: var(--primary-700); font-size: var(--font-size-sm); }
+
+        .time-slots-container { margin-top: var(--spacing-lg); }
+        .time-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px,1fr)); gap: 8px; margin-top: var(--spacing-md); }
+        .time-slot-btn { padding: 10px 4px; border: 2px solid var(--gray-200); background: var(--white); border-radius: var(--radius-md); font-size: var(--font-size-sm); font-weight: 500; cursor: pointer; transition: all var(--transition-fast); font-family: inherit; text-align: center; color: var(--gray-700); }
+        .time-slot-btn:hover { border-color: var(--primary-400); background: var(--primary-50); color: var(--primary-700); }
+        .time-slot-btn.selected { border-color: var(--primary-600); background: var(--primary-600); color: var(--white); font-weight: 700; }
+
         .booking-summary { background: var(--gray-50); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin: var(--spacing-xl) 0; }
         .booking-summary h3 { font-size: var(--font-size-lg); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-md); display: flex; align-items: center; gap: var(--spacing-sm); }
         .booking-summary h3 i { color: var(--primary-600); }
-        .summary-row { display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--gray-200); }
-        .summary-row:last-child { border-bottom: none; }
-        .summary-label { color: var(--gray-600); font-size: var(--font-size-sm); display: flex; align-items: center; gap: var(--spacing-xs); }
-        .summary-label i { color: var(--primary-500); width: 16px; }
-        .summary-value { font-weight: 600; color: var(--gray-900); }
-        .summary-divider { border-top: 1px dashed var(--gray-300); margin: var(--spacing-sm) 0; }
+
         .pricing-note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: var(--spacing-md); border-radius: var(--radius-md); margin: var(--spacing-lg) 0; display: flex; gap: var(--spacing-sm); font-size: var(--font-size-sm); }
         .pricing-note i { color: #f59e0b; margin-top: 2px; }
+
         .booking-sidebar { display: flex; flex-direction: column; gap: var(--spacing-lg); }
         .sidebar-card { background: var(--white); border-radius: var(--radius-xl); padding: var(--spacing-xl); box-shadow: var(--shadow-md); }
         .availability-card { text-align: center; }
@@ -461,12 +546,12 @@
         .card-icon i { font-size: var(--font-size-2xl); color: var(--primary-700); }
         .sidebar-card h3 { font-size: var(--font-size-lg); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-sm); display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); }
         .sidebar-card > p { color: var(--gray-600); font-size: var(--font-size-sm); line-height: 1.6; margin-bottom: var(--spacing-md); }
-        .availability-days { display: flex; justify-content: center; gap: var(--spacing-xs); margin-bottom: var(--spacing-md); }
-        .day { width: 36px; height: 36px; border-radius: 50%; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-500); }
+        .availability-days { display: flex; justify-content: center; gap: 4px; margin-bottom: var(--spacing-md); flex-wrap: wrap; }
+        .day { width: 34px; height: 34px; border-radius: 50%; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--gray-500); }
         .day.active { background: var(--success); color: var(--white); }
-        .availability-note { display: flex; align-items: center; justify-content: center; gap: var(--spacing-xs); font-size: var(--font-size-xs); color: var(--gray-500); }
+        .availability-note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: var(--font-size-xs); color: var(--gray-500); }
         .availability-note i { color: var(--success); }
-        .contact-note { display: flex; align-items: center; justify-content: center; gap: var(--spacing-xs); font-size: var(--font-size-xs); color: var(--gray-500); margin-top: var(--spacing-md); }
+        .contact-note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: var(--font-size-xs); color: var(--gray-500); margin-top: var(--spacing-md); }
         .contact-note i { color: var(--warning); }
         .process-steps { list-style: none; }
         .process-steps li { display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-md); }
@@ -475,12 +560,21 @@
         .process-steps strong { display: block; font-size: var(--font-size-sm); color: var(--gray-900); }
         .process-steps p { font-size: var(--font-size-xs); color: var(--gray-500); margin-top: 2px; }
         .trust-badges { display: flex; justify-content: center; gap: var(--spacing-lg); padding: var(--spacing-lg); background: var(--gray-50); border-radius: var(--radius-xl); }
-        .badge-item { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xs); }
+        .badge-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .badge-item i { font-size: var(--font-size-xl); color: var(--primary-600); }
         .badge-item span { font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-600); }
-        .footer-social { display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-md); }
-        .social-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all var(--transition-base); color: white; text-decoration: none; }
-        .whatsapp-social { background: #25D366; } .whatsapp-social:hover { background: #128C7E; transform: translateY(-2px); }
-        .youtube-social { background: #FF0000; } .youtube-social:hover { background: #cc0000; transform: translateY(-2px); }
-        .email-social { background: var(--primary-600); } .email-social:hover { background: var(--primary-700); transform: translateY(-2px); }
-        @media (max-width: 1024px) { .booki
+
+        @media (max-width: 1024px) { .booking-layout { grid-template-columns: 1fr; } .booking-sidebar { order: -1; } }
+        @media (max-width: 768px) {
+            .booking-form-container { padding: var(--spacing-lg); }
+            .form-row { grid-template-columns: 1fr; }
+            .form-buttons { flex-direction: column-reverse; }
+            .time-slots { grid-template-columns: repeat(auto-fill, minmax(75px,1fr)); }
+        }
+        @media (max-width: 480px) {
+            .time-slots { grid-template-columns: repeat(auto-fill, minmax(68px,1fr)); }
+            .time-slot-btn { font-size: 12px; padding: 8px 2px; }
+        }
+    </style>
+</body>
+</html>
