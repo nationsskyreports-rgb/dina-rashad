@@ -1,36 +1,38 @@
 /* ===================================
-   SPLASH SCREEN — يظهر مرة واحدة عند فتح التطبيق
+   SPLASH SCREEN
+   يظهر فقط لما التطبيق يتفتح من الهوم سكرين (standalone)
    =================================== */
 (function () {
+    var isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true;
+    if (!isStandaloneMode) return;
+
     if (sessionStorage.getItem('splash_shown')) return;
     sessionStorage.setItem('splash_shown', '1');
 
     var style = document.createElement('style');
     style.textContent = [
-        '#splash{position:fixed;inset:0;background:#000;z-index:999999;cursor:default;',
+        '#splash{position:fixed;inset:0;background:#000;z-index:999999;',
         'display:flex;align-items:center;justify-content:center;}',
         '#splash.hide{transition:opacity 0.5s ease;opacity:0;pointer-events:none;}',
         '#splash.gone{display:none;}',
-        '.spl-wrap{position:relative;width:88px;height:88px;',
-        'display:flex;align-items:center;justify-content:center;}',
-        '.spl-wrap i{font-size:38px;color:#c5a059;}',
-        '.spl-ring{position:absolute;inset:0;border-radius:50%;',
-        'border:2px solid transparent;border-top-color:#c5a059;border-right-color:#c5a059;',
-        'animation:spl-spin 0.9s linear infinite;}',
-        '@keyframes spl-spin{to{transform:rotate(360deg);}}'
+        '.spl-logo{width:140px;height:140px;border-radius:28px;object-fit:cover;',
+        'animation:spl-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;}',
+        '@keyframes spl-pop{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}'
     ].join('');
     document.head.appendChild(style);
 
     function mount() {
+        var dir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
         var el = document.createElement('div');
         el.id = 'splash';
-        el.innerHTML = '<div class="spl-wrap"><i class="fas fa-language"></i><div class="spl-ring"></div></div>';
+        el.innerHTML = '<img class="spl-logo" src="' + dir + 'images/icons/icon-512x512.png" alt="Dina Rashad">';
         document.body.appendChild(el);
         setTimeout(function () {
-            el.style.pointerEvents = 'none'; // فوراً — مش ينتظر الـ animation
+            el.style.pointerEvents = 'none';
             el.classList.add('hide');
             setTimeout(function () { el.classList.add('gone'); }, 520);
-        }, 1000);
+        }, 1200);
     }
 
     if (document.body) { mount(); }
