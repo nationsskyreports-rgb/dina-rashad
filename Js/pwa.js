@@ -7,7 +7,7 @@
 
     var style = document.createElement('style');
     style.textContent = [
-        '#splash{position:fixed;inset:0;background:#000;z-index:999999;',
+        '#splash{position:fixed;inset:0;background:#000;z-index:999999;cursor:default;',
         'display:flex;align-items:center;justify-content:center;}',
         '#splash.hide{transition:opacity 0.5s ease;opacity:0;pointer-events:none;}',
         '#splash.gone{display:none;}',
@@ -27,6 +27,7 @@
         el.innerHTML = '<div class="spl-wrap"><i class="fas fa-language"></i><div class="spl-ring"></div></div>';
         document.body.appendChild(el);
         setTimeout(function () {
+            el.style.pointerEvents = 'none'; // فوراً — مش ينتظر الـ animation
             el.classList.add('hide');
             setTimeout(function () { el.classList.add('gone'); }, 520);
         }, 1000);
