@@ -1181,13 +1181,18 @@ button {
 #pwa-install-btn i {
     margin-right: 8px; 
 }
-.time-slots-container { margin-top: 1.5rem; }
+.time-slots-container { 
+    margin-top: 1.5rem; 
+    width: 100%;
+    overflow: hidden;
+}
 
 .time-slots {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
     margin-top: 0.5rem;
+    width: 100%;
 }
 
 .time-slot-btn {
@@ -1202,17 +1207,6 @@ button {
     cursor: pointer;
     transition: all var(--transition-fast);
     text-align: center;
-}
-
-.time-slot-btn:hover {
-    border-color: var(--primary-400);
-    background: var(--primary-50);
-    color: var(--primary-700);
-}
-
-.time-slot-btn.selected {
-    border-color: var(--primary-600);
-    background: var(--primary-600);
-    color: var(--white);
-    font-weight: 700;
+    width: 100%;
+    box-sizing: border-box;
 }
