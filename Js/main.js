@@ -1,157 +1,11 @@
 /* ===================================
-   PAGE TRANSITION LAUNCHER
-   بيظهر لوجو المشروع بين الصفحات
-   =================================== */
-(function() {
-
-    // إنشاء الـ overlay
-    function createLauncher() {
-        if (document.getElementById('page-launcher')) return;
-
-        var launcher = document.createElement('div');
-        launcher.id = 'page-launcher';
-        launcher.innerHTML = \`
-            <div class="launcher-inner">
-                <div class="launcher-logo">
-                    <i class="fas fa-language"></i>
-                </div>
-                <div class="launcher-name">Dina Rashad</div>
-                <div class="launcher-dots">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
-        \`;
-
-        var style = document.createElement('style');
-        style.textContent = \`
-            #page-launcher {
-                position: fixed;
-                inset: 0;
-                background: linear-gradient(135deg, #1e3a8a, #2563eb);
-                z-index: 99999;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: opacity 0.4s ease;
-            }
-            #page-launcher.fade-out {
-                opacity: 0;
-                pointer-events: none;
-            }
-            #page-launcher.hidden {
-                display: none;
-            }
-            .launcher-inner {
-                text-align: center;
-                color: white;
-            }
-            .launcher-logo {
-                width: 80px;
-                height: 80px;
-                background: rgba(255,255,255,0.15);
-                border-radius: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 16px;
-                animation: launcher-pulse 1.5s ease-in-out infinite;
-            }
-            .launcher-logo i {
-                font-size: 36px;
-                color: white;
-            }
-            .launcher-name {
-                font-family: 'Inter', sans-serif;
-                font-size: 22px;
-                font-weight: 700;
-                letter-spacing: 0.5px;
-                margin-bottom: 24px;
-                opacity: 0.95;
-            }
-            .launcher-dots {
-                display: flex;
-                gap: 8px;
-                justify-content: center;
-            }
-            .launcher-dots span {
-                width: 8px;
-                height: 8px;
-                background: rgba(255,255,255,0.7);
-                border-radius: 50%;
-                animation: launcher-dot 1.2s ease-in-out infinite;
-            }
-            .launcher-dots span:nth-child(2) { animation-delay: 0.2s; }
-            .launcher-dots span:nth-child(3) { animation-delay: 0.4s; }
-            @keyframes launcher-pulse {
-                0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.3); }
-                50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(255,255,255,0); }
-            }
-            @keyframes launcher-dot {
-                0%, 100% { transform: translateY(0); opacity: 0.5; }
-                50% { transform: translateY(-6px); opacity: 1; }
-            }
-        \`;
-
-        document.head.appendChild(style);
-        document.body.appendChild(launcher);
-    }
-
-    // إخفاء الـ launcher عند تحميل الصفحة
-    function hideLauncher() {
-        var launcher = document.getElementById('page-launcher');
-        if (!launcher) return;
-        setTimeout(function() {
-            launcher.classList.add('fade-out');
-            setTimeout(function() {
-                launcher.classList.add('hidden');
-            }, 400);
-        }, 300);
-    }
-
-    // إظهار الـ launcher عند الضغط على لينك
-    function showLauncher() {
-        var launcher = document.getElementById('page-launcher');
-        if (!launcher) return;
-        launcher.classList.remove('hidden', 'fade-out');
-    }
-
-    // تهيئة
-    createLauncher();
-
-    // إخفاء عند اكتمال التحميل
-    if (document.readyState === 'complete') {
-        hideLauncher();
-    } else {
-        window.addEventListener('load', hideLauncher);
-    }
-
-    // إظهار عند التنقل بين الصفحات
-    document.addEventListener('click', function(e) {
-        var link = e.target.closest('a[href]');
-        if (!link) return;
-        var href = link.getAttribute('href');
-        // فقط للروابط الداخلية HTML
-        if (!href || href.startsWith('#') || href.startsWith('http') ||
-            href.startsWith('mailto') || href.startsWith('tel') ||
-            link.target === '_blank') return;
-
-        e.preventDefault();
-        showLauncher();
-        setTimeout(function() {
-            window.location.href = href;
-        }, 350);
-    });
-
-})();
-
-/* ===================================
    DINA RASHAD - INTERPRETER PWA
    Main JavaScript v2.2
    =================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
-    initScrollAnimations();  // replaces IntersectionObserver with reliable scroll
+    initScrollAnimations();
     initSmoothScroll();
     initCounters();
     console.log('🎤 Dina Rashad Interpreter PWA - Initialized');
@@ -206,10 +60,8 @@ function closeNav(toggle, menu) {
 
 /* ===================================
    SCROLL ANIMATIONS
-   بدل IntersectionObserver — أكتر موثوقية على كل المتصفحات
    =================================== */
 function initScrollAnimations() {
-    // اضف scroll-animate لـ service cards وغيرها
     document.querySelectorAll('.service-card, .feature-item, .language-card').forEach((el, i) => {
         el.classList.add('scroll-animate');
         el.style.transitionDelay = `${i * 0.1}s`;
@@ -219,18 +71,14 @@ function initScrollAnimations() {
         const windowH = window.innerHeight;
         document.querySelectorAll('.scroll-animate:not(.visible), .stagger-children:not(.visible)').forEach(el => {
             const rect = el.getBoundingClientRect();
-            // عنصر يكون visible لو 10% منه ظاهر في الشاشة
             if (rect.top < windowH * 0.92 && rect.bottom > 0) {
                 el.classList.add('visible');
             }
         });
     }
 
-    // شغّل فوراً عند التحميل
     checkVisibility();
-    // شغّل عند كل scroll
     window.addEventListener('scroll', checkVisibility, { passive: true });
-    // شغّل بعد ثانية كـ fallback لو فيه حاجة اتأخرت
     window.addEventListener('load', function() {
         checkVisibility();
         setTimeout(checkVisibility, 500);
@@ -471,54 +319,10 @@ window.showNotification = showNotification;
 window.formatTime24To12 = formatTime24To12;
 
 /* ===================================
-   PAGE TRANSITION LAUNCHER
+   PAGE TRANSITION — history replace fix
    =================================== */
 (function () {
     var DURATION = 350;
-
-    /* ---- CSS ---- */
-    var style = document.createElement('style');
-    style.textContent = [
-        '#page-launcher{position:fixed;inset:0;background:linear-gradient(135deg,#1e3a8a,#2563eb);',
-        'z-index:99999;display:flex;align-items:center;justify-content:center;',
-        'transition:opacity .4s ease;}',
-        '#page-launcher.fade-out{opacity:0;pointer-events:none;}',
-        '#page-launcher.gone{display:none;}',
-        '.pl-inner{text-align:center;color:#fff;}',
-        '.pl-icon{width:80px;height:80px;background:rgba(255,255,255,.15);border-radius:20px;',
-        'display:flex;align-items:center;justify-content:center;margin:0 auto 16px;',
-        'animation:pl-pulse 1.5s ease-in-out infinite;}',
-        '.pl-icon i{font-size:36px;color:#fff;}',
-        '.pl-name{font-family:Inter,sans-serif;font-size:22px;font-weight:700;margin-bottom:24px;}',
-        '.pl-dots{display:flex;gap:8px;justify-content:center;}',
-        '.pl-dots span{width:8px;height:8px;background:rgba(255,255,255,.7);border-radius:50%;',
-        'animation:pl-dot 1.2s ease-in-out infinite;}',
-        '.pl-dots span:nth-child(2){animation-delay:.2s;}',
-        '.pl-dots span:nth-child(3){animation-delay:.4s;}',
-        '@keyframes pl-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}',
-        '@keyframes pl-dot{0%,100%{transform:translateY(0);opacity:.5;}50%{transform:translateY(-6px);opacity:1;}}'
-    ].join('');
-    document.head.appendChild(style);
-
-    /* ---- HTML ---- */
-    var el = document.createElement('div');
-    el.id = 'page-launcher';
-    el.innerHTML = '<div class="pl-inner">'
-        + '<div class="pl-icon"><i class="fas fa-language"></i></div>'
-        + '<div class="pl-name">Dina Rashad</div>'
-        + '<div class="pl-dots"><span></span><span></span><span></span></div>'
-        + '</div>';
-    document.body.appendChild(el);
-
-    /* ---- Hide on load ---- */
-    function hide() {
-        el.classList.add('fade-out');
-        setTimeout(function () { el.classList.add('gone'); }, 420);
-    }
-    if (document.readyState === 'complete') { setTimeout(hide, 200); }
-    else { window.addEventListener('load', function () { setTimeout(hide, 200); }); }
-
-    /* ---- Show on internal navigation ---- */
     document.addEventListener('click', function (e) {
         var a = e.target.closest('a[href]');
         if (!a) return;
@@ -529,16 +333,11 @@ window.formatTime24To12 = formatTime24To12;
             || href.indexOf('tel') === 0
             || a.target === '_blank') return;
         e.preventDefault();
-        el.classList.remove('gone', 'fade-out');
-        // لو نفس الصفحة — replace بدل push عشان ميتراكمش في الـ history
         var isSamePage = window.location.pathname.endsWith(href) ||
                          window.location.href.endsWith(href);
         setTimeout(function () {
-            if (isSamePage) {
-                window.location.replace(href);
-            } else {
-                window.location.href = href;
-            }
+            if (isSamePage) { window.location.replace(href); }
+            else { window.location.href = href; }
         }, DURATION);
     });
 }());
