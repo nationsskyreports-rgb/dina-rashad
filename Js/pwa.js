@@ -1,45 +1,4 @@
 /* ===================================
-   SPLASH SCREEN
-   يظهر فقط لما التطبيق يتفتح من الهوم سكرين (standalone)
-   =================================== */
-(function () {
-    var isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
-        || window.navigator.standalone === true;
-    if (!isStandaloneMode) return;
-
-    if (sessionStorage.getItem('splash_shown')) return;
-    sessionStorage.setItem('splash_shown', '1');
-
-    var style = document.createElement('style');
-    style.textContent = [
-        '#splash{position:fixed;inset:0;background:#000;z-index:999999;',
-        'display:flex;align-items:center;justify-content:center;}',
-        '#splash.hide{transition:opacity 0.5s ease;opacity:0;pointer-events:none;}',
-        '#splash.gone{display:none;}',
-        '.spl-logo{width:140px;height:140px;border-radius:28px;object-fit:cover;',
-        'animation:spl-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;}',
-        '@keyframes spl-pop{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}'
-    ].join('');
-    document.head.appendChild(style);
-
-    function mount() {
-        var dir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-        var el = document.createElement('div');
-        el.id = 'splash';
-        el.innerHTML = '<img class="spl-logo" src="' + dir + 'images/icons/icon-512x512.png" alt="Dina Rashad">';
-        document.body.appendChild(el);
-        setTimeout(function () {
-            el.style.pointerEvents = 'none';
-            el.classList.add('hide');
-            setTimeout(function () { el.classList.add('gone'); }, 520);
-        }, 1200);
-    }
-
-    if (document.body) { mount(); }
-    else { document.addEventListener('DOMContentLoaded', mount); }
-}());
-
-/* ===================================
    DINA RASHAD - INTERPRETER PWA
    PWA JavaScript v2.3 — Fixed
    
@@ -77,6 +36,9 @@ function initPWA() {
 function initServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
+    // احسب المسار الصح للـ sw.js بناءً على مكان الموقع
+    // لو على /dina-rashad/ → /dina-rashad/sw.js
+    // لو على root /       → /sw.js
     const swPath = getSwPath();
 
     window.addEventListener('load', function () {
@@ -107,9 +69,12 @@ function initServiceWorker() {
 }
 
 function getSwPath() {
+    // خد الـ pathname وشيل اسم الصفحة، خلّي الـ directory بس
     const pathname = window.location.pathname;
+    // لو pathname = /dina-rashad/index.html → نرجع /dina-rashad/sw.js
+    // لو pathname = /index.html أو / → نرجع /sw.js
     const lastSlash = pathname.lastIndexOf('/');
-    const dir = pathname.substring(0, lastSlash + 1);
+    const dir = pathname.substring(0, lastSlash + 1); // "/dina-rashad/" أو "/"
     return dir + 'sw.js';
 }
 
@@ -124,6 +89,7 @@ function initInstallPrompt() {
         return;
     }
 
+    // ── Android / Chrome ──────────────────────────────────────
     window.addEventListener('beforeinstallprompt', function (e) {
         e.preventDefault();
         deferredPrompt = e;
@@ -146,12 +112,16 @@ function initInstallPrompt() {
         }));
     });
 
+    // ── iOS Safari ────────────────────────────────────────────
+    // Safari مش بيطلق beforeinstallprompt خالص
+    // بنشوف لو iOS وبنعرض دليل يدوي
     if (isIos() && !isStandalone()) {
         setTimeout(function () {
             showInstallBanner('ios');
         }, 4000);
     }
 
+    // زرار Install لو موجود في الـ HTML
     const installBtn = document.getElementById('pwa-install-btn');
     if (installBtn) {
         window.addEventListener('beforeinstallprompt', function () {
@@ -166,6 +136,7 @@ function initInstallPrompt() {
 function isIos() {
     return (
         /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+        // iPad على iOS 13+ بيبان كـ Mac
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
     );
 }
@@ -224,6 +195,7 @@ function showInstallBanner(type) {
     banner.className = 'install-banner';
 
     if (type === 'ios') {
+        // iOS: دليل خطوات يدوي
         banner.innerHTML = `
             <div class="install-banner-content">
                 <div class="install-banner-icon ios-icon">
@@ -242,6 +214,7 @@ function showInstallBanner(type) {
             </div>
         `;
     } else {
+        // Android: زرار Install عادي
         banner.innerHTML = `
             <div class="install-banner-content">
                 <div class="install-banner-icon">
@@ -343,18 +316,23 @@ function addInstallBannerStyles() {
             cursor: pointer; transition: background 0.2s; flex-shrink: 0;
         }
         .btn-dismiss:hover { background: rgba(255,255,255,0.35); }
+
+        /* لو فيه whatsapp float button — ارفع الـ banner فوقه */
         body:has(.whatsapp-float) .install-banner.visible { bottom: 80px; }
+
         @media (max-width: 768px) {
             .install-banner { padding: 14px 16px; }
             .install-banner-content { flex-wrap: wrap; gap: 10px; }
             .install-banner-text { flex: 1; min-width: 200px; padding-right: 40px; }
             .install-banner-actions { width: 100%; justify-content: center; }
+            /* زرار الـ dismiss في الكورنر على موبايل */
             .btn-dismiss {
                 position: absolute;
                 top: 0; right: 0;
                 width: 32px; height: 32px;
                 font-size: 11px;
             }
+            /* لو ios مفيش actions — الـ dismiss يبقى في الكورنر */
             .install-banner-content:not(:has(.install-banner-actions)) .btn-dismiss {
                 position: absolute; top: 0; right: 0;
             }
