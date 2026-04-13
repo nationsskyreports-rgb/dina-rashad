@@ -276,6 +276,33 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() { initBookingSteps(); });
 
+        // Submit handler
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var name     = document.getElementById('bookingName').value;
+            var phone    = document.getElementById('bookingPhone').value;
+            var email    = document.getElementById('bookingEmail').value;
+            var typeEl   = document.getElementById('eventType');
+            var type     = typeEl.options[typeEl.selectedIndex].text;
+            var duration = document.getElementById('duration').value;
+            var date     = document.getElementById('bookingDate').value;
+            var location = document.getElementById('eventLocation').value;
+            var message  = document.getElementById('bookingMessage').value;
+            var dateStr  = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '';
+
+            var text = 'Hello Dina! 👋\n\nI would like to book your interpretation services.\n\n'
+                + '👤 Name: ' + name + '\n'
+                + '📞 Phone: ' + phone + '\n'
+                + (email ? '📧 Email: ' + email + '\n' : '')
+                + '🎤 Event Type: ' + type + '\n'
+                + (duration ? '⏱ Duration: ' + duration + '\n' : '')
+                + (dateStr ? '📅 Date: ' + dateStr + '\n' : '')
+                + (location ? '📍 Location: ' + location + '\n' : '')
+                + (message ? '\n📝 Notes: ' + message : '');
+
+            window.open('https://wa.me/201011160627?text=' + encodeURIComponent(text), '_blank');
+        });
+
         function initBookingSteps() {
             document.querySelectorAll('.next-step').forEach(btn => {
                 btn.addEventListener('click', function() {
