@@ -128,24 +128,13 @@
                                 </div>
                             </div>
 
-                            <div class="calendar-picker">
-                                <label class="form-label"><i class="fas fa-calendar-check"></i> Select Preferred Date <span class="required">*</span></label>
-                                <div class="calendar-container">
-                                    <div class="calendar-header">
-                                        <button type="button" id="prevMonth" class="calendar-nav"><i class="fas fa-chevron-left"></i></button>
-                                        <span id="currentMonth" class="calendar-month">January 2025</span>
-                                        <button type="button" id="nextMonth" class="calendar-nav"><i class="fas fa-chevron-right"></i></button>
-                                    </div>
-                                    <div id="calendarGrid" class="calendar-grid"></div>
-                                    <input type="hidden" id="bookingDate" name="date" required>
-                                    <div id="selectedDateDisplay" class="selected-date-display"></div>
-                                </div>
-                            </div>
-
-                            <div class="time-slots-container" style="display:none;">
-                                <label class="form-label"><i class="fas fa-clock"></i> Select Time Slot <span class="required">*</span></label>
-                                <div id="timeSlots" class="time-slots"></div>
-                                <input type="hidden" id="bookingTime" name="time" required>
+                            <!-- CHANGE 1: date input instead of calendar + time slots -->
+                            <div class="form-group" style="margin-top: var(--spacing-lg);">
+                                <label for="bookingDate">
+                                    <i class="fas fa-calendar-check" style="color:var(--primary-600);margin-right:6px;"></i>
+                                    Preferred Date <span class="required">*</span>
+                                </label>
+                                <input type="date" id="bookingDate" name="date" required style="padding-right: var(--spacing-lg);">
                             </div>
 
                             <div class="form-buttons">
@@ -164,11 +153,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="bookingMessage">Additional Details / Special Requirements</label>
-                                <!-- FIX: was missing opening < tag -->
-                                <textarea id="bookingMessage"
-                                          name="message"
-                                          rows="4"
-                                          placeholder="Tell me more about your event, specific topics, technical terms, or any special requirements..."></textarea>
+                                <textarea id="bookingMessage" name="message" rows="4"
+                                    placeholder="Tell me more about your event, specific topics, technical terms, or any special requirements..."></textarea>
                             </div>
 
                             <div class="booking-summary">
@@ -285,7 +271,6 @@
     </a>
 
     <script src="Js/main.js?v=2.1"></script>
-    <script src="Js/booking.js?v=2.1"></script>
     <script src="Js/pwa.js?v=2.1"></script>
 
     <script>
@@ -337,25 +322,18 @@
 
         function updateBookingSummary() {
             const summary = document.getElementById('summaryContent');
-            const data = {
-                name: document.getElementById('bookingName')?.value,
-                phone: document.getElementById('bookingPhone')?.value,
-                email: document.getElementById('bookingEmail')?.value,
-                eventType: document.getElementById('eventType')?.options[document.getElementById('eventType')?.selectedIndex]?.text,
-                duration: document.getElementById('duration')?.value,
-                date: document.getElementById('bookingDate')?.value,
-                time: document.getElementById('bookingTime')?.value,
-                location: document.getElementById('eventLocation')?.value
-            };
+            const eventType = document.getElementById('eventType');
+            const date = document.getElementById('bookingDate')?.value;
+            const dateFormatted = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '-';
             summary.innerHTML = `
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-user"></i> Name:</span><span class="summary-value">${data.name||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-phone"></i> Phone:</span><span class="summary-value">${data.phone||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-envelope"></i> Email:</span><span class="summary-value">${data.email||'-'}</span></div>
+                <div class="summary-row"><span class="summary-label"><i class="fas fa-user"></i> Name:</span><span class="summary-value">${document.getElementById('bookingName')?.value||'-'}</span></div>
+                <div class="summary-row"><span class="summary-label"><i class="fas fa-phone"></i> Phone:</span><span class="summary-value">${document.getElementById('bookingPhone')?.value||'-'}</span></div>
+                <div class="summary-row"><span class="summary-label"><i class="fas fa-envelope"></i> Email:</span><span class="summary-value">${document.getElementById('bookingEmail')?.value||'-'}</span></div>
                 <div class="summary-divider"></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-microphone"></i> Event Type:</span><span class="summary-value">${data.eventType||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-clock"></i> Duration:</span><span class="summary-value">${data.duration||'-'}</span></div>
-                <div class="summary-row"><span class="summary-label"><i class="fas fa-calendar"></i> Date:</span><span class="summary-value">${data.date ? new Date(data.date).toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '-'}</span></div>
-                ${data.location ? `<div class="summary-row"><span class="summary-label"><i class="fas fa-map-marker-alt"></i> Location:</span><span class="summary-value">${data.location}</span></div>` : ''}
+                <div class="summary-row"><span class="summary-label"><i class="fas fa-microphone"></i> Event:</span><span class="summary-value">${eventType?.options[eventType?.selectedIndex]?.text||'-'}</span></div>
+                <div class="summary-row"><span class="summary-label"><i class="fas fa-clock"></i> Duration:</span><span class="summary-value">${document.getElementById('duration')?.value||'-'}</span></div>
+                <div class="summary-row"><span class="summary-label"><i class="fas fa-calendar"></i> Date:</span><span class="summary-value">${dateFormatted}</span></div>
+                ${document.getElementById('eventLocation')?.value ? `<div class="summary-row"><span class="summary-label"><i class="fas fa-map-marker-alt"></i> Location:</span><span class="summary-value">${document.getElementById('eventLocation').value}</span></div>` : ''}
             `;
         }
 
@@ -378,7 +356,11 @@
         .page-header .section-tag { background: rgba(255,255,255,0.2); color: white; }
         .breadcrumb { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-xl); font-size: var(--font-size-sm); opacity: 0.8; }
         .breadcrumb a { color: white; }
-        .booking-layout { display: grid; grid-template-columns: 1fr 380px; gap: var(--spacing-2xl); align-items: start; }
+
+        /* CHANGE 2: mobile-first layout to fix stretch */
+        .booking-layout { display: flex; flex-direction: column; gap: var(--spacing-2xl); }
+        @media (min-width: 1025px) { .booking-layout { display: grid; grid-template-columns: 1fr 380px; align-items: start; } }
+
         .booking-form-container { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); padding: var(--spacing-2xl); }
         .booking-steps { display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-2xl); padding-bottom: var(--spacing-xl); border-bottom: 1px solid var(--gray-200); }
         .step { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xs); }
@@ -396,6 +378,7 @@
         .form-group label { display: block; font-weight: 600; color: var(--gray-700); margin-bottom: var(--spacing-sm); font-size: var(--font-size-sm); }
         .required { color: var(--error); }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: var(--spacing-md) var(--spacing-lg); padding-right: 45px; border: 2px solid var(--gray-200); border-radius: var(--radius-lg); font-size: var(--font-size-base); font-family: inherit; transition: all var(--transition-base); background: var(--white); }
+        .form-group input[type="date"] { padding-right: var(--spacing-lg); }
         .form-group textarea { padding-right: var(--spacing-lg); resize: vertical; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
         .form-group input.error, .form-group select.error { border-color: var(--error); }
@@ -408,22 +391,6 @@
         .btn-success:hover { background: linear-gradient(135deg, #128C7E, #075E54); }
         .btn-whatsapp { background: #25D366; color: var(--white); }
         .btn-whatsapp:hover { background: #128C7E; }
-        .calendar-picker { margin-top: var(--spacing-lg); }
-        .form-label { display: block; font-weight: 600; color: var(--gray-700); margin-bottom: var(--spacing-md); font-size: var(--font-size-sm); }
-        .form-label i { color: var(--primary-600); margin-right: var(--spacing-xs); }
-        .calendar-container { background: var(--gray-50); border-radius: var(--radius-lg); padding: var(--spacing-lg); }
-        .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-md); }
-        .calendar-nav { width: 36px; height: 36px; border: none; background: var(--white); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-700); transition: all var(--transition-fast); }
-        .calendar-nav:hover { background: var(--primary-100); color: var(--primary-600); }
-        .calendar-month { font-weight: 700; color: var(--gray-800); }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .calendar-day-header { text-align: center; font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-500); padding: var(--spacing-sm); }
-        .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-size: var(--font-size-sm); cursor: pointer; transition: all var(--transition-fast); background: var(--white); color: var(--gray-700); }
-        .calendar-day:not(.empty):not(.past):hover { background: var(--primary-100); color: var(--primary-700); }
-        .calendar-day.past { color: var(--gray-300); cursor: not-allowed; }
-        .calendar-day.today { border: 2px solid var(--primary-400); }
-        .calendar-day.selected { background: var(--primary-600); color: var(--white); }
-        .selected-date-display { margin-top: var(--spacing-md); padding: var(--spacing-md); background: var(--primary-50); border-radius: var(--radius-md); text-align: center; font-weight: 600; color: var(--primary-700); font-size: var(--font-size-sm); }
         .booking-summary { background: var(--gray-50); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin: var(--spacing-xl) 0; }
         .booking-summary h3 { font-size: var(--font-size-lg); font-weight: 700; color: var(--gray-900); margin-bottom: var(--spacing-md); display: flex; align-items: center; gap: var(--spacing-sm); }
         .booking-summary h3 i { color: var(--primary-600); }
@@ -464,7 +431,6 @@
         .whatsapp-social { background: #25D366; } .whatsapp-social:hover { background: #128C7E; transform: translateY(-2px); }
         .youtube-social { background: #FF0000; } .youtube-social:hover { background: #cc0000; transform: translateY(-2px); }
         .email-social { background: var(--primary-600); } .email-social:hover { background: var(--primary-700); transform: translateY(-2px); }
-        @media (max-width: 1024px) { .booking-layout { grid-template-columns: 1fr; } .booking-sidebar { order: -1; } }
         @media (max-width: 768px) { .booking-form-container { padding: var(--spacing-lg); } .form-row { grid-template-columns: 1fr; } .form-buttons { flex-direction: column-reverse; } }
     </style>
 </body>
